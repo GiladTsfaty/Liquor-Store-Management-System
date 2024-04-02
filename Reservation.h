@@ -7,6 +7,9 @@
 #include "List.h"
 #include "Sales.h"
 
+
+
+
 #define MAX_RES_CODE_NUM 1000
 
 typedef struct
@@ -25,7 +28,7 @@ typedef struct
 
 int makeReservation();
 
-void printReservatoin(const Reservation* pRes);
+void printReservation(const Reservation* pRes);
 
 
 

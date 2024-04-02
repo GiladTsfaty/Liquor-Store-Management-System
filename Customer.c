@@ -1,6 +1,7 @@
 
 #include "Customer.h"
 #include "list.h"
+#include "GeneralFunctions.h"
 
 #include <stdio.h>
 #include <string.h>

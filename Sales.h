@@ -1,5 +1,7 @@
 #pragma once
 
+
+
 #include "Customer.h"
 #include "Reservation.h"
 //#include "Inventory.h"
@@ -15,7 +17,7 @@ typedef struct
 {
     LIST customersList;
 
-    Reservation** reservationArray;
+   struct Reservation** reservationArray;
     int reservationCount;
 
     eSortOption	ReservationSortOpt;

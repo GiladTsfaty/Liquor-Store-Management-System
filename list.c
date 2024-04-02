@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
 #include "list.h"
 #include "Shop.h"
 #include "Inventory.h"
@@ -144,6 +147,34 @@ int L_print(const LIST* pList, void(*print)(const void*))
     printf("\n");
     return c;
 }
+
+
+
+
+
+////////////////////////////////////////////////
+// length (additional function)
+// Aim:		return the list length (assume the DATA is int)
+// Input:	pointer to the list structure
+// Output:	the length of the list 
+////////////////////////////////////////////////
+// Function to calculate the length of the linked list
+int L_length(const LIST* pList) {
+    if (!pList || !pList->head.next)
+        return 0;
+
+    int length = 0;
+    const NODE* current = &(pList->head);
+
+    while (current != NULL) {
+        length++;
+        current = current->next;
+    }
+
+    return length;// -1 ?
+}
+
+
 
 
 

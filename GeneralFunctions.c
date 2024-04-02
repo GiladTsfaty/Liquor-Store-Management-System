@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+
 # include "GeneralFunctions.h"
 
 char* getStrExactName(const char* msg)
@@ -88,10 +89,6 @@ char** splitCharsToWords(char* str, int* pCount, int* pTotalLength)
 	*pCount = count;
 	return wordsArray;
 }
-
-
-
-
 
 
 
