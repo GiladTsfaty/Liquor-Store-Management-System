@@ -32,7 +32,7 @@ typedef struct
 
 
 
-void        initSales(Sales* pSales, Inventory* pInventory);
+void        initSales(Sales* pSales);
 void        freeSales(Sales* pSales);
 
 
@@ -43,6 +43,7 @@ Customer*   initCustomer(Sales* pSales);
 Customer*   findCustomerByName(const Sales* pSales, const char* name);
 int         uniqeNameCheck(const char* name, const Sales* pSales);
 int         customerCompare(const void* data1, const void* data2);//name comperator
+//int         pickCustomerFromList(const Sales* pSales);//print all clients 
 
 void        printAllCustomers(const Sales* pSales);
 

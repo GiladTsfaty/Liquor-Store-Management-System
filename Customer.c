@@ -23,7 +23,8 @@ int initCustomerWithoutName(Customer* pCustomer)
 
 int printCustomer(const Customer* pCustomer)
 {
-	printf("Customer - %s is a %s client and has spent a total of %d$. \n",pCustomer->name, pCustomer->type, pCustomer->totalSpent);
+	printf("Customer - %s is a %s client and has spent a total of %d$. \n",
+        pCustomer->name, CustomerTypeStr[pCustomer->type], pCustomer->totalSpent);
 
 	return 1;
 }
