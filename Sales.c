@@ -9,6 +9,19 @@
 
 
 
+void initSales(Sales* pSales)
+{
+	printf("-----------  Init Sales ----------\n");
+
+	L_init(&pSales->customersList);
+
+	pSales->reservationCount = 0;
+	pSales->reservationArray = NULL;
+
+}
+
+
+
 //void initSales(Sales* pSales, Inventory* pInventory)
 //{
 //    pSales->inventory = pInventory;
@@ -111,6 +124,45 @@ void printAllCustomers(const Sales* pSales)
 
 
 
+
+
+
+
+int addNewReservation(Sales* pSales)
+{
+
+	Reservation* pRes = (Reservation*)calloc(1, sizeof(Reservation));
+	if(!pRes)
+		return 0;
+
+
+	pSales->reservationArray = (Reservation**)realloc(pSales->reservationArray, (pSales->reservationCount + 1) * sizeof(Reservation*));//arr++
+	if (!pSales->reservationArray)
+	{
+		free(pRes);
+		return 0;
+	}
+
+	pSales->reservationArray[pSales->reservationCount] = pRes;//added to end of arr 
+	pSales->reservationCount++; //arr
+	pSales->ReservationSortOpt = eNone;
+	
+	return 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void findReservation(const Sales* pSales) {
 	int(*compare)(const void* rese1, const void* rese2) = NULL; // Initialize to NULL
 
@@ -120,6 +172,7 @@ void findReservation(const Sales* pSales) {
 	switch (pSales->ReservationSortOpt) {
 	case eResCode:
 		printf("%s\t", "Reservation Code:"); // Corrected printing statement
+		compare = compareReseravationByReservatinCode;
 		break;
 
 	case eCustomerName:
@@ -197,10 +250,6 @@ eSortOption showSortMenu()
 
 	return (eSortOption)opt;
 }
-
-
-
-
 
 
 

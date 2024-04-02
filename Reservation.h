@@ -20,6 +20,10 @@ typedef struct
 }Reservation;
 
 
+//void initReservation(Reservation* pRes,Customer* pCus, Sales* pSales);
+
+
+int makeReservation();
 
 void printReservatoin(const Reservation* pRes);
 

@@ -9,14 +9,35 @@
 #include <stdlib.h>
 
 
+//
+//void initReservation(Reservation* pRes, Customer* pCus, Sales* pSales)
+//{
+//	getCorrectDate(&pRes->date);//date
+//
+//	pRes->totalAmount = 0;//amount
+//
+//	findCustomerByName( pSales ,&pRes->customer->name);//client
+//
+//
+//
+//
+//
+//
+//
+//}
+
+
+
+
+
 
 void printReservatoin(const Reservation* pRes)
 {
 
 	printf("On the ");
 	printDate(&pRes->date);
-	printf(", %s made a Reservation,  REScode: %d, , in the amount of %d$. \n", pRes->customer->name, pRes->ReservationCode,
-		pRes->totalAmount);
+	printf(", %s made a Reservation,  REScode: %d, , in the amount of %d$. \n", pRes->customer->name,
+		pRes->ReservationCode,pRes->totalAmount);
 
 }
 
