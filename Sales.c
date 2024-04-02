@@ -5,7 +5,7 @@
 
 #include "Sales.h"
 #include "list.h"
-
+#include "Reservation.h"
 
 
 
@@ -50,7 +50,7 @@ Customer* initCustomer(Sales* pSales)
 
 	while (1)
 	{
-		getCustomerName(pCustomer->name);
+		getCustomerName(pCustomer);
 		if (uniqeNameCheck(pCustomer->name, pSales))
 			break;
 
@@ -76,19 +76,41 @@ int uniqeNameCheck(const char* name, const Sales* pSales)
 
 
 
-Customer* findCustomerByName(const Sales* pSales, const char* name)
-{
-	Customer temp = { 0 };
-	strcpy(temp.name, name);
+//Customer* findCustomerByName(const Sales* pSales, const char* name)
+//{
+//	Customer temp = { 0 };
+//	strcpy(temp.name, name);
+//
+//
+//	const NODE* clientNode;
+//	clientNode = L_find(pSales->customersList.head.next, &temp, customerCompare);// isSameAirport
+//
+//	if (clientNode != NULL)
+//		return clientNode->key;
+//
+//	return NULL;// a uniqe name
+//}
 
+
+Customer* findCustomerByName(const Sales* pSales, const char* name) {
+	Customer* temp = (Customer*)malloc(sizeof(Customer)); // Allocate memory for the temporary Customer struct
+	if (!temp) {
+		// Handle memory allocation failure
+		return NULL;
+	}
+
+	strcpy(temp->name, name); // Copy the name to the temporary Customer struct
 
 	const NODE* clientNode;
-	clientNode = L_find(pSales->customersList.head.next, &temp, customerCompare);// isSameAirport
+	clientNode = L_find(pSales->customersList.head.next, temp, customerCompare); // Assuming customerCompare is defined elsewhere
 
-	if (clientNode != NULL)
+	free(temp); // Free the dynamically allocated memory for the temporary Customer struct
+
+	if (clientNode != NULL) {
 		return clientNode->key;
+	}
 
-	return NULL;// a uniqe name
+	return NULL; // Customer not found
 }
 
 
@@ -128,34 +150,63 @@ void printAllCustomers(const Sales* pSales)
 
 
 
-int addNewReservation(Sales* pSales)
-{
-
-	Reservation* pRes = (Reservation*)calloc(1, sizeof(Reservation));
-	if(!pRes)
-		return 0;
-
-
-	pSales->reservationArray = (Reservation**)realloc(pSales->reservationArray, (pSales->reservationCount + 1) * sizeof(Reservation*));//arr++
-	if (!pSales->reservationArray)
-	{
-		free(pRes);
-		return 0;
-	}
-
-	pSales->reservationArray[pSales->reservationCount] = pRes;//added to end of arr 
-	pSales->reservationCount++; //arr
-	pSales->ReservationSortOpt = eNone;
-	
-	return 1;
-}
-
-
+//int addNewReservation(Sales* pSales)
+//{
+//
+//	Reservation* pRes = (Reservation*)calloc(1, sizeof(Reservation));
+//	if(!pRes)
+//		return 0;
+//
+//
+//	pSales->reservationArray = (Reservation**)realloc(pSales->reservationArray, (pSales->reservationCount + 1) * sizeof(Reservation*));//arr++
+//	if (!pSales->reservationArray)
+//	{
+//		free(pRes);
+//		return 0;
+//	}
+//
+//	pSales->reservationArray[pSales->reservationCount] = pRes;//added to end of arr 
+//	pSales->reservationCount++; //arr
+//	pSales->ReservationSortOpt = eNone;
+//	
+//	return 1;
+//}
 
 
 
 
 
+//int addNewReservation(Sales* pSales) {
+//	// Allocate memory for a new Reservation object
+//	Reservation* pRes = (Reservation*)calloc(1, sizeof(Reservation));
+//	if (!pRes)
+//		return 0; // Memory allocation failed
+//
+//	// Resize the reservationArray to accommodate the new reservation
+//	Reservation** tempArray = (Reservation**)realloc(pSales->reservationArray, (pSales->reservationCount + 1) * sizeof(Reservation*));
+//	if (!tempArray) {
+//		// Memory allocation failed, free the previously allocated Reservation object
+//		free(pRes);
+//		return 0;
+//	}
+//
+//	// Assign the resized array to a temporary variable
+//	Reservation** resizedArray = (Reservation**)tempArray;
+//
+//	// Add the new reservation to the end of the array
+//	resizedArray[pSales->reservationCount] = pRes;
+//
+//	// Update pSales->reservationArray with the resized array(casting to the same type)
+//		pSales->reservationArray = (Reservation**)resizedArray;
+//
+//	// Increment the reservation count
+//	pSales->reservationCount++;
+//
+//	// Reset the reservation sorting option (if needed)
+//	pSales->ReservationSortOpt = eNone;
+//
+//	return 1; // Reservation added successfully
+//}
 
 
 

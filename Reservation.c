@@ -31,7 +31,7 @@
 
 
 
-void printReservatoin(const Reservation* pRes)
+void printReservation(const Reservation* pRes)
 {
 
 	printf("On the ");
