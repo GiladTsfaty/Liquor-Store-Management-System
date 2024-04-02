@@ -21,7 +21,7 @@ int main() {
 
     Inventory inventory;
     initInventory(&inventory);
-
+    
 
     addBeer(&inventory);
     printBeer(&inventory.beerArray[0]);
@@ -34,3 +34,5 @@ int main() {
 
     return 1;
 }
+
+Gilad123
