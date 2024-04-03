@@ -59,10 +59,26 @@ int main() {
 
     
     Sales sales;
-    Customer customer;
-    
+    Customer customer1;
+    int price1 = 500 ;
+    char* items1 = "3-beers, 2-wines, 1-whisky";
+
+    Customer customer2;
+    int price2 = 1200;
+    char* items2 = "5-beers, 5-wines, 5-whisky";
+
+    initCustomerWithoutName(&customer1);
+    getCustomerName(&customer1);
+    addNewReservationToArray(&sales,&customer1,items1,price1);
+    printReservationsArr(sales.reservationArray,sales.reservationCount);
 
 
+    initCustomerWithoutName(&customer2);
+    getCustomerName(&customer2);
+    addNewReservationToArray(&sales, &customer1, items2, price2);
+    printReservationsArr(sales.reservationArray, sales.reservationCount);
+
+    freeReservationsArr(sales.reservationArray, sales.reservationCount);
 
 
     _CrtDumpMemoryLeaks();

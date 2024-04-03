@@ -241,13 +241,13 @@ int addNewReservationToArray(Sales* pSales, Customer* pCustomer,char* itemsList 
 
 
 
-void printReservationsArr(Reservation** array, int size)
+void printReservationsArr(struct Reservation** array, int size)
 {
 	generalArrayFunction(array, size, sizeof(Reservation*), printReservationPtr);
 
 }
 
-void freeReservationsArr(Reservation** array, int size)
+void freeReservationsArr(struct Reservation** array, int size)
 {
 	generalArrayFunction(array, size, sizeof(Reservation*), freeReservationPtr);
 }
