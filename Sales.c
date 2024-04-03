@@ -6,6 +6,7 @@
 #include "Sales.h"
 #include "list.h"
 #include "Reservation.h"
+#include "GeneralFunctions.h"
 
 
 
@@ -15,21 +16,12 @@ void initSales(Sales* pSales)
 
 	L_init(&pSales->customersList);
 
+	pSales->ReservationSortOpt = eNew;
 	pSales->reservationCount = 0;
 	pSales->reservationArray = NULL;
 
 }
 
-
-
-//void initSales(Sales* pSales, Inventory* pInventory)
-//{
-//    pSales->inventory = pInventory;
-//    L_init(pSales->customersList);
-//    pSales->customerCount = 0;
-//    pSales->reservationArray = NULL;
-//    pSales->reservationCount = 0;
-//}
 
 int addNewCustomer(Sales* pSales)
 {
@@ -165,37 +157,105 @@ void printAllCustomers(const Sales* pSales)
 
 
 
-int addNewReservation(Sales* pSales) {
+//int makeNewReservationForCustomer(Sales* pSales, Customer* pCustomer)
+//{
+//	Date d;
+//
+//	// Create a new Reservation object
+//	Reservation* pNewReservation = (Reservation*)malloc(sizeof(Reservation));
+//	if (!pNewReservation) {
+//		printf("Memory allocation failed for Reservation.\n");
+//		return 0;
+//	}
+//
+//	 pNewReservation->customer = pCustomer;
+//	 getCorrectDate(&pNewReservation->date);
+//	 pNewReservation->ReservationCode = 
+//
+//
+//	return 0;
+//}
+
+
+
+
+
+int addNewReservationToArray(Sales* pSales, Customer* pCustomer,char* itemsList , int itemsPrice )
+{
 	// Allocate memory for a new Reservation object
-	Reservation* pRes = (Reservation*)calloc(1, sizeof(Reservation));
-	if (!pRes)
-		return 0; // Memory allocation failed
+	Reservation* pNewReservation = (Reservation*)calloc(1, sizeof(Reservation));
+	if (!pNewReservation)
+		return 0; 
 
 	// Resize the reservationArray to accommodate the new reservation
 	Reservation** tempArray = (Reservation**)realloc(pSales->reservationArray, (pSales->reservationCount + 1) * sizeof(Reservation*));
 	if (!tempArray) {
 		// Memory allocation failed, free the previously allocated Reservation object
-		free(pRes);
+		free(pNewReservation);
 		return 0;
 	}
+
+
+	pNewReservation->customer = pCustomer;  // the client
+	getCorrectDate(&pNewReservation->date); //date of order
+	pNewReservation->ReservationCode = pSales->reservationCount; //reservatiom code also place in array
+	
+	pNewReservation->purchasedItems = itemsList;
+
+	pNewReservation->priceOfOrder = itemsPrice;
+
+
+	pCustomer->totalSpent += itemsPrice;// total amount spent by client
+
+	if (pCustomer->totalSpent >= VIP_THRESH)
+		pCustomer->type = eVip;
+	else
+		pCustomer->type = eRegular;
+
+
+	//add here alcohal to reservation & calc price & change inventory/total amount/status  
+	//maybe in main ?
+
 
 	// Assign the resized array to a temporary variable
 	Reservation** resizedArray = (Reservation**)tempArray;
 
 	// Add the new reservation to the end of the array
-	resizedArray[pSales->reservationCount] = pRes;
+	resizedArray[pSales->reservationCount] = pNewReservation;
 
 	// Update pSales->reservationArray with the resized array(casting to the same type)
-		pSales->reservationArray = (Reservation**)resizedArray;
+	(Reservation**)pSales->reservationArray = resizedArray;  //casting??
+
+	
 
 	// Increment the reservation count
 	pSales->reservationCount++;
 
-	// Reset the reservation sorting option (if needed)
+	// Reset the reservation sorting option (if needed) ///maybe add in order 
 	pSales->ReservationSortOpt = eNone;
 
 	return 1; // Reservation added successfully
 }
+
+
+
+
+
+void printReservationsArr(Reservation** array, int size)
+{
+	generalArrayFunction(array, size, sizeof(Reservation*), printReservationPtr);
+
+}
+
+void freeReservationsArr(Reservation** array, int size)
+{
+	generalArrayFunction(array, size, sizeof(Reservation*), freeReservationPtr);
+}
+
+
+
+
+
 
 
 

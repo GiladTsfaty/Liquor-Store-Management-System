@@ -14,11 +14,13 @@
 
 typedef struct
 {
-    int         ReservationCode;
+    int         ReservationCode;// will be the same as location in array 0 1 2 3....
     Customer*   customer;
-    LIST        purchasedItems;
-    int         totalAmount;
+    int         priceOfOrder;
     Date        date;
+
+    char* purchasedItems;//string of items and there amount
+    //Cart* cart;
 
 }Reservation;
 
@@ -26,9 +28,13 @@ typedef struct
 //void initReservation(Reservation* pRes,Customer* pCus, Sales* pSales);
 
 
-int makeReservation();
+//int makeReservation();
 
 void printReservation(const Reservation* pRes);
+void printReservationPtr(void* pResPtr );
+
+void freeReservationPtr(void* pResPtr);
+
 
 
 

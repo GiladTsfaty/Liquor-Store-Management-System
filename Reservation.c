@@ -19,13 +19,18 @@
 //	findCustomerByName( pSales ,&pRes->customer->name);//client
 //
 //
-//
-//
-//
-//
-//
 //}
 
+
+
+
+
+
+//int makeReservation()
+//{
+//
+//	return 0;
+//}
 
 
 
@@ -37,9 +42,27 @@ void printReservation(const Reservation* pRes)
 	printf("On the ");
 	printDate(&pRes->date);
 	printf(", %s made a Reservation,  REScode: %d, , in the amount of %d$. \n", pRes->customer->name,
-		pRes->ReservationCode,pRes->totalAmount);
+		pRes->ReservationCode,pRes->priceOfOrder);
 
 }
+
+void printReservationPtr(void* pResPtr)
+{
+	const Reservation* temp = *(Reservation**)pResPtr;
+	printReservation(temp);
+
+}
+
+void freeReservationPtr(void* pResPtr)
+{
+	 Reservation* temp = *(Reservation**)pResPtr;
+	 free(temp);
+}
+
+
+
+
+
 
 
 
