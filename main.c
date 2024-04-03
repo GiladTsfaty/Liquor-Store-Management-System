@@ -81,7 +81,7 @@ int main() {
     freeReservationsArr(sales.reservationArray, sales.reservationCount);
 
 
-    _CrtDumpMemoryLeaks();
+    // comment to see that i can push to master in repo
 
     return 1;
 

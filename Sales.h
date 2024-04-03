@@ -34,28 +34,30 @@ void        initSales(Sales* pSales);
 void        freeSales(Sales* pSales);
 
 
-
+/// <summary>
 /// Client funcs
 int         addNewCustomer(Sales* pSales);
 Customer*   initCustomer(Sales* pSales);
 Customer*   findCustomerByName(const Sales* pSales, const char* name);
 int         uniqeNameCheck(const char* name, const Sales* pSales);
 int         customerCompare(const void* data1, const void* data2);//name comperator
+//int         pickCustomerFromList(const Sales* pSales);//print all clients 
 
 void        printAllCustomers(const Sales* pSales);
 
 
 
-/// Res funcs
+/// <summary>
+/// /Res funcs
  
 
 //int        makeNewReservationForCustomer(Sales* pSales, Customer* pCustomer);
 
 int         addNewReservationToArray(Sales* pSales, Customer* pCustomer, char* itemsList, int itemsPrice);
 
-void        printReservationsArr(struct Reservation** array ,int size);//why add struct? dosent work without 
+void        printReservationsArr(Reservation** array ,int size);
 
-void        freeReservationsArr(struct Reservation** array, int size);
+void        freeReservationsArr(Reservation** array, int size);
 
 
 

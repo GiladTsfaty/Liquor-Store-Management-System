@@ -224,7 +224,7 @@ int addNewReservationToArray(Sales* pSales, Customer* pCustomer,char* itemsList 
 	resizedArray[pSales->reservationCount] = pNewReservation;
 
 	// Update pSales->reservationArray with the resized array(casting to the same type)
-	(Reservation**)pSales->reservationArray = resizedArray;  //casting??
+//	(Reservation**)pSales->reservationArray = resizedArray;  //casting??
 
 	
 
