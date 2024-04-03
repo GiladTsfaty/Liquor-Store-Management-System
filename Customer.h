@@ -3,6 +3,7 @@
 
 #include "Inventory.h"
 
+# define VIP_THRESH 1000
 # define MAX_STR_LEN 255
 #define SEP_CHAR '_'
 

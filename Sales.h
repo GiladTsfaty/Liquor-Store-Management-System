@@ -4,7 +4,7 @@
 
 #include "Customer.h"
 #include "Reservation.h"
-//#include "Inventory.h"
+#include "Inventory.h"
 
 
 
@@ -15,19 +15,15 @@ static const char* sortOptStr[eNofSortOpt];
 
 typedef struct
 {
-    LIST customersList;
-
-   struct Reservation** reservationArray;
-    int reservationCount;
-
-    eSortOption	ReservationSortOpt;
+    LIST                    customersList;
+    struct Reservation**    reservationArray;
+    int                     reservationCount;
+    eSortOption	            ReservationSortOpt;
 
 
-    //LIST reservationList;
-
+    
     //Inventory* inventory;
    
-    //int customerCount;
   
 
 }Sales;
@@ -49,15 +45,22 @@ int         customerCompare(const void* data1, const void* data2);//name compera
 
 void        printAllCustomers(const Sales* pSales);
 
+
+
 /// <summary>
 /// /Res funcs
  
 
-eSortOption showSortMenu();  
+//int        makeNewReservationForCustomer(Sales* pSales, Customer* pCustomer);
 
-int         addNewReservation(Sales* pSales);
+int         addNewReservationToArray(Sales* pSales, Customer* pCustomer, char* itemsList, int itemsPrice);
 
+void        printReservationsArr(Reservation** array ,int size);
+
+void        freeReservationsArr(Reservation** array, int size);
+
+
+
+eSortOption showSortMenu();
 void        findReservation(const Sales* pSales); //bsearch- 1)ResCode  2)clientName   3)date?
 void        sortReservations(Sales* pSales);
-
-void        printReservationsArr(const Sales* pSales);

@@ -3,13 +3,13 @@
 #include <crtdbg.h>
 #include <stdlib.h>
 #include <stdio.h>
-//
-//#include "GeneralFunctions.h"
-//#include "Shop.h"
-//#include "Inventory.h"
-//#include "Beer.h"
-//#include "Wine.h"
-//#include "Sales.h"
+
+#include "GeneralFunctions.h"
+#include "Shop.h"
+#include "Inventory.h"
+#include "Beer.h"
+#include "Wine.h"
+#include "Sales.h"
 #include "Customer.h"
 #include "list.h"
 #include "Reservation.h"
@@ -43,12 +43,12 @@ int main() {
 
 
 
-    Sales sales;
+    /*Sales sales;
     initSales(&sales);
     addNewCustomer(&sales);
     printAllCustomers(&sales);
     addNewCustomer(&sales);
-    printAllCustomers(&sales);
+    printAllCustomers(&sales);*/
 
 
    /* Customer client;
@@ -58,6 +58,11 @@ int main() {
     freeCustomer(&client);*/
 
     
+    Sales sales;
+    Customer customer;
+    
+
+
 
 
     _CrtDumpMemoryLeaks();
