@@ -24,18 +24,6 @@
 
 
 
-
-
-//int makeReservation()
-//{
-//
-//	return 0;
-//}
-
-
-
-
-
 void printReservation(const Reservation* pRes)
 {
 
@@ -43,7 +31,7 @@ void printReservation(const Reservation* pRes)
 	printDate(&pRes->date);
 	printf(", %s made a Reservation,  REScode: %d, , in the amount of %d$. \n", pRes->customer->name,
 		pRes->ReservationCode,pRes->priceOfOrder);
-
+	printf("and got: %s \n", pRes->purchasedItems );
 }
 
 void printReservationPtr(void* pResPtr)
