@@ -48,7 +48,7 @@ void        printAllCustomers(const Sales* pSales);
 
 /// Res funcs
  
-
+void         initReservationArray();
 //int        makeNewReservationForCustomer(Sales* pSales, Customer* pCustomer);
 
 int         addNewReservationToArray(Sales* pSales, Customer* pCustomer, char* itemsList, int itemsPrice);

@@ -11,8 +11,8 @@ typedef struct
 {
     Beer* beerArray;
     int beersCount;
-    //Whiskey* whiskeyArray;
-  //  Wine* wineArray;
+     //Whiskey* whiskeyArray;
+    //Wine* wineArray;
     int winesCount;
 
 }Inventory;

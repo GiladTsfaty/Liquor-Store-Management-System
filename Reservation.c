@@ -9,20 +9,29 @@
 #include <stdlib.h>
 
 
-//
-//void initReservation(Reservation* pRes, Customer* pCus, Sales* pSales)
+
+void initReservation(Reservation* pRes, Customer* pCus, Sales* pSales)
+{
+	char* baseList = "nothig";
+
+	getCorrectDate(&pRes->date);//date
+
+	pRes->priceOfOrder = 0;//amount
+
+	//findCustomerByName( pSales ,&pRes->customer->name);//client
+	pRes->customer->name = getCustomerName(pCus);
+	
+	pRes->ReservationCode = 0;
+
+	pRes->purchasedItems = baseList;
+}
+
+
+
+
+//void initReservation()
 //{
-//	getCorrectDate(&pRes->date);//date
-//
-//	pRes->totalAmount = 0;//amount
-//
-//	findCustomerByName( pSales ,&pRes->customer->name);//client
-//
-//
 //}
-
-
-
 
 void printReservation(const Reservation* pRes)
 {

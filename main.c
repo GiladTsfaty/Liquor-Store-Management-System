@@ -43,12 +43,12 @@ int main() {
 
 
 
-    /*Sales sales;
-    initSales(&sales);
-    addNewCustomer(&sales);
-    printAllCustomers(&sales);
-    addNewCustomer(&sales);
-    printAllCustomers(&sales);*/
+    //Sales sales;
+    //initSales(&sales);
+    //addNewCustomer(&sales);
+    //printAllCustomers(&sales);
+    //addNewCustomer(&sales);
+    //printAllCustomers(&sales);
 
 
    /* Customer client;
