@@ -43,16 +43,21 @@ int main() {
 
 
 
-    //Sales sales;
-    //initSales(&sales);
+    Sales sales;
+    initSales(&sales);
+    addNewCustomer(&sales);
+    printAllCustomers(&sales);
+    addNewCustomer(&sales);
+    printAllCustomers(&sales);
 
-    Customer client;
+
+   /* Customer client;
     initCustomerWithoutName(&client);
     getCustomerName(&client);
     printCustomer(&client);
+    freeCustomer(&client);*/
 
-
-
+    
 
 
     _CrtDumpMemoryLeaks();

@@ -16,8 +16,8 @@ static const char* CustomerTypeStr[eNomOfCustomerTypes]
 typedef struct
 {
     char* name;
-    int serialNum;
-    int numOfReservations;
+   // int serialNum;
+   // int numOfReservations;
     int totalSpent;
     eCustomerType type;
 
