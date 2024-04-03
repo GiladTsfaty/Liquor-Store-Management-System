@@ -4,7 +4,7 @@
 #include "Inventory.h"
 #include "Customer.h"
 #include "Date.h"
-#include "List.h"
+#include "list.h"
 #include "Sales.h"
 
 

@@ -81,7 +81,6 @@ int main() {
     freeReservationsArr(sales.reservationArray, sales.reservationCount);
 
 
-    _CrtDumpMemoryLeaks();
 
     return 1;
 
