@@ -192,7 +192,7 @@ void L_insertByNameOrder(LIST* pList, Customer* pCustomer)
 
     while (tmp->next != NULL)
     {
-        if (strcmp(pCustomer->name, ((Customer*)(tmp->next->key))->name) < 0) // strcmp insted of compare becuase code is lexicograf 
+        if (strcmp(pCustomer->name, ((Customer*)(tmp->next->key))->name) < 0) // strcmp insted of compare becuase name is lexicograf 
             break;
         tmp = tmp->next;
     }
