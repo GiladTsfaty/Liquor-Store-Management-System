@@ -25,9 +25,9 @@ typedef struct
 }Reservation;
 
 
-//void initReservation(Reservation* pRes,Customer* pCus, Sales* pSales);
+void initReservation(Reservation* pRes,Customer* pCus, Sales* pSales);
 
-
+//void initReservation();
 
 void printReservation(const Reservation* pRes);
 void printReservationPtr(void* pResPtr );
