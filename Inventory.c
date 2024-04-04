@@ -29,7 +29,7 @@ void initInventory(Inventory* pInventory)
 int addBeer(Inventory* pInventory)
 {
     pInventory->beerArray = (Beer*)realloc(pInventory->beerArray, (pInventory->beersCount + 1) * sizeof(Beer));
-    if (!pInventory->beerArray) return 0;
+    if (!pInventory->beerArray) return 0;//good place macro //checkReturn0
 
     initBeer(&pInventory->beerArray[pInventory->beersCount], pInventory->beerArray, pInventory->beersCount);
     pInventory->beersCount++;
@@ -74,14 +74,16 @@ void printInventory(const Inventory* pInventory) {
 
     // Print Beers
     printf("\nBeers (%d):\n", pInventory->beersCount);
-    for (int i = 0; i < pInventory->beersCount; i++) {
-        printf("Brand: %s, Serial: %d, Available: %d, Price: %d, Sold: %d, Size: %s\n",
+    for (int i = 0; i < pInventory->beersCount; i++) 
+    {
+        printf("Brand: %s, Serial: %d, Available: %d, Price: %d, Sold:%d , Size: % s \n",
                pInventory->beerArray[i].brand,
                pInventory->beerArray[i].itemSerial,
                pInventory->beerArray[i].amountAvailable,
                pInventory->beerArray[i].price,
-               pInventory->beerArray[i].numOfSolds,
-               BeerSizeStr[pInventory->beerArray[i].bSize]);
+               pInventory->beerArray[i].numOfSolds
+              ,BeerSizeStr[pInventory->beerArray[i].bSize]
+        );
     }
 
     // Print Whiskeys

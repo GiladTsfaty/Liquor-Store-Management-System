@@ -15,11 +15,11 @@ static const char* sortOptStr[eNofSortOpt];
 
 typedef struct
 {
-    LIST*                    customersList;
+    LIST*                   customersList;
     struct Reservation**    reservationArray;
     int                     reservationCount;
     eSortOption	            ReservationSortOpt;
-    Inventory* inventory;
+    Inventory*              inventory;
 }Sales;
 
 
@@ -45,10 +45,12 @@ void        printAllCustomers(const Sales* pSales);
 /// /Res funcs
  
 void         initReservationArray();
-//int        makeNewReservationForCustomer(Sales* pSales, Customer* pCustomer);
 
-int         addNewReservationToArray(Sales* pSales, Customer* pCustomer, char* itemsList, int itemsPrice);
-int addNewReservationToArray2(Sales* pSales, Inventory* pInventory,Customer* pCustomer);
+Customer*   getCustomerForReservation(Sales* pSales);
+
+
+//int         addNewReservationToArray(Sales* pSales, Customer* pCustomer, char* itemsList, int itemsPrice);
+int         addNewReservationToArray2(Sales* pSales, Inventory* pInventory,Customer* pCustomer);
 
 void        printReservationsArr(struct Reservation** array ,int size);
 

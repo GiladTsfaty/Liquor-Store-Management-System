@@ -328,6 +328,119 @@ double findWhiskeyBySerialAndUpdate(Inventory* pInventory, int serialNumber, int
     return 0.0;
 }
 
+//Customer* getCustomerForReservation(Sales* pSales)
+//{
+//    Customer* pCustomer = NULL;
+//    char choice;
+//    int validChoice = 0;
+//
+//    while (!validChoice) {
+//        //char name[MAX_NAME_LENGTH];
+//
+//        printf("New or existing customer? (n/e): ");
+//        scanf(" %c", &choice);
+//
+//        if (choice == 'n' || choice == 'N')
+//        {
+//            if (!addNewCustomer(pCustomer))
+//            {
+//                return NULL;
+//            }
+//
+//            return pCustomer;
+//            validChoice = 1;
+//        }
+//        else if (choice == 'e' || choice == 'E') {
+//            // Existing customer
+//            printAllCustomers(pSales);
+//            //printf("Enter customer name:\n");
+//            getCustomerName(pCustomer);
+//
+//            Customer*   pTempCustomer = findCustomerByName(pSales, pCustomer->name);
+//            if (pTempCustomer != NULL)
+//            {
+//                return pTempCustomer;
+//            }
+//            return NULL;
+//            validChoice = 1;
+//        }
+//    }
+//}
+
+Customer* getCustomerForReservation(Sales* pSales) {
+    Customer* pCustomer = NULL;
+    char choice;
+    int validChoice = 0;
+
+    while (!validChoice) {
+        printf("New or existing customer? (n/e): ");
+        scanf(" %c", &choice);
+
+        if (choice == 'n' || choice == 'N') {
+            // New customer
+            pCustomer = (Customer*)calloc(1, sizeof(Customer));
+            if (pCustomer == NULL) {
+                printf("Memory allocation failed\n");
+                return NULL;
+            }
+
+            if (!getCustomerName(pCustomer)) {
+                printf("Failed to get customer name\n");
+                free(pCustomer);
+                return NULL;
+            }
+
+            if (addNewCustomer(pSales, pCustomer)) {
+                return pCustomer;
+            }
+            else {
+                printf("Failed to add a new customer with name: %s\n", pCustomer->name);
+                freeCustomer(pCustomer);
+                free(pCustomer);
+                return NULL;
+            }
+
+            validChoice = 1;
+        }
+        else if (choice == 'e' || choice == 'E') {
+            // Existing customer
+            pCustomer = (Customer*)calloc(1, sizeof(Customer));
+            if (pCustomer == NULL) {
+                printf("Memory allocation failed\n");
+                return NULL;
+            }
+
+            if (!getCustomerName(pCustomer)) {
+                printf("Failed to get customer name\n");
+                free(pCustomer);
+                return NULL;
+            }
+
+            Customer* pTempCustomer = findCustomerByName(pSales, pCustomer->name);
+            freeCustomer(pCustomer);
+            free(pCustomer);
+
+            if (pTempCustomer != NULL) {
+                return pTempCustomer;
+            }
+            else {
+                printf("Customer with name '%s' not found\n", pCustomer->name);
+                validChoice = 1;
+            }
+        }
+        else {
+            printf("Invalid choice, please try again.\n");
+        }
+    }
+
+    return NULL;
+}
+
+
+
+
+
+
 // Function to add a new reservation to the array
 int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pCustomer)
 {

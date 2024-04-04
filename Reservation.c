@@ -10,28 +10,32 @@
 
 
 
-//void initReservation(Reservation* pRes, Customer* pCus, Sales* pSales)
-//{
-//	char* baseList = "nothig";
-//
-//	getCorrectDate(&pRes->date);//date
-//
-//	pRes->priceOfOrder = 0;//amount
-//
-//	//findCustomerByName( pSales ,&pRes->customer->name);//client
-//	pRes->customer->name = getCustomerName(pCus);
-//
-//	pRes->ReservationCode = 0;
-//
-//	pRes->purchasedItems = baseList;
-//}
+void initPurchasedItem(PurchasedItem* pItems)
+{
+	pItems->amount = 0;
+	pItems->cost = 0;
+	pItems->serial = 0;
+
+}
+
+void initReservation(Reservation* pRes, Customer* pCus, Sales* pSales) {
+	
+	pRes->ReservationCode = -1;
+
+	// Copy customer information
+	pRes->customer = pCus;
+
+	// Initialize the date
+	getCorrectDate(&(pRes->date));
+
+	// Initialize the price of the order
+	pRes->priceOfOrder = 0;
+
+	// Initialize the list of purchased items
+	initPurchasedItem(pRes->purchasedItems) ;
+}
 
 
-
-
-//void initReservation()
-//{
-//}
 
 void printPurchasedItem(const void* pItemVoid) {
     // Cast from void* to the appropriate type
@@ -41,6 +45,7 @@ void printPurchasedItem(const void* pItemVoid) {
     printf("Item Serial: %d, Amount: %d, Cost: $%.2f\n",
            pItem->serial, pItem->amount, pItem->cost);
 }
+
 
 void printReservation(const Reservation* pRes)
 {

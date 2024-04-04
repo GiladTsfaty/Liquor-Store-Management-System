@@ -66,8 +66,10 @@ const char* GetBeerSizeStr(int type)
 
 void printBeer(const Beer* pBeer)
 {
-    printf("Beer: Brand: %s, Item Serial: %d Amount Available: %d, Price: %d, Number of Sold: %d, Beer Size: %s\n",
-        pBeer->brand, pBeer->itemSerial, pBeer->amountAvailable, pBeer->price, pBeer->numOfSolds, BeerSizeStr[pBeer->bSize]);
+    printf("Beer: Brand: %s, Item Serial: %d Amount Available: %d, Price: %d, Number of Sold: %d, Beer Size: \n",
+        pBeer->brand, pBeer->itemSerial, pBeer->amountAvailable, pBeer->price, pBeer->numOfSolds
+        //, BeerSizeStr[pBeer->bSize]
+    );
 }
 
 
