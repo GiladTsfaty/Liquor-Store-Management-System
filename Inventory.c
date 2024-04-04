@@ -29,8 +29,8 @@ void initInventory(Inventory* pInventory)
 int addBeer(Inventory* pInventory)
 {
     pInventory->beerArray = (Beer*)realloc(pInventory->beerArray, (pInventory->beersCount + 1) * sizeof(Beer));
-    if (!pInventory->beerArray) return 0;
-
+    if (!pInventory->beerArray)
+        return 0;
     initBeer(&pInventory->beerArray[pInventory->beersCount], pInventory->beerArray, pInventory->beersCount);
     pInventory->beersCount++;
     return 1;
@@ -39,7 +39,8 @@ int addBeer(Inventory* pInventory)
 int addWine(Inventory* pInventory)
 {
     pInventory->wineArray = (Wine*)realloc(pInventory->wineArray, (pInventory->winesCount + 1) * sizeof(Wine));
-    if (!pInventory->wineArray) return 0;
+    if (!pInventory->wineArray)
+        return 0;
     initWine(&pInventory->wineArray[pInventory->winesCount], pInventory->wineArray, pInventory->winesCount);
     pInventory->winesCount++;
     return 1;
@@ -48,7 +49,8 @@ int addWine(Inventory* pInventory)
 int addWhiskey(Inventory* pInventory)
 {
     pInventory->whiskeyArray = (Whiskey*)realloc(pInventory->whiskeyArray, (pInventory->whiskeysCount + 1) * sizeof(Whiskey));
-    if (!pInventory->whiskeyArray) return 0;
+    if (!pInventory->whiskeyArray)
+        return 0;
     initWhiskey(&pInventory->whiskeyArray[pInventory->whiskeysCount], pInventory->whiskeyArray, pInventory->whiskeysCount);
     pInventory->whiskeysCount++;
     return 1;
@@ -64,9 +66,9 @@ void initInventoryFromFile(Inventory* pInventory, const char* filename) {
 
 
     readInventoryFromFile(pInventory, filename);
-
-
 }
+
+
 
 // shit one just to check
 void printInventory(const Inventory* pInventory) {
@@ -107,6 +109,45 @@ void printInventory(const Inventory* pInventory) {
                pInventory->wineArray[i].numOfSolds,
                WineTypeStr[pInventory->wineArray[i].wType]);
     }
+}
+
+int isSerialNumberUnique(void* arr, int count, int serialNumber, int elementSize, int (*getSerialNumber)(void*)) {
+    for (int i = 0; i < count; i++) {
+        void* item = (char*)arr + i * elementSize;
+        if (getSerialNumber(item) == serialNumber) {
+            return 0; // Serial number already exists
+        }
+    }
+    return 1; // Serial number is unique
+}
+
+int getValidSerialNumber(int minSerial, int maxSerial) {
+    int serialNumber;
+    do {
+        printf("Enter the serial number (%d-%d): ", minSerial, maxSerial);
+        scanf("%d", &serialNumber);
+    } while (serialNumber < minSerial || serialNumber > maxSerial);
+    return serialNumber;
+}
+
+int getBeerSerialNumber(void* pBeer) {
+    return ((Beer*)pBeer)->itemSerial;
+}
+
+int getWhiskeySerialNumber(void* pWhiskey) {
+    return ((Whiskey*)pWhiskey)->itemSerial;
+}
+
+int getWineSerialNumber(void* pWine) {
+    return ((Wine*)pWine)->itemSerial;
+}
+
+int getUniqueSerialNumber(void* arr, int count, int minSerial, int maxSerial, int elementSize, int (*getSerialNumber)(void*)) {
+    int serialNumber;
+    do {
+        serialNumber = getValidSerialNumber(minSerial, maxSerial);
+    } while (!isSerialNumberUnique(arr, count, serialNumber, elementSize, getSerialNumber));
+    return serialNumber;
 }
 
 void freeInventory(Inventory* inventory) {

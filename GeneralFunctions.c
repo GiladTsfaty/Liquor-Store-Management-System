@@ -49,6 +49,16 @@ char* myGets(char* buffer, int size)
 	return NULL;
 }
 
+int getIntPositive(const char* prompt)
+{
+    int value;
+    do {
+        printf("%s", prompt);
+        scanf("%d", &value);
+    } while (value <= 0);
+    return value;
+}
+
 char* myGetsFile(char* buffer, int size, FILE* fp)
 {
 	if (buffer != NULL && size > 0)

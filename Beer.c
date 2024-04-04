@@ -5,16 +5,17 @@
 
 #include "Beer.h"
 #include "GeneralFunctions.h"
+#include "Inventory.h"
 
 
 void initBeer(Beer* pBeer, Beer* beerArr, int beersCount)
 {
     char* tempBrand = getStrExactName("Enter the Beer brand:");
     pBeer->brand = tempBrand;
-    pBeer->amountAvailable = 40;
-    pBeer->price = 8;
+    pBeer->itemSerial = getUniqueSerialNumber(beerArr, beersCount, 100, 199, sizeof(Beer), getBeerSerialNumber);
+    pBeer->amountAvailable = START_NUM_UNITS_OF_BEER;
+    pBeer->price = getIntPositive("Enter the price:");
     pBeer->numOfSolds = 0;
-    pBeer->itemSerial = 111;
     pBeer->bSize = getBeerSize();
     printf("Beer Added\n");
 }
