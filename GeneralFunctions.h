@@ -12,6 +12,7 @@ char* myGets(char* buffer, int size);
 char* myGetsFile(char* buffer, int size, FILE* fp);
 char* getDynStr(char* str);
 char** splitCharsToWords(char* str, int* pCount, int* pTotalLength);
+int getIntPositive(const char* prompt);
 
 void generalArrayFunction(void* arr, int size, int arrTypeSize, void(*func)(void* element));
 

@@ -4,15 +4,16 @@
 #include <stdlib.h>
 
 #include "Whiskey.h"
+#include "Inventory.h"
 #include "GeneralFunctions.h"
 
-void initWhiskey(Whiskey* pWhiskey, Whiskey* whiskeyArr, int whiskeyCount)
+void initWhiskey(Whiskey* pWhiskey, Whiskey* whiskeyArr, int whiskeysCount)
 {
     char* tempBrand = getStrExactName("Enter the Whiskey brand:");
     pWhiskey->brand = tempBrand;
-    pWhiskey->amountAvailable = 10;
-    pWhiskey->price = 70;
-    pWhiskey->itemSerial = 333;
+    pWhiskey->itemSerial = getUniqueSerialNumber(whiskeyArr, whiskeysCount, 200, 299, sizeof(Whiskey), getWhiskeySerialNumber);
+    pWhiskey->amountAvailable = START_NUM_UNITS_OF_WHISKEY;
+    pWhiskey->price = getIntPositive("Enter the price:");
     pWhiskey->numOfSolds = 0;
     pWhiskey->whiskeyType = getWhiskeyType();
     printf("Whiskey Added\n");

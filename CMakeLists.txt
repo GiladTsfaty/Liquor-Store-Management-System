@@ -20,4 +20,6 @@ add_executable(final_repo main.c
         Date.c
         Shop.c
         Whiskey.c
-        Filefunctions.c)
+        Filefunctions.c
+        BinaryFiles.h
+        BinaryFiles.c)

@@ -4,15 +4,16 @@
 #include <stdlib.h>
 
 #include "Wine.h"
+#include "Inventory.h"
 #include "GeneralFunctions.h"
 
 void initWine(Wine* pWine, Wine* wineArr, int winesCount)
 {
     char* tempBrand = getStrExactName("Enter the Wine brand:");
     pWine->brand = tempBrand;
-    pWine->amountAvailable = 15;
-    pWine->price = 35;
-    pWine->itemSerial = 222;
+    pWine->itemSerial = getUniqueSerialNumber(wineArr, winesCount, 300, 399, sizeof(Wine), getWineSerialNumber);
+    pWine->amountAvailable = START_NUM_UNITS_OF_WINE;
+    pWine->price = getIntPositive("Enter the price:");
     pWine->numOfSolds = 0;
     pWine->wType = getWineType();
     printf("Wine Added\n");
