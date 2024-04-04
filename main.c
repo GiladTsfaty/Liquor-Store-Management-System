@@ -1,6 +1,6 @@
 #define _CRTDBG_MAP_ALLOC
 
-//#include <crtdbg.h>
+#include <crtdbg.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -42,12 +42,12 @@ int main() {
 //   initInventory(&inventory);
 
 //    saveInventoryToBinaryFile(&inventory, INVENTORY_BINARY_FILE_NAME);
-    initInventoryFromBinaryFile(&inventory, INVENTORY_BINARY_FILE_NAME);
+//     initInventoryFromBinaryFile(&inventory, INVENTORY_BINARY_FILE_NAME);
 //    addWine(&inventory);
 //    addBeer(&inventory);
 //    addWhiskey(&inventory);
 
-    printInventory(&inventory);
+//     printInventory(&inventory);
 
  //   addBeer(&inventory);
 //    inventory.beerArray[0].itemSerial = 111;
@@ -59,19 +59,6 @@ int main() {
 
 
 
-//    Sales sales;
-//    initSales(&sales);
-//    addNewCustomer(&sales);
-//    printAllCustomers(&sales);
-//    addNewCustomer(&sales);
-//    printAllCustomers(&sales);
-
-
-   /* Customer client;
-    initCustomerWithoutName(&client);
-    getCustomerName(&client);
-    printCustomer(&client);
-    freeCustomer(&client);*/
 
     
 //    Sales sales;
@@ -79,6 +66,7 @@ int main() {
 ////    shop.salesDepartment = &sales;
 //    Customer customer1;
 //    initCustomerWithoutName(&customer1);
+
 //
 //
 //
@@ -98,9 +86,20 @@ int main() {
 //    printBeer(&inventory.beerArray[0]); // the amount ba res has substract from Inventory
 //
 //    freeReservationsArr(sales.reservationArray, sales.reservationCount);
+=======
+
+
+
+
+   // freeReservationsArr(sales.reservationArray, sales.reservationCount);// fix free
+
+
+
 
 
     // The winter is coming. Buy Whiskey
+
+//     _CrtDumpMemoryLeaks();
 
     return 1;
 

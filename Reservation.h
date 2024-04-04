@@ -10,7 +10,7 @@
 
 
 
-#define MAX_RES_CODE_NUM 1000
+//#define MAX_RES_CODE_NUM 1000
 typedef struct
 {
     int serial;    // Serial number of the drink
@@ -25,15 +25,16 @@ typedef struct
     Customer*   customer;
     Date        date;
 
-    int         priceOfOrder;
+    double        priceOfOrder;
     LIST*     purchasedItems;
 
 }Reservation;
 
+void initPurchasedItem(PurchasedItem* pItems);
 
 void initReservation(Reservation* pRes,Customer* pCus, Sales* pSales);
 
-//void initReservation();
+
 
 void printReservation(const Reservation* pRes);
 void printReservationPtr(void* pResPtr );

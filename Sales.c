@@ -35,7 +35,7 @@ int addNewCustomer(Sales* pSales)
 	Customer* pCustomer = initCustomer(pSales);
 	if (!pCustomer)
 		return 0;
-	L_insertByNameOrder(&pSales->customersList, pCustomer);
+	L_insertByNameOrder((LIST*) &pSales->customersList, pCustomer);
 	return 1;
 }
 
@@ -119,9 +119,9 @@ int customerCompare(const void* data1, const void* data2) //if code is uniqe ret
 void printAllCustomers(const Sales* pSales)
 {
 
-	printf("there are %d clients\n", L_length(&(pSales->customersList)) - 1);
+	printf("there are %d clients\n", L_length((LIST*) & (pSales->customersList)) - 1);
 
-	L_print(&(pSales->customersList), (void (*)(const void *)) printCustomer);
+	L_print((LIST*)&(pSales->customersList), (void (*)(const void *)) printCustomer);
 
 	printf("\n");
 
@@ -328,6 +328,97 @@ double findWhiskeyBySerialAndUpdate(Inventory* pInventory, int serialNumber, int
     return 0.0;
 }
 
+//Customer* getCustomerForReservation(Sales* pSales)
+//{
+//    Customer* pCustomer = NULL;
+//    char choice;
+//    int validChoice = 0;
+//
+//    while (!validChoice) {
+//        //char name[MAX_NAME_LENGTH];
+//
+//        printf("New or existing customer? (n/e): ");
+//        scanf(" %c", &choice);
+//
+//        if (choice == 'n' || choice == 'N')
+//        {
+//            if (!addNewCustomer(pCustomer))
+//            {
+//                return NULL;
+//            }
+//
+//            return pCustomer;
+//            validChoice = 1;
+//        }
+//        else if (choice == 'e' || choice == 'E') {
+//            // Existing customer
+//            printAllCustomers(pSales);
+//            //printf("Enter customer name:\n");
+//            getCustomerName(pCustomer);
+//
+//            Customer*   pTempCustomer = findCustomerByName(pSales, pCustomer->name);
+//            if (pTempCustomer != NULL)
+//            {
+//                return pTempCustomer;
+//            }
+//            return NULL;
+//            validChoice = 1;
+//        }
+//    }
+//}
+
+Customer* getCustomerForReservation(Sales* pSales)
+{
+    Customer* pCustomer = NULL;
+    char choice;
+    int validChoice = 0;
+    char name[MAX_STR_LEN];
+
+    while (!validChoice) {
+        printf("New or existing customer? (n/e): ");
+        scanf(" %c", &choice);
+
+        // Convert input to lowercase for easier comparison
+        choice = tolower(choice);
+
+        // Check if the input is valid
+        if (choice == 'n' || choice == 'e') {
+            validChoice = 1;
+        }
+        else {
+            printf("Invalid choice. Please enter 'n' for new customer or 'e' for existing customer.\n");
+            // Consume any remaining characters in input buffer to prevent infinite loop
+            while (getchar() != '\n');
+        }
+    }
+
+    if (choice == 'n') {
+        // New customer
+        pCustomer = initCustomer(pSales);
+        return pCustomer;
+    }
+    else {
+        // Existing customer
+        printAllCustomers(pSales);
+
+        while (1) {
+            printf("Enter a client name from the list: ");
+            scanf("%s", name); // Remove the '&' before name
+
+            pCustomer = findCustomerByName(pSales, name);
+            if (pCustomer != NULL) {
+                return pCustomer;
+            }
+            else {
+                printf("Customer not found. Please enter a valid name.\n");
+            }
+        }
+    }
+}
+
+
+
+
 // Function to add a new reservation to the array
 int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pCustomer)
 {
@@ -337,7 +428,7 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
         return 0;
 
     // Initialize the list of purchased items
-    L_init(&pNewReservation->purchasedItems);
+    L_init((LIST*)&pNewReservation->purchasedItems);
     double totalCost = 0.0;
 
     int addMoreItems = 1;
@@ -386,13 +477,19 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
             continue;
         }
 
-        // Create a new PurchasedItem and add it to the list
         PurchasedItem* newItem = (PurchasedItem*)malloc(sizeof(PurchasedItem));
-        newItem->serial = serialNumber;
-        newItem->amount = numBottles;
-        newItem->cost = cost;
-        L_insert(&pNewReservation->purchasedItems, newItem);
-
+        if (newItem != NULL)
+        {
+            newItem->serial = serialNumber;
+            newItem->amount = numBottles;
+            newItem->cost = cost;
+            L_insert(pNewReservation->purchasedItems, newItem);
+        }
+        else
+        {
+            printf("Memory allocation failed for newItem.\n");
+            free(newItem);
+        }
         totalCost += cost;
 
         // Ask the user if they want to add more items
@@ -561,7 +658,7 @@ eSortOption showSortMenu()
 
 void freeSales(Sales* pSales)
 {
-	L_free(&pSales->customersList, (void (*)(void *)) freeCustomer);//free clients
+	L_free((LIST*) & pSales->customersList, (void (*)(void*)) freeCustomer);//free clients
 
 	//L_free(&(pSales->reservationList, freereservation);// free reservations 
 
