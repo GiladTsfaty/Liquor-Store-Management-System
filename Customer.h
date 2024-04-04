@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include <stdio.h>
 #include "Inventory.h"
 
 # define VIP_THRESH 1000
@@ -32,3 +32,4 @@ int  getCustomerName( Customer* pCustomer);
 int  isSameCustomerName(const Customer* pCustomer1,const Customer* pCustomer2);
 void freeCustomer(Customer* pCustomer);
 
+int loadCustomerFromTextFile(Customer* pCustomer, FILE* fp);

@@ -16,7 +16,7 @@
 #include "Date.h"
 
 #define INVENTORY_FILE_NAME "Inventory.txt"
-
+#define CUSTOMER_LIST_TEXT_FILE_NAME "customer_list.txt"
 
 //typedef enum
 //{
@@ -34,56 +34,52 @@ int main() {
    initShop(&shop);
    Inventory inventory;
    ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-   initInventoryFromFile(&inventory, INVENTORY_FILE_NAME);
-   printInventory(&inventory);
+   //initInventoryFromFile(&inventory, INVENTORY_FILE_NAME);
+   //printInventory(&inventory);
    ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //   initInventory(&inventory);
 
 
 
- //   addBeer(&inventory);
-//    inventory.beerArray[0].itemSerial = 111;
-//    printBeer(&inventory.beerArray[0]);
-//    addWine(&inventory);
-//    printWine(&inventory.wineArray[0]);
 
-
-
-
-
-
-    
-    Sales sales;
-    initSales(&sales, &inventory);
-//    shop.salesDepartment = &sales;
-    Customer customer1;
-    initCustomerWithoutName(&customer1);
-
-
-
+//    
+//    Sales sales;
+//    initSales(&sales, &inventory);
+////    shop.salesDepartment = &sales;
+//    Customer customer1;
 //    initCustomerWithoutName(&customer1);
-    getCustomerName(&customer1);
-    L_insertByNameOrder(sales.customersList, &customer1);
-  //  addNewReservationToArray(&sales,&customer1,items1,price1);
-    //printReservationsArr(sales.reservationArray,sales.reservationCount);
+//
+//
+//
+////    initCustomerWithoutName(&customer1);
+//    getCustomerName(&customer1);
+//    L_insertByNameOrder(sales.customersList, &customer1);
+//  //  addNewReservationToArray(&sales,&customer1,items1,price1);
+//    //printReservationsArr(sales.reservationArray,sales.reservationCount);
+//
+//
+////    initCustomerWithoutName(&customer2);
+////    getCustomerName(&customer2);
+////    addNewReservationToArray(&sales, &customer1, items2, price2);
+//    addNewReservationToArray2(&sales, &inventory, &customer1);
+//    printReservationsArr(sales.reservationArray, sales.reservationCount);
+//    printCustomer(&customer1); /// sim lev -> ha amount sel res hitvasef ezal customer
+//    printBeer(&inventory.beerArray[0]); // the amount ba res has substract from Inventory
+//
+//   // freeReservationsArr(sales.reservationArray, sales.reservationCount);// fix free
 
 
-//    initCustomerWithoutName(&customer2);
-//    getCustomerName(&customer2);
-//    addNewReservationToArray(&sales, &customer1, items2, price2);
-    addNewReservationToArray2(&sales, &inventory, &customer1);
-    printReservationsArr(sales.reservationArray, sales.reservationCount);
-    printCustomer(&customer1); /// sim lev -> ha amount sel res hitvasef ezal customer
-    printBeer(&inventory.beerArray[0]); // the amount ba res has substract from Inventory
-
-   // freeReservationsArr(sales.reservationArray, sales.reservationCount);// fix free
 
 
+   Sales sales;
+   initSales(&sales, &inventory);
+   initCustomerListFromTextFile(&sales, CUSTOMER_LIST_TEXT_FILE_NAME);
+   printAllCustomers(&sales);
 
 
     // The winter is coming. Buy Whiskey
 
-    _CrtDumpMemoryLeaks();
+    _CrtDumpMemoryLeaks();//dont delete put in comment
 
     return 1;
 

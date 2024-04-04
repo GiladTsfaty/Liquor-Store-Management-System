@@ -1,6 +1,8 @@
 #pragma once
 //change funcs
 #include "Inventory.h"
+#include "Sales.h"
+
 
 int	 writeStringToFile(char* str, FILE* fp, const char* msg);
 int	 writeCharsToFile(char* arr, int size, FILE* fp, const char* msg);
@@ -9,7 +11,14 @@ int	 writeIntToFile(int val, FILE* fp, const char* msg);
 char* readStringFromFile(FILE* fp, const char* msg);
 int	  readCharsFromFile(char* arr, int size, FILE* fp, const char* msg);
 int	  readIntFromFile(int* val, FILE* fp, const char* msg);
-void readInventoryFromFile(Inventory* pInventory, const char* filename);
+
+
+void  readInventoryFromFile(Inventory* pInventory, const char* filename);
+
+
+
+
+
 
 
 //int writeAirlineToBFile(FILE* pFile, const Airline* pComp);

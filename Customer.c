@@ -54,6 +54,32 @@ void freeCustomer(Customer* pCustomer)
     free(pCustomer->name);
 }
 
+int loadCustomerFromTextFile(Customer* pCustomer, FILE* fp)
+{
+    char temp[MAX_STR_LEN];
+
+    if (!pCustomer)
+        return 0;
+
+    // Read customer name
+    if (myGets(temp, MAX_STR_LEN, fp) == NULL)
+        return 0;
+    pCustomer->name = getDynStr(temp);
+    if (pCustomer->name == NULL)
+        return 0;
+
+    // Read total spent
+    if (myGets(temp, MAX_STR_LEN, fp) == NULL)
+        return 0;
+    pCustomer->totalSpent = atof(temp);
+
+    // Read customer type
+    if (myGets(temp, MAX_STR_LEN, fp) == NULL)
+        return 0;
+    pCustomer->type = (eCustomerType)atoi(temp);
+
+    return 1;
+}
 
 
 
