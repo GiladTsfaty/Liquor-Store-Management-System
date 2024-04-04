@@ -18,4 +18,6 @@ add_executable(final_repo main.c
         Sales.c
         Reservation.c
         Date.c
-        Shop.c)
+        Shop.c
+        Whiskey.c
+        Filefunctions.c)

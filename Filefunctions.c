@@ -3,8 +3,141 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "fileFunctions.h"
+
+#include "Filefunctions.h"
 #include "General.h"
+#include "Wine.h"
+#include "Inventory.h"
+#include "Beer.h"
+#include "Whiskey.h"
+
+void parseBeerSize(const char* sizeStr, eBeerSize* size) {
+    if (strcmp(sizeStr, "Paint") == 0)
+        *size = ePaint;
+    else if (strcmp(sizeStr, "ImperialPaint") == 0)
+        *size = eImperialPaint;
+    else if (strcmp(sizeStr, "Jug") == 0)
+        *size = eJug;
+}
+
+void parseWhiskeyType(const char* typeStr, eWhiskeyType* type) {
+    if (strcmp(typeStr, "Scotch") == 0)
+        *type = eScotch;
+    else if (strcmp(typeStr, "Irish") == 0)
+        *type = eIrish;
+    else if (strcmp(typeStr, "Bourbon") == 0)
+        *type = eBourbon;
+    else if (strcmp(typeStr, "Tennessee") == 0)
+        *type = eTennessee;
+    else if (strcmp(typeStr, "Blended") == 0)
+        *type = eBlended;
+    else if (strcmp(typeStr, "Japanese") == 0)
+        *type = eJapanese;
+}
+
+void parseWineType(const char* typeStr, eWineType* type) {
+    if (strcmp(typeStr, "Red") == 0)
+        *type = eRed;
+    else if (strcmp(typeStr, "White") == 0)
+        *type = eWhite;
+    else if (strcmp(typeStr, "Rose") == 0)
+        *type = eRose;
+    else if (strcmp(typeStr, "Sparkling") == 0)
+        *type = eSparkling;
+    else if (strcmp(typeStr, "Fortified") == 0)
+        *type = eFortified;
+}
+
+
+
+
+void readLine(FILE* file, char* buffer, int bufferSize) {
+    if (file == NULL || buffer == NULL || bufferSize <= 0) {
+        // Invalid parameters, handle the error accordingly
+        return;
+    }
+
+    if (fgets(buffer, bufferSize, file) != NULL) {
+        buffer[strcspn(buffer, "\n")] = '\0'; // Remove newline character
+    } else {
+        // Error occurred while reading the line or reached end of file
+        buffer[0] = '\0'; // Set the buffer to an empty string
+    }
+}
+
+
+void readInventoryFromFile(Inventory* pInventory, const char* filename) {
+    FILE* fp = fopen(filename, "r");
+    if (!fp) {
+        perror("Unable to open file");
+        return;
+    }
+
+    char line[256];
+    int itemCount;
+
+    // Read Beers
+    fscanf(fp, "%d\n", &itemCount); // Read the count of beer items
+    pInventory->beerArray = (Beer*)malloc(itemCount * sizeof(Beer));
+    pInventory->beersCount = itemCount;
+    for (int i = 0; i < itemCount; ++i) {
+        char tempBrand[256];
+        readLine(fp, tempBrand, sizeof(tempBrand));
+        pInventory->beerArray[i].brand = (char*)malloc((strlen(tempBrand) + 1) * sizeof(char));
+        strcpy(pInventory->beerArray[i].brand, tempBrand);
+
+        fscanf(fp, "%d\n%d\n%d\n%d\n",
+               &pInventory->beerArray[i].itemSerial,
+               &pInventory->beerArray[i].amountAvailable,
+               &pInventory->beerArray[i].price,
+               &pInventory->beerArray[i].numOfSolds);
+
+        readLine(fp, line, sizeof(line)); // Read the beer size/type as string
+        parseBeerSize(line, &pInventory->beerArray[i].bSize);
+    }
+
+    // Read Whiskeys
+    fscanf(fp, "%d\n", &itemCount); // Read the count of whiskey items
+    pInventory->whiskeyArray = (Whiskey*)malloc(itemCount * sizeof(Whiskey));
+    pInventory->whiskeysCount = itemCount;
+    for (int i = 0; i < itemCount; ++i) {
+        char tempBrand[256];
+        readLine(fp, tempBrand, sizeof(tempBrand));
+        pInventory->whiskeyArray[i].brand = (char*)malloc((strlen(tempBrand) + 1) * sizeof(char));
+        strcpy(pInventory->whiskeyArray[i].brand, tempBrand);
+
+        fscanf(fp, "%d\n%d\n%d\n%d\n",
+               &pInventory->whiskeyArray[i].itemSerial,
+               &pInventory->whiskeyArray[i].amountAvailable,
+               &pInventory->whiskeyArray[i].price,
+               &pInventory->whiskeyArray[i].numOfSolds);
+
+        readLine(fp, line, sizeof(line)); // Read the whiskey type as string
+        parseWhiskeyType(line, &pInventory->whiskeyArray[i].whiskeyType);
+    }
+
+    // Read Wines
+    fscanf(fp, "%d\n", &itemCount); // Read the count of wine items
+    pInventory->wineArray = (Wine*)malloc(itemCount * sizeof(Wine));
+    pInventory->winesCount = itemCount;
+    for (int i = 0; i < itemCount; ++i) {
+        char tempBrand[256];
+        readLine(fp, tempBrand, sizeof(tempBrand));
+        pInventory->wineArray[i].brand = (char*)malloc((strlen(tempBrand) + 1) * sizeof(char));
+        strcpy(pInventory->wineArray[i].brand, tempBrand);
+
+        fscanf(fp, "%d\n%d\n%d\n%d\n",
+               &pInventory->wineArray[i].itemSerial,
+               &pInventory->wineArray[i].amountAvailable,
+               &pInventory->wineArray[i].price,
+               &pInventory->wineArray[i].numOfSolds);
+
+        readLine(fp, line, sizeof(line)); // Read the wine type as string
+        parseWineType(line, &pInventory->wineArray[i].wType);
+    }
+
+    fclose(fp);
+}
 
 
 int	 writeStringToFile(char* str, FILE* fp, const char* msg)

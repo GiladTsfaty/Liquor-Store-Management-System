@@ -11,6 +11,13 @@
 
 
 #define MAX_RES_CODE_NUM 1000
+typedef struct
+{
+    int serial;    // Serial number of the drink
+    int amount;         // Amount purchased
+    double cost;        // Cost of the purchased item
+} PurchasedItem;
+
 
 typedef struct
 {
@@ -19,8 +26,7 @@ typedef struct
     Date        date;
 
     int         priceOfOrder;
-    char*       purchasedItems;//string of items and there amount
-    //Cart* cart;
+    LIST*     purchasedItems;
 
 }Reservation;
 

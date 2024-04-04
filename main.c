@@ -1,6 +1,6 @@
 #define _CRTDBG_MAP_ALLOC
 
-#include <crtdbg.h>
+//#include <crtdbg.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -15,7 +15,7 @@
 #include "Reservation.h"
 #include "Date.h"
 
-
+#define INVENTORY_FILE_NAME "Inventory.txt"
 
 
 //typedef enum
@@ -30,25 +30,33 @@
 
 int main() {
 
-   /* Inventory inventory;
-    initInventory(&inventory);
-    
-
-    addBeer(&inventory);
-    printBeer(&inventory.beerArray[0]);
-    addWine(&inventory);
-    printWine(&inventory.wineArray[0]);*/
-
-
+   Shop shop;
+   initShop(&shop);
+   Inventory inventory;
+   ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+   initInventoryFromFile(&inventory, INVENTORY_FILE_NAME);
+   printInventory(&inventory);
+   ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//   initInventory(&inventory);
 
 
 
-    //Sales sales;
-    //initSales(&sales);
-    //addNewCustomer(&sales);
-    //printAllCustomers(&sales);
-    //addNewCustomer(&sales);
-    //printAllCustomers(&sales);
+ //   addBeer(&inventory);
+//    inventory.beerArray[0].itemSerial = 111;
+//    printBeer(&inventory.beerArray[0]);
+//    addWine(&inventory);
+//    printWine(&inventory.wineArray[0]);
+
+
+
+
+
+//    Sales sales;
+//    initSales(&sales);
+//    addNewCustomer(&sales);
+//    printAllCustomers(&sales);
+//    addNewCustomer(&sales);
+//    printAllCustomers(&sales);
 
 
    /* Customer client;
@@ -59,29 +67,32 @@ int main() {
 
     
     Sales sales;
+    initSales(&sales, &inventory);
+//    shop.salesDepartment = &sales;
     Customer customer1;
-    int price1 = 500 ;
-    char* items1 = "3-beers, 2-wines, 1-whisky";
-
-    Customer customer2;
-    int price2 = 1200;
-    char* items2 = "5-beers, 5-wines, 5-whisky";
-
     initCustomerWithoutName(&customer1);
+
+
+
+//    initCustomerWithoutName(&customer1);
     getCustomerName(&customer1);
-    addNewReservationToArray(&sales,&customer1,items1,price1);
-    printReservationsArr(sales.reservationArray,sales.reservationCount);
+    L_insertByNameOrder(sales.customersList, &customer1);
+  //  addNewReservationToArray(&sales,&customer1,items1,price1);
+    //printReservationsArr(sales.reservationArray,sales.reservationCount);
 
 
-    initCustomerWithoutName(&customer2);
-    getCustomerName(&customer2);
-    addNewReservationToArray(&sales, &customer1, items2, price2);
+//    initCustomerWithoutName(&customer2);
+//    getCustomerName(&customer2);
+//    addNewReservationToArray(&sales, &customer1, items2, price2);
+    addNewReservationToArray2(&sales, &inventory, &customer1);
     printReservationsArr(sales.reservationArray, sales.reservationCount);
+    printCustomer(&customer1); /// sim lev -> ha amount sel res hitvasef ezal customer
+    printBeer(&inventory.beerArray[0]); // the amount ba res has substract from Inventory
 
     freeReservationsArr(sales.reservationArray, sales.reservationCount);
 
 
-    // comment to see that i can push to master in repo
+    // The winter is coming. Buy Whiskey
 
     return 1;
 

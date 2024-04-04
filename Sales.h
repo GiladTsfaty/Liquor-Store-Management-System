@@ -3,9 +3,9 @@
 
 
 #include "Customer.h"
-#include "Reservation.h"
+//#include "Reservation.h"
 #include "Inventory.h"
-
+#include "list.h"
 
 
 typedef enum { eNone, eResCode, eCustomerName, eDate, eNofSortOpt } eSortOption;
@@ -15,22 +15,16 @@ static const char* sortOptStr[eNofSortOpt];
 
 typedef struct
 {
-    LIST                    customersList;
+    LIST*                    customersList;
     struct Reservation**    reservationArray;
     int                     reservationCount;
     eSortOption	            ReservationSortOpt;
-
-
-    
-    //Inventory* inventory;
-   
-  
-
+    Inventory* inventory;
 }Sales;
 
 
 
-void        initSales(Sales* pSales);
+void        initSales(Sales* pSales, Inventory* pInventory);
 void        freeSales(Sales* pSales);
 
 
@@ -54,10 +48,11 @@ void         initReservationArray();
 //int        makeNewReservationForCustomer(Sales* pSales, Customer* pCustomer);
 
 int         addNewReservationToArray(Sales* pSales, Customer* pCustomer, char* itemsList, int itemsPrice);
+int addNewReservationToArray2(Sales* pSales, Inventory* pInventory,Customer* pCustomer);
 
-void        printReservationsArr(Reservation** array ,int size);
+void        printReservationsArr(struct Reservation** array ,int size);
 
-void        freeReservationsArr(Reservation** array, int size);
+void        freeReservationsArr(struct Reservation** array, int size);
 
 
 

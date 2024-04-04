@@ -18,6 +18,7 @@ int initCustomerWithoutName(Customer* pCustomer)
    
 	pCustomer->type = eNew;
 	pCustomer->totalSpent = 0;
+    printf("Customer created\n");
 
 	return 1;
 }
