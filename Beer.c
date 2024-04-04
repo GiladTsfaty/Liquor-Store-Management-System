@@ -14,6 +14,7 @@ void initBeer(Beer* pBeer, Beer* beerArr, int beersCount)
     pBeer->amountAvailable = 40;
     pBeer->price = 8;
     pBeer->numOfSolds = 0;
+    pBeer->itemSerial = 111;
     pBeer->bSize = getBeerSize();
     printf("Beer Added\n");
 }
@@ -65,8 +66,8 @@ const char* GetBeerSizeStr(int type)
 
 void printBeer(const Beer* pBeer)
 {
-    printf("Beer: Brand: %s, Amount Available: %d, Price: %d, Number of Sold: %d, Beer Size: %s\n",
-        pBeer->brand, pBeer->amountAvailable, pBeer->price, pBeer->numOfSolds, BeerSizeStr[pBeer->bSize]);
+    printf("Beer: Brand: %s, Item Serial: %d Amount Available: %d, Price: %d, Number of Sold: %d, Beer Size: %s\n",
+        pBeer->brand, pBeer->itemSerial, pBeer->amountAvailable, pBeer->price, pBeer->numOfSolds, BeerSizeStr[pBeer->bSize]);
 }
 
 

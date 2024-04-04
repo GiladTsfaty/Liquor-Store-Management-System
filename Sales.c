@@ -7,20 +7,27 @@
 #include "list.h"
 #include "Reservation.h"
 #include "GeneralFunctions.h"
+#include "Customer.h"
 
 
 
-void initSales(Sales* pSales)
+void initSales(Sales* pSales, Inventory* pInventory)
 {
-	printf("-----------  Init Sales ----------\n");
+    printf("-----------  Init Sales ----------\n");
 
-	L_init(&pSales->customersList);
-
-	pSales->ReservationSortOpt = eNew;
-	pSales->reservationCount = 0;
-	pSales->reservationArray = NULL;
-
+    pSales->customersList = (LIST*)malloc(sizeof(LIST));
+    if (pSales->customersList == NULL)
+    {
+        printf("Memory allocation failed for customersList.\n");
+        return;
+    }
+    L_init(pSales->customersList);
+    pSales->inventory = pInventory;
+    pSales->ReservationSortOpt = eNew;
+    pSales->reservationCount = 0;
+    pSales->reservationArray = NULL;
 }
+
 
 
 int addNewCustomer(Sales* pSales)
@@ -71,7 +78,7 @@ int uniqeNameCheck(const char* name, const Sales* pSales)
 
 Customer* findCustomerByName(const Sales* pSales, const char* name)
 {
-	NODE* pN = pSales->customersList.head.next; //first Node
+	NODE* pN = pSales->customersList->head.next; //first Node
 	if (!pN)
 		return NULL;
 
@@ -114,7 +121,7 @@ void printAllCustomers(const Sales* pSales)
 
 	printf("there are %d clients\n", L_length(&(pSales->customersList)) - 1);
 
-	L_print(&(pSales->customersList), printCustomer);
+	L_print(&(pSales->customersList), (void (*)(const void *)) printCustomer);
 
 	printf("\n");
 
@@ -180,66 +187,264 @@ void printAllCustomers(const Sales* pSales)
 
 
 
-int addNewReservationToArray(Sales* pSales, Customer* pCustomer,char* itemsList , int itemsPrice )
+//int addNewReservationToArray(Sales* pSales, Customer* pCustomer, char* itemsList, int itemsPrice)
+//{
+//    // Allocate memory for a new Reservation object
+//    Reservation* pNewReservation = (Reservation*)calloc(1, sizeof(Reservation));
+//    if (!pNewReservation)
+//        return 0;
+//
+//    // Resize the reservationArray to accommodate the new reservation
+//    Reservation** tempArray;
+//    if (pSales->reservationArray == NULL)
+//    {
+//        // If reservationArray is NULL, allocate memory for the first reservation
+//        tempArray = (Reservation**)malloc(sizeof(Reservation*));
+//    }
+//    else
+//    {
+//        // If reservationArray is not NULL, reallocate memory to accommodate the new reservation
+//        tempArray = (Reservation**)realloc(pSales->reservationArray, (pSales->reservationCount + 1) * sizeof(Reservation*));
+//    }
+//
+//    if (!tempArray)
+//    {
+//        // Memory allocation failed, free the previously allocated Reservation object
+//        free(pNewReservation);
+//        return 0;
+//    }
+//
+//    pNewReservation->customer = pCustomer;
+//    getCorrectDate(&pNewReservation->date);
+//    pNewReservation->ReservationCode = pSales->reservationCount;
+//    pNewReservation->purchasedItems = itemsList;
+//    pNewReservation->priceOfOrder = itemsPrice;
+//    pCustomer->totalSpent += itemsPrice;
+//
+//    if (pCustomer->totalSpent >= VIP_THRESH)
+//        pCustomer->type = eVip;
+//    else
+//        pCustomer->type = eRegular;
+//
+//    // Assign the resized array to the reservationArray
+//    pSales->reservationArray = tempArray;
+//
+//    // Add the new reservation to the end of the array
+//    pSales->reservationArray[pSales->reservationCount] = pNewReservation;
+//
+//    // Increment the reservation count
+//    pSales->reservationCount++;
+//
+//    // Reset the reservation sorting option (if needed)
+//    pSales->ReservationSortOpt = eNone;
+//
+//    return 1; // Reservation added successfully
+//}
+
+// Function to print the list of beers
+void printBeerList(Inventory* pInventory)
 {
-	// Allocate memory for a new Reservation object
-	Reservation* pNewReservation = (Reservation*)calloc(1, sizeof(Reservation));
-	if (!pNewReservation)
-		return 0; 
-
-	// Resize the reservationArray to accommodate the new reservation
-	Reservation** tempArray = (Reservation**)realloc(pSales->reservationArray, (pSales->reservationCount + 1) * sizeof(Reservation*));
-	if (!tempArray) {
-		// Memory allocation failed, free the previously allocated Reservation object
-		free(pNewReservation);
-		return 0;
-	}
-
-
-	pNewReservation->customer = pCustomer;  // the client
-	getCorrectDate(&pNewReservation->date); //date of order
-	pNewReservation->ReservationCode = pSales->reservationCount; //reservatiom code also place in array
-	
-	pNewReservation->purchasedItems = itemsList;
-
-	pNewReservation->priceOfOrder = itemsPrice;
-
-
-	pCustomer->totalSpent += itemsPrice;// total amount spent by client
-
-	if (pCustomer->totalSpent >= VIP_THRESH)
-		pCustomer->type = eVip;
-	else
-		pCustomer->type = eRegular;
-
-
-	//add here alcohal to reservation & calc price & change inventory/total amount/status  
-	//maybe in main ?
-
-
-	// Assign the resized array to a temporary variable
-	Reservation** resizedArray = (Reservation**)tempArray;
-
-	// Add the new reservation to the end of the array
-	resizedArray[pSales->reservationCount] = pNewReservation;
-
-	// Update pSales->reservationArray with the resized array(casting to the same type)
-//	(Reservation**)pSales->reservationArray = resizedArray;  //casting??
-
-	
-
-	// Increment the reservation count
-	pSales->reservationCount++;
-
-	// Reset the reservation sorting option (if needed) ///maybe add in order 
-	pSales->ReservationSortOpt = eNone;
-
-	return 1; // Reservation added successfully
+    printf("Beer List:\n");
+    for (int i = 0; i < pInventory->beersCount; i++)
+    {
+        printf("%d. %s\n", pInventory->beerArray[i].itemSerial, pInventory->beerArray[i].brand);
+    }
 }
 
+// Function to print the list of wines
+void printWineList(Inventory* pInventory)
+{
+    printf("Wine List:\n");
+    for (int i = 0; i < pInventory->winesCount; i++)
+    {
+        printf("%d. %s\n", pInventory->wineArray[i].itemSerial, pInventory->wineArray[i].brand);
+    }
+}
 
+// Function to print the list of whiskeys
+void printWhiskeyList(Inventory* pInventory)
+{
+    printf("Whiskey List:\n");
+    for (int i = 0; i < pInventory->whiskeysCount; i++)
+    {
+        printf("%d. %s\n", pInventory->whiskeyArray[i].itemSerial, pInventory->whiskeyArray[i].brand);
+    }
+}
 
+// Function to find a beer by serial number and update the inventory
+double findBeerBySerialAndUpdate(Inventory* pInventory, int serialNumber, int numBottles)
+{
+    for (int i = 0; i < pInventory->beersCount; i++)
+    {
+        if (pInventory->beerArray[i].itemSerial == serialNumber)
+        {
+            if (pInventory->beerArray[i].amountAvailable >= numBottles)
+            {
+                double cost = pInventory->beerArray[i].price * numBottles;
+                pInventory->beerArray[i].amountAvailable -= numBottles;
+                return cost;
+            }
+            break;
+        }
+    }
+    return 0.0;
+}
 
+// Function to find a wine by serial number and update the inventory
+double findWineBySerialAndUpdate(Inventory* pInventory, int serialNumber, int numBottles)
+{
+    for (int i = 0; i < pInventory->winesCount; i++)
+    {
+        if (pInventory->wineArray[i].itemSerial == serialNumber)
+        {
+            if (pInventory->wineArray[i].amountAvailable >= numBottles)
+            {
+                double cost = pInventory->wineArray[i].price * numBottles;
+                pInventory->wineArray[i].amountAvailable -= numBottles;
+                return cost;
+            }
+            break;
+        }
+    }
+    return 0.0;
+}
+
+// Function to find a whiskey by serial number and update the inventory
+double findWhiskeyBySerialAndUpdate(Inventory* pInventory, int serialNumber, int numBottles)
+{
+    for (int i = 0; i < pInventory->whiskeysCount; i++)
+    {
+        if (pInventory->whiskeyArray[i].itemSerial == serialNumber)
+        {
+            if (pInventory->whiskeyArray[i].amountAvailable >= numBottles)
+            {
+                double cost = pInventory->whiskeyArray[i].price * numBottles;
+                pInventory->whiskeyArray[i].amountAvailable -= numBottles;
+                return cost;
+            }
+            break;
+        }
+    }
+    return 0.0;
+}
+
+// Function to add a new reservation to the array
+int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pCustomer)
+{
+    // Allocate memory for a new Reservation object
+    Reservation* pNewReservation = (Reservation*)calloc(1, sizeof(Reservation));
+    if (!pNewReservation)
+        return 0;
+
+    // Initialize the list of purchased items
+    L_init(&pNewReservation->purchasedItems);
+    double totalCost = 0.0;
+
+    int addMoreItems = 1;
+    while (addMoreItems)
+    {
+        // Ask the user to choose between beer, wine, or whiskey
+        int choice;
+        printf("Enter 0 for beer, 1 for wine, or 2 for whiskey: ");
+        scanf("%d", &choice);
+
+        // Print the list of drinks based on the user's choice
+        if (choice == 0)
+            printBeerList(pInventory);
+        else if (choice == 1)
+            printWineList(pInventory);
+        else if (choice == 2)
+            printWhiskeyList(pInventory);
+        else
+        {
+            printf("Invalid choice.\n");
+            continue;
+        }
+
+        // Ask the user to enter the serial number of the drink
+        int serialNumber;
+        printf("Enter the serial number of the drink: ");
+        scanf("%d", &serialNumber);
+
+        // Ask the user for the number of bottles
+        int numBottles;
+        printf("Enter the number of bottles: ");
+        scanf("%d", &numBottles);
+
+        // Find the drink in the inventory and update the cost
+        double cost = 0.0;
+        if (choice == 0)
+            cost = findBeerBySerialAndUpdate(pInventory, serialNumber, numBottles);
+        else if (choice == 1)
+            cost = findWineBySerialAndUpdate(pInventory, serialNumber, numBottles);
+        else if (choice == 2)
+            cost = findWhiskeyBySerialAndUpdate(pInventory, serialNumber, numBottles);
+
+        if (cost == 0.0)
+        {
+            printf("Invalid selection or insufficient bottles.\n");
+            continue;
+        }
+
+        // Create a new PurchasedItem and add it to the list
+        PurchasedItem* newItem = (PurchasedItem*)malloc(sizeof(PurchasedItem));
+        newItem->serial = serialNumber;
+        newItem->amount = numBottles;
+        newItem->cost = cost;
+        L_insert(&pNewReservation->purchasedItems, newItem);
+
+        totalCost += cost;
+
+        // Ask the user if they want to add more items
+        printf("Do you want to add another item? (1 for yes, 0 for no): ");
+        scanf("%d", &addMoreItems);
+    }
+
+    // Resize the reservationArray to accommodate the new reservation
+    Reservation** tempArray;
+    if (pSales->reservationArray == NULL)
+    {
+        // If reservationArray is NULL, allocate memory for the first reservation
+        tempArray = (Reservation**)malloc(sizeof(Reservation*));
+    }
+    else
+    {
+        // If reservationArray is not NULL, reallocate memory to accommodate the new reservation
+        tempArray = (Reservation**)realloc(pSales->reservationArray, (pSales->reservationCount + 1) * sizeof(Reservation*));
+    }
+
+    if (!tempArray)
+    {
+        // Memory allocation failed, free the previously allocated Reservation object
+        free(pNewReservation);
+        return 0;
+    }
+
+    pNewReservation->customer = pCustomer;
+    getCorrectDate(&pNewReservation->date);
+    pNewReservation->ReservationCode = pSales->reservationCount;
+    pNewReservation->priceOfOrder = totalCost;
+    pCustomer->totalSpent += totalCost;
+
+    if (pCustomer->totalSpent >= VIP_THRESH)
+        pCustomer->type = eVip;
+    else
+        pCustomer->type = eRegular;
+
+    // Assign the resized array to the reservationArray
+    pSales->reservationArray = tempArray;
+
+    // Add the new reservation to the end of the array
+    pSales->reservationArray[pSales->reservationCount] = pNewReservation;
+
+    // Increment the reservation count
+    pSales->reservationCount++;
+
+    // Reset the reservation sorting option (if needed)
+    pSales->ReservationSortOpt = eNone;
+
+    return 1; // Reservation added successfully
+}
 
 void printReservationsArr(struct Reservation** array, int size)
 {
@@ -356,7 +561,7 @@ eSortOption showSortMenu()
 
 void freeSales(Sales* pSales)
 {
-	L_free(&pSales->customersList, freeCustomer);//free clients
+	L_free(&pSales->customersList, (void (*)(void *)) freeCustomer);//free clients
 
 	//L_free(&(pSales->reservationList, freereservation);// free reservations 
 

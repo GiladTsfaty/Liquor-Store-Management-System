@@ -12,6 +12,7 @@ void initWine(Wine* pWine, Wine* wineArr, int winesCount)
     pWine->brand = tempBrand;
     pWine->amountAvailable = 15;
     pWine->price = 35;
+    pWine->itemSerial = 222;
     pWine->numOfSolds = 0;
     pWine->wType = getWineType();
     printf("Wine Added\n");

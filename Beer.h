@@ -1,16 +1,16 @@
 #pragma once
 
 typedef enum {
-    eThird, ePaint, eHalf, eNumOfBeerSizes
+    eThirdLiter, ePaint, eImperialPaint, eJug, eNumOfBeerSizes
 } eBeerSize;
 
 static const char* BeerSizeStr[eNumOfBeerSizes]
-= { "Third", "Paint", "Half" };
+= { "ThirdLiter", "Paint", "ImperialPaint", "Jug" };
 
 typedef struct
 {
     char* brand;
-    //    char itemSerial[5]; //BGOLD
+    int itemSerial; //111
     int amountAvailable;
     int price;
     int numOfSolds;

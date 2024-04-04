@@ -3,16 +3,16 @@
 
 
 typedef enum {
-    eRed, eWhite, eNumOfWineTypes
+    eRed, eWhite, eRose, eSparkling, eDessert, eFortified, eNumOfWineTypes
 } eWineType;
 
 static const char* WineTypeStr[eNumOfWineTypes]
-= { "Red", "White" };
+= { "Red", "White","Rose", "Sparkling", "Dessert", "Fortified"};
 
 typedef struct
 {
     char* brand;
-    //    int itemSerial;
+    int itemSerial; // 222
     int amountAvailable;
     int price;
     int numOfSolds;

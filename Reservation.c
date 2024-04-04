@@ -10,21 +10,21 @@
 
 
 
-void initReservation(Reservation* pRes, Customer* pCus, Sales* pSales)
-{
-	char* baseList = "nothig";
-
-	getCorrectDate(&pRes->date);//date
-
-	pRes->priceOfOrder = 0;//amount
-
-	//findCustomerByName( pSales ,&pRes->customer->name);//client
-	pRes->customer->name = getCustomerName(pCus);
-	
-	pRes->ReservationCode = 0;
-
-	pRes->purchasedItems = baseList;
-}
+//void initReservation(Reservation* pRes, Customer* pCus, Sales* pSales)
+//{
+//	char* baseList = "nothig";
+//
+//	getCorrectDate(&pRes->date);//date
+//
+//	pRes->priceOfOrder = 0;//amount
+//
+//	//findCustomerByName( pSales ,&pRes->customer->name);//client
+//	pRes->customer->name = getCustomerName(pCus);
+//
+//	pRes->ReservationCode = 0;
+//
+//	pRes->purchasedItems = baseList;
+//}
 
 
 
@@ -33,6 +33,15 @@ void initReservation(Reservation* pRes, Customer* pCus, Sales* pSales)
 //{
 //}
 
+void printPurchasedItem(const void* pItemVoid) {
+    // Cast from void* to the appropriate type
+    const PurchasedItem* pItem = (const PurchasedItem*)pItemVoid;
+
+    // Print the details of the PurchasedItem
+    printf("Item Serial: %d, Amount: %d, Cost: $%.2f\n",
+           pItem->serial, pItem->amount, pItem->cost);
+}
+
 void printReservation(const Reservation* pRes)
 {
 
@@ -40,7 +49,8 @@ void printReservation(const Reservation* pRes)
 	printDate(&pRes->date);
 	printf(", %s made a Reservation,  REScode: %d, , in the amount of %d$. \n", pRes->customer->name,
 		pRes->ReservationCode,pRes->priceOfOrder);
-	printf("and got: %s \n", pRes->purchasedItems );
+    printf("The Items are:\n");
+    L_print(&pRes->purchasedItems, printPurchasedItem);
 }
 
 void printReservationPtr(void* pResPtr)
@@ -79,6 +89,8 @@ int compareReseravationByReservatinCode(const void* rese1, const void* rese2)//f
 	else 
 		return 0;
 }
+
+
 
 int compareReseravationByCustomerName(const void* rese1, const void* rese2)
 {
