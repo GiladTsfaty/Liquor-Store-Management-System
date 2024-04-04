@@ -39,6 +39,11 @@ int         customerCompare(const void* data1, const void* data2);//name compera
 
 void        printAllCustomers(const Sales* pSales);
 
+int		insertNewAirportToList(LIST* pList, Customer* pCustomer);
+
+
+int   initCustomerListFromTextFile(Sales* pSales, const char* fileName);
+int   saveCustomerListToTextFile(Sales* pSales, const char* fileName);
 
 
 /// <summary>
