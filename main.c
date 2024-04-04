@@ -51,19 +51,6 @@ int main() {
 
 
 
-//    Sales sales;
-//    initSales(&sales);
-//    addNewCustomer(&sales);
-//    printAllCustomers(&sales);
-//    addNewCustomer(&sales);
-//    printAllCustomers(&sales);
-
-
-   /* Customer client;
-    initCustomerWithoutName(&client);
-    getCustomerName(&client);
-    printCustomer(&client);
-    freeCustomer(&client);*/
 
     
     Sales sales;
@@ -90,6 +77,8 @@ int main() {
     printBeer(&inventory.beerArray[0]); // the amount ba res has substract from Inventory
 
    // freeReservationsArr(sales.reservationArray, sales.reservationCount);// fix free
+
+
 
 
     // The winter is coming. Buy Whiskey

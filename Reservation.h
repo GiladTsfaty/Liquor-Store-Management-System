@@ -25,7 +25,7 @@ typedef struct
     Customer*   customer;
     Date        date;
 
-    int         priceOfOrder;
+    double        priceOfOrder;
     LIST*     purchasedItems;
 
 }Reservation;

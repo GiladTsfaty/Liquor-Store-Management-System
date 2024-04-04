@@ -44,7 +44,7 @@ void        printAllCustomers(const Sales* pSales);
 /// <summary>
 /// /Res funcs
  
-void         initReservationArray();
+//void         initReservationArray();
 
 Customer*   getCustomerForReservation(Sales* pSales);
 

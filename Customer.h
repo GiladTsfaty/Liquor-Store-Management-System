@@ -19,10 +19,12 @@ typedef struct
     char* name;
    // int serialNum;
    // int numOfReservations;
-    int totalSpent;
+   double totalSpent;
     eCustomerType type;
 
 }Customer;
+
+Customer* returnBlanckCustomer(Customer* pCustomer)  ;
 
 int  initCustomerWithoutName(Customer* pCustomer);
 int  printCustomer( const Customer* pCustomer);
