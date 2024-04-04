@@ -1,6 +1,6 @@
 #define _CRTDBG_MAP_ALLOC
 
-//#include <crtdbg.h>
+#include <crtdbg.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -51,19 +51,6 @@ int main() {
 
 
 
-//    Sales sales;
-//    initSales(&sales);
-//    addNewCustomer(&sales);
-//    printAllCustomers(&sales);
-//    addNewCustomer(&sales);
-//    printAllCustomers(&sales);
-
-
-   /* Customer client;
-    initCustomerWithoutName(&client);
-    getCustomerName(&client);
-    printCustomer(&client);
-    freeCustomer(&client);*/
 
     
     Sales sales;
@@ -89,10 +76,14 @@ int main() {
     printCustomer(&customer1); /// sim lev -> ha amount sel res hitvasef ezal customer
     printBeer(&inventory.beerArray[0]); // the amount ba res has substract from Inventory
 
-    freeReservationsArr(sales.reservationArray, sales.reservationCount);
+   // freeReservationsArr(sales.reservationArray, sales.reservationCount);// fix free
+
+
 
 
     // The winter is coming. Buy Whiskey
+
+    _CrtDumpMemoryLeaks();
 
     return 1;
 

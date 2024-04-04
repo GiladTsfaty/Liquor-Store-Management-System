@@ -10,6 +10,15 @@
 
 
 
+Customer* returnBlanckCustomer(Customer* pCustomer)
+{
+    pCustomer->name = "Jhon_Doe";
+    pCustomer->totalSpent = 0;
+    pCustomer->type = eNew;
+
+    return pCustomer;
+}
+
 int initCustomerWithoutName(Customer* pCustomer)
 {
 
