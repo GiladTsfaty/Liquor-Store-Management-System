@@ -32,12 +32,13 @@ int initCustomerWithoutName(Customer* pCustomer)
 	return 1;
 }
 
+
 int printCustomer(const Customer* pCustomer)
 {
-	printf("Customer - %s is a %s client and has spent a total of %d$. \n",
+    printf("Customer - %s is a %s client and has spent a total of %.2f$.\n",
         pCustomer->name, CustomerTypeStr[pCustomer->type], pCustomer->totalSpent);
 
-	return 1;
+    return 1;
 }
 
 
@@ -76,8 +77,31 @@ int loadCustomerFromTextFile(Customer* pCustomer, FILE* fp)
     // Read customer type
     if (myGetsFile(temp, MAX_STR_LEN, fp) == NULL)
         return 0;
-    pCustomer->type = (eCustomerType)atoi(temp);
 
+    // Convert the string to enum value
+    pCustomer->type = eNomOfCustomerTypes; // Set a default value
+    for (int i = 0; i < eNomOfCustomerTypes; i++)
+    {
+        if (strcmp(temp, CustomerTypeStr[i]) == 0)
+        {
+            pCustomer->type = (eCustomerType)i;
+            break;
+        }
+    }
+
+
+    return 1;
+}
+
+int saveCustomerToFile(Customer* pCustomer, FILE* fp)
+{
+
+    if (!pCustomer)
+        return 0;
+
+    fprintf(fp, "%s\n",   pCustomer->name);
+    fprintf(fp, "%.2f\n", pCustomer->totalSpent);
+    fprintf(fp, "%s\n",   CustomerTypeStr[pCustomer->type]);
     return 1;
 }
 

@@ -17,10 +17,15 @@
 #include "BinaryFiles.h"
 
 #define INVENTORY_FILE_NAME "Inventory.txt"
-
-#define CUSTOMER_LIST_TEXT_FILE_NAME "customer_list.txt"
-
 #define INVENTORY_BINARY_FILE_NAME "Inventory.bin"
+
+
+
+#define CUSTOMER_LIST_TEXT_FILE_LOAD_NAME "customer_list.txt"
+#define CUSTOMER_LIST_TEXT_FILE_SAVE_NAME "customer_list_saveTo.txt"
+
+#define CUSTOMER_LIST_BINARY_FILE_LOAD_NAME "customer_list_binary.bin"
+#define CUSTOMER_LIST_BINARY_FILE_SAVE_NAME "customer_list_saveTo_binary.bin"
 
 
 
@@ -127,8 +132,13 @@ int main() {
 
    Sales sales;
    initSales(&sales, &inventory);
-   initCustomerListFromTextFile(&sales, CUSTOMER_LIST_TEXT_FILE_NAME);
+   initCustomerListFromTextFile(&sales, CUSTOMER_LIST_TEXT_FILE_LOAD_NAME);
    printAllCustomers(&sales);
+   addNewCustomer(&sales);
+   printAllCustomers(&sales);
+   saveCustomerListToTextFile(&sales,CUSTOMER_LIST_TEXT_FILE_SAVE_NAME);
+
+
 
 
 

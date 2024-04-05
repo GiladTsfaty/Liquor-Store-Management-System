@@ -2,6 +2,7 @@
 #include "Customer.h"
 #include "list.h"
 #include "Date.h"
+#include "Sales.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -18,7 +19,7 @@ void initPurchasedItem(PurchasedItem* pItems)
 
 }
 
-void initReservation(Reservation* pRes, Customer* pCus, Sales* pSales) {
+void initReservation(Reservation* pRes, Customer* pCus) {
 	
 	pRes->ReservationCode = -1;
 
@@ -32,7 +33,7 @@ void initReservation(Reservation* pRes, Customer* pCus, Sales* pSales) {
 	pRes->priceOfOrder = 0;
 
 	// Initialize the list of purchased items
-	initPurchasedItem(pRes->purchasedItems) ;
+	initPurchasedItem(&pRes->purchasedItems) ;//& i add 
 }
 
 
@@ -52,7 +53,7 @@ void printReservation(const Reservation* pRes)
 
 	printf("On the ");
 	printDate(&pRes->date);
-	printf(", %s made a Reservation,  REScode: %d, , in the amount of %d$. \n", pRes->customer->name,
+	printf(", %s made a Reservation,  REScode: %d, , in the amount of %.2f$. \n", pRes->customer->name,
 		pRes->ReservationCode,pRes->priceOfOrder);
     printf("The Items are:\n");
     L_print(&pRes->purchasedItems, printPurchasedItem);

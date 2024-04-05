@@ -21,6 +21,10 @@ void  readInventoryFromFile(Inventory* pInventory, const char* filename);
 
 
 
+
+
+
+
 //int writeAirlineToBFile(FILE* pFile, const Airline* pComp);
 //int writePlaneArrToBFile(FILE* pFile, const Plane* pPlaneArr, const int count);
 //int writePlaneToBFile(FILE* pFile, const Plane* pPlane);

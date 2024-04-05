@@ -8,19 +8,18 @@
 #define SEP_CHAR '_'
 
 typedef enum {
-    eVip, eRegular, eNew, eNomOfCustomerTypes
+    eNew, eRegular, eVip, eNomOfCustomerTypes
 } eCustomerType;
 
 static const char* CustomerTypeStr[eNomOfCustomerTypes]
-= { "Regular", "Vip", "New" };
+= { "New", "Regular", "Vip" };
+
 
 typedef struct
 {
-    char* name;
-   // int serialNum;
-   // int numOfReservations;
-   double totalSpent;
-    eCustomerType type;
+    char*                name;
+    double               totalSpent;
+    eCustomerType        type;
 
 }Customer;
 
@@ -33,3 +32,4 @@ int  isSameCustomerName(const Customer* pCustomer1,const Customer* pCustomer2);
 void freeCustomer(Customer* pCustomer);
 
 int loadCustomerFromTextFile(Customer* pCustomer, FILE* fp);
+int saveCustomerToFile(Customer* pCustomer, FILE* fp);

@@ -15,19 +15,43 @@ void initSales(Sales* pSales, Inventory* pInventory)
 {
     printf("-----------  Init Sales ----------\n");
 
-    pSales->customersList = (LIST*)malloc(sizeof(LIST));
-    if (pSales->customersList == NULL)
+   // pSales->customersList = (LIST*)malloc(sizeof(LIST));
+    /*if (pSales->customersList == NULL)
+    {
+        printf("Memory allocation failed for customersList.\n");
+        return;
+    }*/
+    if (L_init(&pSales->customersList) == False)
     {
         printf("Memory allocation failed for customersList.\n");
         return;
     }
-    L_init(pSales->customersList);
+    //L_init(&pSales->customersList);//&
     pSales->inventory = pInventory;
     pSales->ReservationSortOpt = eNew;
     pSales->reservationCount = 0;
     pSales->reservationArray = NULL;
 }
 
+
+
+//
+//void initSalesFromFile(Sales* pSales, const char* fileName)
+//{
+//   
+//
+//    if (loadSalesFromFile(pSales, fileName))
+//        return FROM_FILE;
+//
+//    printf("-----------  Init airport Manager ---- User\n");
+//    if (!L_init(&pSales->customersList))
+//        return ERROR;
+//
+//
+//    return FROM_USER;
+//
+//
+//}
 
 
 int addNewCustomer(Sales* pSales)
@@ -78,7 +102,7 @@ int uniqeNameCheck(const char* name, const Sales* pSales)
 
 Customer* findCustomerByName(const Sales* pSales, const char* name)
 {
-	NODE* pN = pSales->customersList->head.next; //first Node
+	NODE* pN = pSales->customersList.head.next; //first Node
 	if (!pN)
 		return NULL;
 
@@ -118,13 +142,23 @@ int customerCompare(const void* data1, const void* data2) //if code is uniqe ret
 
 void printAllCustomers(const Sales* pSales)
 {
+    int lengeth = (L_length((LIST*)&(pSales->customersList)) - 1);
 
-	printf("there are %d clients\n", L_length((LIST*) & (pSales->customersList)) - 1);
+    if (lengeth == 0) 
+    {
+        printf("there are NO clients\n");
+       
+    }
+    else
+    {
+        printf("there are %d clients\n", lengeth);
 
-	L_print((LIST*)&(pSales->customersList), (void (*)(const void *)) printCustomer);
+        L_print((LIST*)&(pSales->customersList), (void (*)(const void*)) printCustomer);
 
-	printf("\n");
+        printf("\n");
 
+    }
+	
 
 }
 
@@ -173,7 +207,7 @@ int initCustomerListFromTextFile(Sales* pSales, const char* fileName)
         return 0;
     }
 
-    L_init(pSales->customersList);
+    L_init(&pSales->customersList);//&
 
     int count;
     fscanf(fp, "%d", &count);
@@ -204,62 +238,40 @@ int initCustomerListFromTextFile(Sales* pSales, const char* fileName)
     return 1;
 }
 
+int saveCustomerListToTextFile(const Sales* pSales, const char* fileName)
+{
+   
 
-//
-//int initCustomerListFromTextFile(Sales* pSales, const char* fileName)//bad
-//{
-//    FILE* fp;
-//    fp = fopen(fileName, "r");
-//    if (!fp)
-//    {
-//        printf("Error opening customer list file\n");
-//        return 0;
-//    }
-//
-//    L_init(pSales->customersList);
-//
-//    int count;
-//    fscanf(fp, "%d", &count);
-//    // Clean the buffer
-//    fgetc(fp);
-//
-//    Customer* pCustomer;
-//    NODE* pNode = &(pSales->customersList->head);
-//
-//    for (int i = 0; i < count; i++)
-//    {
-//        pCustomer = (Customer*)calloc(1, sizeof(Customer));
-//        if (!pCustomer)
-//            break;
-//
-//        // Read customer name
-//        char name[MAX_STR_LEN];
-//        fscanf(fp, "%s", name);
-//        pCustomer->name = (char*)malloc((strlen(name) + 1) * sizeof(char));
-//        if (pCustomer->name == NULL)
-//        {
-//            printf("Memory allocation failed for customer name.\n");
-//            free(pCustomer);
-//            fclose(fp);
-//            return 0;
-//        }
-//        strcpy(pCustomer->name, name);
-//
-//        // Read total spent
-//        fscanf(fp, "%lf", &(pCustomer->totalSpent));
-//
-//        // Read customer type
-//        int type;
-//        fscanf(fp, "%d", &type);
-//        pCustomer->type = (eCustomerType)type;
-//
-//        // Insert customer into the list
-//        pNode = L_insert(pNode, pCustomer);
-//    }
-//
-//    fclose(fp);
-//    return 1;
-//}
+    FILE* file;
+
+    file = fopen(fileName, "w"); //open to write 
+    if (!file)
+    {
+        printf("cant open file to write in \n");
+        return 0;
+    }
+
+    fprintf(file, "%d\n", L_length(&(pSales->customersList)) - 1);// first line num of clients/length of list
+
+    NODE* pNode = (pSales->customersList.head.next); //first member of list 
+    while (pNode) {
+        if (!saveCustomerToFile(pNode->key, file))
+        {
+            printf("cant write customer to file\n");
+            fclose(file);
+            return 0;
+        }
+        pNode = pNode->next;
+
+
+    }
+    fclose(file);
+    return 1; //success
+
+
+}
+
+
 
 ////RESERVATIONS////
 
@@ -614,7 +626,7 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
             newItem->serial = serialNumber;
             newItem->amount = numBottles;
             newItem->cost = cost;
-            L_insert(pNewReservation->purchasedItems, newItem);
+            L_insert(pNewReservation->purchasedItems.head.key, newItem);//add .head.key
         }
         else
         {

@@ -21,18 +21,18 @@ typedef struct
 
 typedef struct
 {
-    int         ReservationCode;// will be the same as location in array 0 1 2 3....
-    Customer*   customer;
-    Date        date;
+    int           ReservationCode;// will be the same as location in array 0 1 2 3....
+    Customer*     customer;
+    Date          date;
 
     double        priceOfOrder;
-    LIST*     purchasedItems;
+    LIST          purchasedItems;  //LIST*
 
 }Reservation;
 
 void initPurchasedItem(PurchasedItem* pItems);
 
-void initReservation(Reservation* pRes,Customer* pCus, Sales* pSales);
+void initReservation(Reservation* pRes,Customer* pCus);
 
 
 
