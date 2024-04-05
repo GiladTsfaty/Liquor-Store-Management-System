@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 #include "GeneralFunctions.h"
+#include "Filefunctions.h"
 #include "Shop.h"
 #include "Inventory.h"
 #include "Beer.h"
@@ -24,8 +25,8 @@
 #define CUSTOMER_LIST_TEXT_FILE_LOAD_NAME "customer_list.txt"
 #define CUSTOMER_LIST_TEXT_FILE_SAVE_NAME "customer_list_saveTo.txt"
 
-#define CUSTOMER_LIST_BINARY_FILE_LOAD_NAME "customer_list_binary.bin"
-#define CUSTOMER_LIST_BINARY_FILE_SAVE_NAME "customer_list_saveTo_binary.bin"
+#define CUSTOMER_LIST_BINARY_FILE_LOAD_NAME "BinaryCustomer.bin"
+#define CUSTOMER_LIST_BINARY_FILE_SAVE_NAME "BinaryCustomerSaveTo.bin"
 
 
 
@@ -132,11 +133,24 @@ int main() {
 
    Sales sales;
    initSales(&sales, &inventory);
-   initCustomerListFromTextFile(&sales, CUSTOMER_LIST_TEXT_FILE_LOAD_NAME);
+   printAllCustomers(&sales);
+
+   readCustomerListFromBFile(&sales, CUSTOMER_LIST_BINARY_FILE_LOAD_NAME );
    printAllCustomers(&sales);
    addNewCustomer(&sales);
    printAllCustomers(&sales);
-   saveCustomerListToTextFile(&sales,CUSTOMER_LIST_TEXT_FILE_SAVE_NAME);
+   writeCustomerListToBFile(&sales, CUSTOMER_LIST_BINARY_FILE_SAVE_NAME);
+
+
+   /*readCustomerListFromBFile(&sales, CUSTOMER_LIST_BINARY_FILE_SAVE_NAME);
+   printAllCustomers(&sales);*/
+
+
+   /*addNewCustomer(&sales);
+   printAllCustomers(&sales);
+   //initCustomerListFromTextFile(&sales, CUSTOMER_LIST_TEXT_FILE_LOAD_NAME);
+   writeCustomerListToBFile(&sales, CUSTOMER_LIST_BINARY_FILE_SAVE_NAME);*/
+  // saveCustomerListToTextFile(&sales,CUSTOMER_LIST_TEXT_FILE_SAVE_NAME);
 
 
 
