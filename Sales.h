@@ -3,9 +3,14 @@
 
 
 #include "Customer.h"
-//#include "Reservation.h"
+#include "Reservation.h"
 #include "Inventory.h"
 #include "list.h"
+
+
+#define ERROR 0
+#define FROM_FILE 1
+#define FROM_USER 2
 
 
 typedef enum { eNone, eResCode, eCustomerName, eDate, eNofSortOpt } eSortOption;
@@ -15,7 +20,7 @@ static const char* sortOptStr[eNofSortOpt];
 
 typedef struct
 {
-    LIST*                   customersList;
+    LIST                    customersList;//list*??
     struct Reservation**    reservationArray;
     int                     reservationCount;
     eSortOption	            ReservationSortOpt;
@@ -23,7 +28,7 @@ typedef struct
 }Sales;
 
 
-
+void        initSalesFromFile(Sales* pSales, const char* fileName);
 void        initSales(Sales* pSales, Inventory* pInventory);
 void        freeSales(Sales* pSales);
 
@@ -43,7 +48,7 @@ int		insertNewCustomerToList(LIST* pList, Customer* pCustomer);
 
 
 int   initCustomerListFromTextFile(Sales* pSales, const char* fileName);
-int   saveCustomerListToTextFile(Sales* pSales, const char* fileName);
+int   saveCustomerListToTextFile(const Sales* pSales, const char* fileName);
 
 
 /// <summary>
