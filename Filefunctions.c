@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-
+#include "BinaryFunctions.h"
 #include "Filefunctions.h"
 #include "General.h"
 #include "Wine.h"
@@ -257,47 +257,53 @@ int readDoubleFromFile(double* pVal, FILE* fp, const char* msg)
 
 
 
-
-int writeCustomerListToBFile(const Sales* pSales, FILE* fileName)
+int loadCustomerFromTextFile(Customer* pCustomer, FILE* fp)
 {
-    FILE* pFile = fopen(fileName, "wb");
-    if (!pFile)
-    {
-        printf("Error opening file for writing customer list.\n");
+    char temp[MAX_STR_LEN];
+
+    if (!pCustomer)
         return 0;
-    }
 
-    int count = L_length(&pSales->customersList)-1;
-    if (!writeIntToFile(count, pFile, "Error writing customer count"))
-    {
-        fclose(pFile);
+    // Read customer name
+    if (myGetsFile(temp, MAX_STR_LEN, fp) == NULL)
         return 0;
-    }
+    pCustomer->name = getDynStr(temp);
+    if (pCustomer->name == NULL)
+        return 0;
 
-    NODE* pNode = pSales->customersList.head.next;
-    while (pNode != NULL)
+    // Read total spent
+    if (myGetsFile(temp, MAX_STR_LEN, fp) == NULL)
+        return 0;
+    pCustomer->totalSpent = atof(temp);
+
+    // Read customer type
+    if (myGetsFile(temp, MAX_STR_LEN, fp) == NULL)
+        return 0;
+
+    // Convert the string to enum value
+    pCustomer->type = eNomOfCustomerTypes; // Set a default value
+    for (int i = 0; i < eNomOfCustomerTypes; i++)
     {
-        Customer* pCustomer = (Customer*)pNode->key;
-        if (!writeStringToFile(pCustomer->name, pFile, "Error writing customer name"))
+        if (strcmp(temp, CustomerTypeStr[i]) == 0)
         {
-            fclose(pFile);
-            return 0;
+            pCustomer->type = (eCustomerType)i;
+            break;
         }
-        if (!writeDoubleToFile(pCustomer->totalSpent, pFile, "Error writing customer total spent"))
-        {
-            fclose(pFile);
-            return 0;
-        }
-        if (!writeIntToFile(pCustomer->type, pFile, "Error writing customer type"))
-        {
-            fclose(pFile);
-            return 0;
-        }
-
-        pNode = pNode->next;
     }
 
-    fclose(pFile);
+
+    return 1;
+}
+
+int saveCustomerToFile(Customer* pCustomer, FILE* fp)
+{
+
+    if (!pCustomer)
+        return 0;
+
+    fprintf(fp, "%s\n", pCustomer->name);
+    fprintf(fp, "%.2f\n", pCustomer->totalSpent);
+    fprintf(fp, "%s\n", CustomerTypeStr[pCustomer->type]);
     return 1;
 }
 
@@ -305,83 +311,183 @@ int writeCustomerListToBFile(const Sales* pSales, FILE* fileName)
 
 
 
-int readCustomerListFromBFile(Sales* pSales, const FILE* fileName)
+
+
+int initCustomerListFromTextFile(Sales* pSales, const char* fileName)
 {
-    FILE* pFile = fopen(fileName, "rb");
-    if (!pFile)
+    FILE* fp;
+    fp = fopen(fileName, "r");
+    if (!fp)
     {
-        printf("Error opening file for reading customer list.\n");
+        printf("Error opening customer list file\n");
         return 0;
     }
+
+    L_init(&pSales->customersList);//&
 
     int count;
-    if (!readIntFromFile(&count, pFile, "Error reading customer count"))
-    {
-        fclose(pFile);
-        return 0;
-    }
+    fscanf(fp, "%d", &count);
+    // Clean the buffer
+    fgetc(fp);
 
-    L_init(&pSales->customersList);
+    Customer* pCustomer;
+
 
     for (int i = 0; i < count; i++)
     {
-        Customer* pCustomer = (Customer*)malloc(sizeof(Customer));
+        pCustomer = (Customer*)calloc(1, sizeof(Customer));
         if (!pCustomer)
+            break;
+
+        if (!loadCustomerFromTextFile(pCustomer, fp))
         {
-            fclose(pFile);
+            printf("Error loading customer from file\n");
+            fclose(fp);
             return 0;
         }
 
-        pCustomer->name = readStringFromFile(pFile, "Error reading customer name");
-        if (!pCustomer->name)
-        {
-            free(pCustomer);
-            fclose(pFile);
-            return 0;
-        }
+        insertNewCustomerToList(&pSales->customersList, pCustomer);
 
-
-
-        //double totalSpent;
-        if (!readDoubleFromFile(&pCustomer->totalSpent, pFile, "Error reading customer total spent"))
-        {
-            free(pCustomer->name);
-            free(pCustomer);
-            fclose(pFile);
-            return 0;
-        }
-        //pCustomer->totalSpent = ;
-
-
-
-        int type;
-        if (!readIntFromFile(&type, pFile, "Error reading customer type"))
-        {
-            free(pCustomer->name);
-            free(pCustomer);
-            fclose(pFile);
-            return 0;
-        }
-        pCustomer->type = (eCustomerType)type;
-
-        NODE* pNode = pSales->customersList.head.next;
-        if (pNode == NULL)
-        {
-            L_insert(&pSales->customersList.head, pCustomer);
-        }
-        else
-        {
-            while (pNode->next != NULL)
-            {
-                pNode = pNode->next;
-            }
-            L_insert(pNode, pCustomer);
-        }
     }
 
-    fclose(pFile);
+    fclose(fp);
     return 1;
 }
+
+int saveCustomerListToTextFile(const Sales* pSales, const char* fileName)
+{
+
+
+    FILE* file;
+
+    file = fopen(fileName, "w"); //open to write 
+    if (!file)
+    {
+        printf("cant open file to write in \n");
+        return 0;
+    }
+
+    fprintf(file, "%d\n", L_length(&(pSales->customersList)) - 1);// first line num of clients/length of list
+
+    NODE* pNode = (pSales->customersList.head.next); //first member of list 
+    while (pNode) {
+        if (!saveCustomerToFile(pNode->key, file))
+        {
+            printf("cant write customer to file\n");
+            fclose(file);
+            return 0;
+        }
+        pNode = pNode->next;
+
+
+    }
+    fclose(file);
+    return 1; //success
+
+
+}
+
+
+
+
+
+///resevation///
+
+// Function to load reservations from a text file
+int loadReservationsFromTextFile(Sales* pSales, const char* filename)
+{
+    FILE* file = fopen(filename, "r");
+    if (file == NULL)
+    {
+        printf("Failed to open file: %s\n", filename);
+        return 0;
+    }
+
+    // Read the number of reservations
+    int count;
+    fscanf(file, "%d", &count);
+
+    // Allocate memory for the reservation array
+    pSales->reservationArray = (Reservation**)malloc(count * sizeof(Reservation*));
+    if (pSales->reservationArray == NULL)
+    {
+        printf("Memory allocation failed for reservation array.\n");
+        fclose(file);
+        return 0;
+    }
+
+    // Read each reservation from the file
+    for (int i = 0; i < count; i++)
+    {
+        Reservation* reservation = (Reservation*)malloc(sizeof(Reservation));
+        if (reservation == NULL)
+        {
+            printf("Memory allocation failed for reservation.\n");
+            fclose(file);
+            return 0;
+        }
+
+        // Read reservation data from the file
+        fscanf(file, "%d %d %lf", &reservation->ReservationCode, &reservation->customer->type, &reservation->priceOfOrder);
+        // Read other reservation fields as needed
+
+        pSales->reservationArray[i] = reservation;
+    }
+
+    pSales->reservationCount = count;
+    fclose(file);
+    return 1;
+}
+
+// Function to save reservations to a text file
+int saveReservationsToTextFile(const Sales* pSales, const char* filename)
+{
+    FILE* file = fopen(filename, "w");
+    if (file == NULL)
+    {
+        printf("Failed to open file: %s\n", filename);
+        return 0;
+    }
+
+    // Write the number of reservations
+    fprintf(file, "%d\n", pSales->reservationCount);
+
+    // Write each reservation to the file
+    for (int i = 0; i < pSales->reservationCount; i++)
+    {
+        Reservation* reservation = pSales->reservationArray[i];
+        fprintf(file, "%d %d %lf\n", reservation->ReservationCode, reservation->customer->type, reservation->priceOfOrder);
+        // Write other reservation fields as needed
+    }
+
+    fclose(file);
+    return 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

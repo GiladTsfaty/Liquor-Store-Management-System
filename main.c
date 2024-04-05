@@ -6,6 +6,7 @@
 
 #include "GeneralFunctions.h"
 #include "Filefunctions.h"
+#include "BinaryFunctions.h"
 #include "Shop.h"
 #include "Inventory.h"
 #include "Beer.h"
@@ -15,7 +16,7 @@
 #include "list.h"
 #include "Reservation.h"
 #include "Date.h"
-#include "BinaryFiles.h"
+
 
 #define INVENTORY_FILE_NAME "Inventory.txt"
 #define INVENTORY_BINARY_FILE_NAME "Inventory.bin"

@@ -55,55 +55,6 @@ void freeCustomer(Customer* pCustomer)
     free(pCustomer->name);
 }
 
-int loadCustomerFromTextFile(Customer* pCustomer, FILE* fp)
-{
-    char temp[MAX_STR_LEN];
-
-    if (!pCustomer)
-        return 0;
-
-    // Read customer name
-    if (myGetsFile(temp, MAX_STR_LEN, fp) == NULL)
-        return 0;
-    pCustomer->name = getDynStr(temp);
-    if (pCustomer->name == NULL)
-        return 0;
-
-    // Read total spent
-    if (myGetsFile(temp, MAX_STR_LEN, fp) == NULL)
-        return 0;
-    pCustomer->totalSpent = atof(temp);
-
-    // Read customer type
-    if (myGetsFile(temp, MAX_STR_LEN, fp) == NULL)
-        return 0;
-
-    // Convert the string to enum value
-    pCustomer->type = eNomOfCustomerTypes; // Set a default value
-    for (int i = 0; i < eNomOfCustomerTypes; i++)
-    {
-        if (strcmp(temp, CustomerTypeStr[i]) == 0)
-        {
-            pCustomer->type = (eCustomerType)i;
-            break;
-        }
-    }
-
-
-    return 1;
-}
-
-int saveCustomerToFile(Customer* pCustomer, FILE* fp)
-{
-
-    if (!pCustomer)
-        return 0;
-
-    fprintf(fp, "%s\n",   pCustomer->name);
-    fprintf(fp, "%.2f\n", pCustomer->totalSpent);
-    fprintf(fp, "%s\n",   CustomerTypeStr[pCustomer->type]);
-    return 1;
-}
 
 
 //int		loadCustomerFromTextFile(Customer* pCustomer, FILE* fp)

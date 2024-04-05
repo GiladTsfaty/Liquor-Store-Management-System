@@ -30,6 +30,3 @@ int  printCustomer( const Customer* pCustomer);
 int  getCustomerName( Customer* pCustomer);
 int  isSameCustomerName(const Customer* pCustomer1,const Customer* pCustomer2);
 void freeCustomer(Customer* pCustomer);
-
-int loadCustomerFromTextFile(Customer* pCustomer, FILE* fp);
-int saveCustomerToFile(Customer* pCustomer, FILE* fp);
