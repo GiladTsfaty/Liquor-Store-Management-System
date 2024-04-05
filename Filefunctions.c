@@ -177,6 +177,20 @@ int	 writeIntToFile(int val, FILE* fp, const char* msg)
     return 1;
 }
 
+
+int writeDoubleToFile(double val, FILE* fp, const char* msg)
+{
+    if (fwrite(&val, sizeof(double), 1, fp) != 1)
+    {
+        puts(msg);
+        fclose(fp);
+        return 0;
+    }
+    return 1;
+}
+
+
+
 char* readStringFromFile(FILE* fp, const char* msg)
 {
     char* str;
@@ -222,6 +236,249 @@ int	  readIntFromFile(int* pVal, FILE* fp, const char* msg)
     return 1;
 
 }
+
+
+
+
+int readDoubleFromFile(double* pVal, FILE* fp, const char* msg)
+{
+    if (fread(pVal, sizeof(double), 1, fp) != 1)
+    {
+        puts(msg);
+        fclose(fp);
+        return 0;
+    }
+    return 1;
+}
+
+
+
+
+
+
+
+
+int writeCustomerListToBFile(const Sales* pSales, FILE* fileName)
+{
+    FILE* pFile = fopen(fileName, "wb");
+    if (!pFile)
+    {
+        printf("Error opening file for writing customer list.\n");
+        return 0;
+    }
+
+    int count = L_length(&pSales->customersList)-1;
+    if (!writeIntToFile(count, pFile, "Error writing customer count"))
+    {
+        fclose(pFile);
+        return 0;
+    }
+
+    NODE* pNode = pSales->customersList.head.next;
+    while (pNode != NULL)
+    {
+        Customer* pCustomer = (Customer*)pNode->key;
+        if (!writeStringToFile(pCustomer->name, pFile, "Error writing customer name"))
+        {
+            fclose(pFile);
+            return 0;
+        }
+        if (!writeDoubleToFile(pCustomer->totalSpent, pFile, "Error writing customer total spent"))
+        {
+            fclose(pFile);
+            return 0;
+        }
+        if (!writeIntToFile(pCustomer->type, pFile, "Error writing customer type"))
+        {
+            fclose(pFile);
+            return 0;
+        }
+
+        pNode = pNode->next;
+    }
+
+    fclose(pFile);
+    return 1;
+}
+
+
+
+
+
+int readCustomerListFromBFile(Sales* pSales, const FILE* fileName)
+{
+    FILE* pFile = fopen(fileName, "rb");
+    if (!pFile)
+    {
+        printf("Error opening file for reading customer list.\n");
+        return 0;
+    }
+
+    int count;
+    if (!readIntFromFile(&count, pFile, "Error reading customer count"))
+    {
+        fclose(pFile);
+        return 0;
+    }
+
+    L_init(&pSales->customersList);
+
+    for (int i = 0; i < count; i++)
+    {
+        Customer* pCustomer = (Customer*)malloc(sizeof(Customer));
+        if (!pCustomer)
+        {
+            fclose(pFile);
+            return 0;
+        }
+
+        pCustomer->name = readStringFromFile(pFile, "Error reading customer name");
+        if (!pCustomer->name)
+        {
+            free(pCustomer);
+            fclose(pFile);
+            return 0;
+        }
+
+
+
+        //double totalSpent;
+        if (!readDoubleFromFile(&pCustomer->totalSpent, pFile, "Error reading customer total spent"))
+        {
+            free(pCustomer->name);
+            free(pCustomer);
+            fclose(pFile);
+            return 0;
+        }
+        //pCustomer->totalSpent = ;
+
+
+
+        int type;
+        if (!readIntFromFile(&type, pFile, "Error reading customer type"))
+        {
+            free(pCustomer->name);
+            free(pCustomer);
+            fclose(pFile);
+            return 0;
+        }
+        pCustomer->type = (eCustomerType)type;
+
+        NODE* pNode = pSales->customersList.head.next;
+        if (pNode == NULL)
+        {
+            L_insert(&pSales->customersList.head, pCustomer);
+        }
+        else
+        {
+            while (pNode->next != NULL)
+            {
+                pNode = pNode->next;
+            }
+            L_insert(pNode, pCustomer);
+        }
+    }
+
+    fclose(pFile);
+    return 1;
+}
+
+
+
+
+
+
+
+
+//int readCustomerListFromBFile(Sales* pSales, const FILE* fileName) 
+//{
+//
+//    FILE* pFile = fopen(fileName, "rb");
+//    if (!pFile)
+//    {
+//        printf("Error opening file for reading customer list.\n");
+//        return 0;
+//    }
+//
+//    int count;
+//    if (!readIntFromFile(&count, pFile, "Error reading customer count"))
+//    {
+//        fclose(pFile);
+//        return 0;
+//    }
+//
+//    L_init(&pSales->customersList);
+//
+//    for (int i = 0; i < count; i++)
+//    {
+//        Customer* pCustomer = (Customer*)malloc(sizeof(Customer));
+//        if (!pCustomer)
+//        {
+//            fclose(pFile);
+//            return 0;
+//        }
+//
+//        pCustomer->name = readStringFromFile(pFile, "Error reading customer name");
+//        if (!pCustomer->name)
+//        {
+//            free(pCustomer);
+//            fclose(pFile);
+//            return 0;
+//        }
+//
+//        if (fread(&pCustomer->totalSpent, sizeof(double), 1, pFile) != 1)
+//        {
+//            printf("Error reading customer total spent.\n");
+//            free(pCustomer->name);
+//            free(pCustomer);
+//            fclose(pFile);
+//            return 0;
+//        }
+//
+//        int type;
+//        if (!readIntFromFile(&type, pFile, "Error reading customer type"))
+//        {
+//            free(pCustomer->name);
+//            free(pCustomer);
+//            fclose(pFile);
+//            return 0;
+//        }
+//        pCustomer->type = (eCustomerType)type;
+//
+//        NODE* pNode = pSales->customersList.head.next;
+//        if (pNode == NULL)
+//        {
+//            L_insert(&pSales->customersList.head, pCustomer);
+//        }
+//        else
+//        {
+//            while (pNode->next != NULL)
+//            {
+//                pNode = pNode->next;
+//            }
+//            L_insert(pNode, pCustomer);
+//        }
+//    }
+//
+//    fclose(pFile);
+//    return 1;
+//
+//
+//
+//}
+
+
+
+
+
+
+
+
+
+
+
+
+
 //
 //int writeAirlineToBFile(FILE* pFile, const Airline* pComp)
 //{

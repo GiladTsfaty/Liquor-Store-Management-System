@@ -144,7 +144,7 @@ void printAllCustomers(const Sales* pSales)
 {
     int lengeth = (L_length((LIST*)&(pSales->customersList)) - 1);
 
-    if (lengeth == 0) 
+    if (lengeth == -1) 
     {
         printf("there are NO clients\n");
        
