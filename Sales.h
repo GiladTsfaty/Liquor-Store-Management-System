@@ -47,9 +47,6 @@ void        printAllCustomers(const Sales* pSales);
 int		insertNewCustomerToList(LIST* pList, Customer* pCustomer);
 
 
-int   initCustomerListFromTextFile(Sales* pSales, const char* fileName);
-int   saveCustomerListToTextFile(const Sales* pSales, const char* fileName);
-
 
 /// <summary>
 /// /Res funcs

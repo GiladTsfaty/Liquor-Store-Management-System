@@ -16,12 +16,22 @@ int   readDoubleFromFile(double* pVal, FILE* fp, const char* msg);
 
 void  readInventoryFromFile(Inventory* pInventory, const char* filename);
 
+///customer text files ///
+
+
+int   loadCustomerFromTextFile(Customer* pCustomer, FILE* fp);
+int   saveCustomerToFile(Customer* pCustomer, FILE* fp);
+
+
+int   initCustomerListFromTextFile(Sales* pSales, const char* fileName);
+int   saveCustomerListToTextFile(const Sales* pSales, const char* fileName);
 
 
 
 
-int writeCustomerListToBFile( const Sales* pSales  , FILE* fileName);
-int readCustomerListFromBFile( Sales* pSales  ,const FILE* fileName);
+// Functions for loading and saving reservations to/from text files
+int loadReservationsFromTextFile(Sales* pSales, const char* filename);
+int saveReservationsToTextFile(const Sales* pSales, const char* filename);
 
 
 

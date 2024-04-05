@@ -54,6 +54,9 @@
     <ClInclude Include="def.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BinaryFunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Shop.c">
@@ -93,6 +96,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Date.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryFunctions.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,0 +1,4 @@
+finish invetnory + methods
+
+-i chaged the binaryFiles to binaryFunctions
+-i add load/write from/to text/bin funcs for reservation-not finished
