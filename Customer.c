@@ -62,25 +62,48 @@ int loadCustomerFromTextFile(Customer* pCustomer, FILE* fp)
         return 0;
 
     // Read customer name
-    if (myGets(temp, MAX_STR_LEN, fp) == NULL)
+    if (myGetsFile(temp, MAX_STR_LEN, fp) == NULL)
         return 0;
     pCustomer->name = getDynStr(temp);
     if (pCustomer->name == NULL)
         return 0;
 
     // Read total spent
-    if (myGets(temp, MAX_STR_LEN, fp) == NULL)
+    if (myGetsFile(temp, MAX_STR_LEN, fp) == NULL)
         return 0;
     pCustomer->totalSpent = atof(temp);
 
     // Read customer type
-    if (myGets(temp, MAX_STR_LEN, fp) == NULL)
+    if (myGetsFile(temp, MAX_STR_LEN, fp) == NULL)
         return 0;
     pCustomer->type = (eCustomerType)atoi(temp);
 
     return 1;
 }
 
+
+//int		loadCustomerFromTextFile(Customer* pCustomer, FILE* fp)
+//{
+//    char temp[MAX_STR_LEN];
+//
+//    if (!pCustomer)
+//        return 0;
+//
+//    do {
+//        myGetsFile(temp, MAX_STR_LEN, fp);
+//
+//    } while (strlen(temp) < 2);
+//    pCustomer->name = getDynStr(temp);
+//
+//    do {
+//        myGetsFile(temp, MAX_STR_LEN, fp);
+//
+//    } while (strlen(temp) < 2);
+//    pCustomer->country = getDynStr(temp);
+//
+//    fscanf(fp, "%s", pCustomer->code);
+//    return 1;
+//}
 
 
 
