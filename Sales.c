@@ -128,7 +128,7 @@ void printAllCustomers(const Sales* pSales)
 
 }
 
-int insertNewAirportToList(LIST* pList, Customer* pCustomer)
+int insertNewCustomerToList(LIST* pList, Customer* pCustomer)
 {
 
     NODE* pN = pList->head.next; //first Node
@@ -163,50 +163,7 @@ int insertNewAirportToList(LIST* pList, Customer* pCustomer)
 }
 
 
-//int initCustomerListFromTextFile(Sales* pSales, const char* fileName)
-//{
-//    FILE* fp;
-//    fp = fopen(fileName, "r");
-//    if (!fp)
-//    {
-//        printf("Error opening customer list file\n");
-//        return 0;
-//    }
-//
-//    L_init(pSales->customersList);
-//
-//    int count;
-//    fscanf(fp, "%d", &count);
-//    // Clean the buffer
-//    fgetc(fp);
-//
-//    Customer* pCustomer;
-//  
-//
-//    for (int i = 0; i < count; i++)
-//    {
-//        pCustomer = (Customer*)calloc(1, sizeof(Customer));
-//        if (!pCustomer)
-//            break;
-//
-//        if (!loadCustomerFromTextFile(pCustomer, fp))
-//        {
-//            printf("Error loading customer from file\n");
-//            fclose(fp);
-//            return 0;
-//        }
-//
-//        insertNewAirportToList(&pSales->customersList,pCustomer);
-//            
-//    }
-//
-//    fclose(fp);
-//    return 1;
-//}
-
-
-
-int initCustomerListFromTextFile(Sales* pSales, const char* fileName)//bad
+int initCustomerListFromTextFile(Sales* pSales, const char* fileName)
 {
     FILE* fp;
     fp = fopen(fileName, "r");
@@ -224,7 +181,7 @@ int initCustomerListFromTextFile(Sales* pSales, const char* fileName)//bad
     fgetc(fp);
 
     Customer* pCustomer;
-    NODE* pNode = &(pSales->customersList->head);
+  
 
     for (int i = 0; i < count; i++)
     {
@@ -232,34 +189,77 @@ int initCustomerListFromTextFile(Sales* pSales, const char* fileName)//bad
         if (!pCustomer)
             break;
 
-        // Read customer name
-        char name[MAX_STR_LEN];
-        fscanf(fp, "%s", name);
-        pCustomer->name = (char*)malloc((strlen(name) + 1) * sizeof(char));
-        if (pCustomer->name == NULL)
+        if (!loadCustomerFromTextFile(pCustomer, fp))
         {
-            printf("Memory allocation failed for customer name.\n");
-            free(pCustomer);
+            printf("Error loading customer from file\n");
             fclose(fp);
             return 0;
         }
-        strcpy(pCustomer->name, name);
 
-        // Read total spent
-        fscanf(fp, "%lf", &(pCustomer->totalSpent));
-
-        // Read customer type
-        int type;
-        fscanf(fp, "%d", &type);
-        pCustomer->type = (eCustomerType)type;
-
-        // Insert customer into the list
-        pNode = L_insert(pNode, pCustomer);
+        insertNewCustomerToList(&pSales->customersList,pCustomer);
+            
     }
 
     fclose(fp);
     return 1;
 }
+
+
+//
+//int initCustomerListFromTextFile(Sales* pSales, const char* fileName)//bad
+//{
+//    FILE* fp;
+//    fp = fopen(fileName, "r");
+//    if (!fp)
+//    {
+//        printf("Error opening customer list file\n");
+//        return 0;
+//    }
+//
+//    L_init(pSales->customersList);
+//
+//    int count;
+//    fscanf(fp, "%d", &count);
+//    // Clean the buffer
+//    fgetc(fp);
+//
+//    Customer* pCustomer;
+//    NODE* pNode = &(pSales->customersList->head);
+//
+//    for (int i = 0; i < count; i++)
+//    {
+//        pCustomer = (Customer*)calloc(1, sizeof(Customer));
+//        if (!pCustomer)
+//            break;
+//
+//        // Read customer name
+//        char name[MAX_STR_LEN];
+//        fscanf(fp, "%s", name);
+//        pCustomer->name = (char*)malloc((strlen(name) + 1) * sizeof(char));
+//        if (pCustomer->name == NULL)
+//        {
+//            printf("Memory allocation failed for customer name.\n");
+//            free(pCustomer);
+//            fclose(fp);
+//            return 0;
+//        }
+//        strcpy(pCustomer->name, name);
+//
+//        // Read total spent
+//        fscanf(fp, "%lf", &(pCustomer->totalSpent));
+//
+//        // Read customer type
+//        int type;
+//        fscanf(fp, "%d", &type);
+//        pCustomer->type = (eCustomerType)type;
+//
+//        // Insert customer into the list
+//        pNode = L_insert(pNode, pCustomer);
+//    }
+//
+//    fclose(fp);
+//    return 1;
+//}
 
 ////RESERVATIONS////
 
