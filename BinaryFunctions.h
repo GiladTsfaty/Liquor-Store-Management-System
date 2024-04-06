@@ -31,6 +31,13 @@ int readCustomerListFromBFile(Sales* pSales, const FILE* fileName);
 
 
 // Functions for loading and saving reservations to/from binary files
-int loadReservationsFromBinaryFile(Sales* pSales, const char* filename);
-int saveReservationsToBinaryFile(const Sales* pSales, const char* filename);
+// 
+//int loadReservationsFromBinaryFile(Sales* pSales, const char* filename);
+//int saveReservationsToBinaryFile(const Sales* pSales, const char* filename);
+
+void saveReservationToBinaryFile(const Reservation* reservation, FILE* file);
+Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file);
+int loadReservationsArrayFromBinaryFile(Sales* pSales, const char* filename);
+int saveReservationsArrayToBinaryFile(const Sales* pSales, const char* filename);
+
 
