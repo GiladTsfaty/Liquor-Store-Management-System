@@ -87,8 +87,6 @@ int main() {
    printReservationsArr(sales.reservationArray, sales.reservationCount);
    saveReservationsArrayToBinaryFile(&sales, RESERVATIONS_ARR_BINARY_FILE_SAVE_NAME);*/
 
-   loadReservationsArrayFromBinaryFile(&sales, RESERVATIONS_ARR_BINARY_FILE_SAVE_NAME);
-   printReservationsArr(sales.reservationArray, sales.reservationCount);
 
 
    ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

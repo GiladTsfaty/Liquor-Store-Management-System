@@ -7,3 +7,6 @@ finish invetnory + methods
 
 -first init client list THEN rese array 
    else wont read client name  
+-compress one stuct.
+
+

@@ -618,3 +618,16 @@ int saveReservationsArrayToBinaryFile(const Sales* pSales, const char* filename)
     fclose(file);
     return 1;
 }
+
+
+
+
+int	 writeStringToComprassFile(const char* str, FILE* fp, const char* msg)
+{
+
+    if (!writeCharsToFile(str, strlen(str), fp, msg))
+        return 0;
+
+
+    return 1;
+}

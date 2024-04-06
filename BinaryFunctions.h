@@ -40,4 +40,6 @@ Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file);
 int loadReservationsArrayFromBinaryFile(Sales* pSales, const char* filename);
 int saveReservationsArrayToBinaryFile(const Sales* pSales, const char* filename);
 
+/// Compress///
 
+int	 writeStringToComprassFile(const char* str, FILE* fp, const char* msg);

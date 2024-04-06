@@ -13,10 +13,10 @@
 //#define MAX_RES_CODE_NUM 1000
 typedef struct
 {
-    int serial;    // Serial number of the drink
-    int amount;         // Amount purchased
-    double cost;        // Cost of the purchased item
-} PurchasedItem;
+    int serial;         // Serial number of the drink  ////for compression - 3 digits
+    int amount;         // Amount purchased            ////for compression - up to 10
+    double cost;        // Cost of the purchased item ////for compression  - up to 10,000
+} PurchasedItem;  //i will compress here
 
 
 typedef struct
