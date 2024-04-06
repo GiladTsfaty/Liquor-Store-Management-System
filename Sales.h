@@ -44,7 +44,7 @@ int         customerCompare(const void* data1, const void* data2);//name compera
 
 void        printAllCustomers(const Sales* pSales);
 
-int		insertNewCustomerToList(LIST* pList, Customer* pCustomer);
+int		    insertNewCustomerToList(LIST* pList, Customer* pCustomer);
 
 
 

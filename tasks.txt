@@ -1,4 +1,9 @@
 finish invetnory + methods
 
 -i chaged the binaryFiles to binaryFunctions
--i add load/write from/to text/bin funcs for reservation-not finished
+-i add load/write from/to text/bin funcs 
+   for reservation-not finished
+-we need to make addReservation more moddolar now we can
+
+-first init client list THEN rese array 
+   else wont read client name  

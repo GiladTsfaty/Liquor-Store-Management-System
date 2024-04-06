@@ -65,6 +65,7 @@ void initInventoryFromFile(Inventory* pInventory, const char* filename) {
 
 
     readInventoryFromFile(pInventory, filename);
+    printf("---Init Inventory From File---");
 }
 
 

@@ -13,7 +13,7 @@
 
 void initSales(Sales* pSales, Inventory* pInventory)
 {
-    printf("-----------  Init Sales ----------\n");
+    printf("---------Init Sales----------\n");
 
    // pSales->customersList = (LIST*)malloc(sizeof(LIST));
     /*if (pSales->customersList == NULL)
@@ -506,7 +506,7 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
     {
         // Ask the user to choose between beer, wine, or whiskey
         int choice;
-        printf("Enter 0 for beer, 1 for wine, or 2 for whiskey: ");
+        printf("\nEnter 0 for beer, 1 for wine, or 2 for whiskey: ");
         scanf("%d", &choice);
 
         // Print the list of drinks based on the user's choice
@@ -553,7 +553,7 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
             newItem->serial = serialNumber;
             newItem->amount = numBottles;
             newItem->cost = cost;
-            L_insert(pNewReservation->purchasedItems.head.key, newItem);//add .head.key
+            L_insert(&pNewReservation->purchasedItems, newItem);//add .head.key//L_insert_rese 
         }
         else
         {
@@ -615,7 +615,12 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
 
 void printReservationsArr(struct Reservation** array, int size)
 {
-	generalArrayFunction(array, size, sizeof(Reservation*), printReservationPtr);
+    if (!size)
+    {
+        printf("\nThere are no reservations.\n");
+    }
+    else
+	    generalArrayFunction(array, size, sizeof(Reservation*), printReservationPtr);
 
 }
 

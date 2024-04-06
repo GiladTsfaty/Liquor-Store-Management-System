@@ -17,18 +17,24 @@
 #include "Reservation.h"
 #include "Date.h"
 
-
+///inventory files ///
 #define INVENTORY_FILE_NAME "Inventory.txt"
 #define INVENTORY_BINARY_FILE_NAME "Inventory.bin"
 
 
-
+///customer files ///
 #define CUSTOMER_LIST_TEXT_FILE_LOAD_NAME "customer_list.txt"
 #define CUSTOMER_LIST_TEXT_FILE_SAVE_NAME "customer_list_saveTo.txt"
 
 #define CUSTOMER_LIST_BINARY_FILE_LOAD_NAME "BinaryCustomer.bin"
 #define CUSTOMER_LIST_BINARY_FILE_SAVE_NAME "BinaryCustomerSaveTo.bin"
 
+///reservations files ///
+#define RESERVATIONS_ARR_TEXT_FILE_LOAD_NAME "reservation_arr.txt"
+#define RESERVATIONS_ARR_TEXT_FILE_SAVE_NAME "reservation_arr_saveTo.txt"
+
+#define RESERVATIONS_ARR_BINARY_FILE_LOAD_NAME "BinaryReservation.bin"
+#define RESERVATIONS_ARR_BINARY_FILE_SAVE_NAME "BinaryReservationSaveTo.bin"
 
 
 //typedef enum
@@ -46,21 +52,48 @@ int main() {
    Shop shop;
    initShop(&shop);
    Inventory inventory;
+   Sales sales;
+   initSales(&sales, &inventory);
+   Customer cus ;
+   returnBlanckCustomer(&cus);
+   insertNewCustomerToList(&sales, &cus);
+
+   initInventoryFromFile(&inventory, INVENTORY_FILE_NAME);
+   //printInventory(&inventory);
+
+   /*initCustomerWithoutName(&cus);
+   getCustomerName(&cus);*/
+
+   /*printReservationsArr(sales.reservationArray, sales.reservationCount);
+   addNewReservationToArray2(&sales, &inventory, &cus);
+   addNewReservationToArray2(&sales, &inventory, &cus);
+   printReservationsArr(sales.reservationArray, sales.reservationCount);
+   printCustomer(&cus); 
+
+   saveReservationsArrayToTextFile(&sales, RESERVATIONS_ARR_TEXT_FILE_LOAD_NAME);*/
+
+   loadReservationsArrayFromTextFile(&sales, RESERVATIONS_ARR_TEXT_FILE_LOAD_NAME);
+   printReservationsArr(sales.reservationArray, sales.reservationCount);
+   addNewReservationToArray2(&sales, &inventory, &cus);
+   printReservationsArr(sales.reservationArray, sales.reservationCount);
+   saveReservationsArrayToTextFile(&sales,RESERVATIONS_ARR_TEXT_FILE_SAVE_NAME);
+      
+
    ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-//   initInventoryFromFile(&inventory, INVENTORY_FILE_NAME);
-//   printInventory(&inventory);
+   //initInventoryFromFile(&inventory, INVENTORY_FILE_NAME);
+   //printInventory(&inventory);
 
    ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//   initInventory(&inventory);
+//     initInventory(&inventory);
 
-//    saveInventoryToBinaryFile(&inventory, INVENTORY_BINARY_FILE_NAME);
+//     saveInventoryToBinaryFile(&inventory, INVENTORY_BINARY_FILE_NAME);
 //     initInventoryFromBinaryFile(&inventory, INVENTORY_BINARY_FILE_NAME);
-//    addWine(&inventory);
-//    addBeer(&inventory);
-//    addWhiskey(&inventory);
+//     addWine(&inventory);
+//     addBeer(&inventory);
+//     addWhiskey(&inventory);
 
-//     printInventory(&inventory);
+   // printInventory(&inventory);
 
 
 
@@ -104,23 +137,23 @@ int main() {
     
 //    Sales sales;
 //    initSales(&sales, &inventory);
-////    shop.salesDepartment = &sales;
+//    shop.salesDepartment = &sales;
 //    Customer customer1;
 //    initCustomerWithoutName(&customer1);
 
 //
 //
 //
-////    initCustomerWithoutName(&customer1);
+//    initCustomerWithoutName(&customer1);
 //    getCustomerName(&customer1);
 //    L_insertByNameOrder(sales.customersList, &customer1);
-//  //  addNewReservationToArray(&sales,&customer1,items1,price1);
-//    //printReservationsArr(sales.reservationArray,sales.reservationCount);
+//    addNewReservationToArray(&sales,&customer1,items1,price1);
+//    printReservationsArr(sales.reservationArray,sales.reservationCount);
 //
 //
-////    initCustomerWithoutName(&customer2);
-////    getCustomerName(&customer2);
-////    addNewReservationToArray(&sales, &customer1, items2, price2);
+//    initCustomerWithoutName(&customer2);
+//    getCustomerName(&customer2);
+//    addNewReservationToArray(&sales, &customer1, items2, price2);
 //    addNewReservationToArray2(&sales, &inventory, &customer1);
 //    printReservationsArr(sales.reservationArray, sales.reservationCount);
 //    printCustomer(&customer1); /// sim lev -> ha amount sel res hitvasef ezal customer
@@ -131,16 +164,13 @@ int main() {
 
 
 
+   ///cusromer file check///
 
-   Sales sales;
-   initSales(&sales, &inventory);
-   printAllCustomers(&sales);
-
-   readCustomerListFromBFile(&sales, CUSTOMER_LIST_BINARY_FILE_LOAD_NAME );
-   printAllCustomers(&sales);
-   addNewCustomer(&sales);
-   printAllCustomers(&sales);
-   writeCustomerListToBFile(&sales, CUSTOMER_LIST_BINARY_FILE_SAVE_NAME);
+   //readCustomerListFromBFile(&sales, CUSTOMER_LIST_BINARY_FILE_LOAD_NAME );
+   //printAllCustomers(&sales);
+   //addNewCustomer(&sales);
+   //printAllCustomers(&sales);
+   //writeCustomerListToBFile(&sales,CUSTOMER_LIST_BINARY_FILE_SAVE_NAME);
 
 
    /*readCustomerListFromBFile(&sales, CUSTOMER_LIST_BINARY_FILE_SAVE_NAME);
@@ -151,7 +181,19 @@ int main() {
    printAllCustomers(&sales);
    //initCustomerListFromTextFile(&sales, CUSTOMER_LIST_TEXT_FILE_LOAD_NAME);
    writeCustomerListToBFile(&sales, CUSTOMER_LIST_BINARY_FILE_SAVE_NAME);*/
-  // saveCustomerListToTextFile(&sales,CUSTOMER_LIST_TEXT_FILE_SAVE_NAME);
+   // saveCustomerListToTextFile(&sales,CUSTOMER_LIST_TEXT_FILE_SAVE_NAME);
+
+
+
+
+
+
+  
+
+
+
+
+
 
 
 

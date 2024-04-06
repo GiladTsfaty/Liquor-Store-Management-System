@@ -4,6 +4,7 @@
 
 #include "Inventory.h"
 #include "BinaryFunctions.h"
+#include "Filefunctions.h"
 
 ///B inventory files ///
 
