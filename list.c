@@ -142,7 +142,7 @@ int L_print(const LIST* pList, void(*print)(const void*))
     printf("\n");
 
     for (tmp = pList->head.next; tmp; tmp = tmp->next, c++)
-        print(tmp->key);
+        print(tmp->key);//(const void*)
 
     printf("\n");
     return c;

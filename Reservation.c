@@ -38,7 +38,8 @@ void initReservation(Reservation* pRes, Customer* pCus) {
 
 
 
-void printPurchasedItem(const void* pItemVoid) {
+void printPurchasedItem(const void* pItemVoid)//NODE
+{
     // Cast from void* to the appropriate type
     const PurchasedItem* pItem = (const PurchasedItem*)pItemVoid;
 
@@ -50,13 +51,15 @@ void printPurchasedItem(const void* pItemVoid) {
 
 void printReservation(const Reservation* pRes)
 {
-
-	printf("On the ");
+	
+	
+	printf("\n\nOn the ");
 	printDate(&pRes->date);
 	printf(", %s made a Reservation,  REScode: %d, , in the amount of %.2f$. \n", pRes->customer->name,
 		pRes->ReservationCode,pRes->priceOfOrder);
     printf("The Items are:\n");
-    L_print(&pRes->purchasedItems, printPurchasedItem);
+    L_print((LIST*)&pRes->purchasedItems, (void(*)(const void*))printPurchasedItem);
+	
 }
 
 void printReservationPtr(void* pResPtr)

@@ -13,7 +13,7 @@
 
 void initShop(Shop* pShop)
 {
-
+    printf("---------Init Shop-----------\n");
 
     pShop->inventory = NULL;
     pShop->salesDepartment = NULL;

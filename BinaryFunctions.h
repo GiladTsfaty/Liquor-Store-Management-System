@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "Inventory.h"
 #include "Sales.h"
-
+#include "Filefunctions.h"
 
 ///B inventory files ///
 int saveInventoryToBinaryFile(const Inventory* pInventory, const char* filename);
