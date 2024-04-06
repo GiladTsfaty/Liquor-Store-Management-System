@@ -348,8 +348,215 @@ int readCustomerListFromBFile(Sales* pSales, const FILE* fileName)
 
 //// reservation///
 
+//// Function to load reservations from a binary file
+//int loadReservationsFromBinaryFile(Sales* pSales, const char* filename)
+//{
+//    FILE* file = fopen(filename, "rb");
+//    if (file == NULL)
+//    {
+//        printf("Failed to open file: %s\n", filename);
+//        return 0;
+//    }
+//
+//    // Read the number of reservations
+//    int count;
+//    fread(&count, sizeof(int), 1, file);
+//
+//    // Allocate memory for the reservation array
+//    pSales->reservationArray = (Reservation**)malloc(count * sizeof(Reservation*));
+//    if (pSales->reservationArray == NULL)
+//    {
+//        printf("Memory allocation failed for reservation array.\n");
+//        fclose(file);
+//        return 0;
+//    }
+//
+//    // Read each reservation from the file
+//    for (int i = 0; i < count; i++)
+//    {
+//        Reservation* reservation = (Reservation*)malloc(sizeof(Reservation));
+//        if (reservation == NULL)
+//        {
+//            printf("Memory allocation failed for reservation.\n");
+//            fclose(file);
+//            return 0;
+//        }
+//
+//        // Read reservation data from the file
+//        fread(reservation, sizeof(Reservation), 1, file);
+//        // Read other reservation fields as needed
+//
+//        pSales->reservationArray[i] = reservation;
+//    }
+//
+//    pSales->reservationCount = count;
+//    fclose(file);
+//    return 1;
+//}
+//
+//// Function to save reservations to a binary file
+//int saveReservationsToBinaryFile(const Sales* pSales, const char* filename)
+//{
+//    FILE* file = fopen(filename, "wb");
+//    if (file == NULL)
+//    {
+//        printf("Failed to open file: %s\n", filename);
+//        return 0;
+//    }
+//
+//    // Write the number of reservations
+//    fwrite(&pSales->reservationCount, sizeof(int), 1, file);
+//
+//    // Write each reservation to the file
+//    for (int i = 0; i < pSales->reservationCount; i++)
+//    {
+//        Reservation* reservation = pSales->reservationArray[i];
+//        fwrite(reservation, sizeof(Reservation), 1, file);
+//        // Write other reservation fields as needed
+//    }
+//
+//    fclose(file);
+//    return 1;
+//}
+
+
+
+// Function to save a single reservation to a binary file
+void saveReservationToBinaryFile(const Reservation* reservation, FILE* file)
+{
+    fwrite(&reservation->ReservationCode, sizeof(int), 1, file);
+
+    int nameLength = strlen(reservation->customer->name) + 1;
+    fwrite(&nameLength, sizeof(int), 1, file);
+    fwrite(reservation->customer->name, sizeof(char), nameLength, file);
+
+    fwrite(&reservation->customer->type, sizeof(eCustomerType), 1, file);
+    fwrite(&reservation->date, sizeof(Date), 1, file);
+    fwrite(&reservation->priceOfOrder, sizeof(double), 1, file);
+
+    // Save purchased items
+    int itemCount = L_length(&reservation->purchasedItems)-1;//-1
+    fwrite(&itemCount, sizeof(int), 1, file);
+    NODE* pNode = reservation->purchasedItems.head.next;
+    while (pNode != NULL)
+    {
+        PurchasedItem* item = (PurchasedItem*)pNode->key;
+        fwrite(item, sizeof(PurchasedItem), 1, file);
+        pNode = pNode->next;
+    }
+}
+
+// Function to load a single reservation from a binary file
+Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file)
+{
+    Reservation* reservation = (Reservation*)malloc(sizeof(Reservation));
+    if (reservation == NULL)
+    {
+        printf("Memory allocation failed for reservation.\n");
+        return NULL;
+    }
+
+    // Read reservation data from the file
+    fread(&reservation->ReservationCode, sizeof(int), 1, file);
+
+    // Read customer name
+    int nameLength;
+    fread(&nameLength, sizeof(int), 1, file);
+    char* customerName = (char*)malloc(nameLength * sizeof(char));
+    fread(customerName, sizeof(char), nameLength, file);
+    reservation->customer = findCustomerByName(pSales, customerName);
+    free(customerName);
+
+    // Read customer type
+    fread(&reservation->customer->type, sizeof(eCustomerType), 1, file);
+
+    // Read date
+    fread(&reservation->date, sizeof(Date), 1, file);
+
+    fread(&reservation->priceOfOrder, sizeof(double), 1, file);
+
+    // Read purchased items
+    int itemCount;
+    fread(&itemCount, sizeof(int), 1, file);
+    L_init(&reservation->purchasedItems);
+    for (int j = 0; j < itemCount; j++)
+    {
+        PurchasedItem* item = (PurchasedItem*)malloc(sizeof(PurchasedItem));
+        fread(item, sizeof(PurchasedItem), 1, file);
+        L_insert(&reservation->purchasedItems, item);
+    }
+
+    return reservation;
+}
+
+//// Function to load a single reservation from a binary file
+//Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file)
+//{
+//    Reservation* reservation = (Reservation*)malloc(sizeof(Reservation));
+//    if (reservation == NULL)
+//    {
+//        printf("Memory allocation failed for reservation.\n");
+//        return NULL;
+//    }
+//
+//    // Read reservation data from the file
+//    fread(&reservation->ReservationCode, sizeof(int), 1, file);
+//
+//    // Read customer name
+//    int nameLength;
+//    fread(&nameLength, sizeof(int), 1, file);
+//    char* customerName = (char*)malloc(nameLength * sizeof(char));
+//    if (customerName == NULL)
+//    {
+//        printf("Memory allocation failed for customer name.\n");
+//        free(reservation);
+//        return NULL;
+//    }
+//    fread(customerName, sizeof(char), nameLength, file);
+//
+//    // Find the customer by name
+//    reservation->customer = findCustomerByName(pSales, customerName);
+//    if (reservation->customer == NULL)
+//    {
+//        printf("Customer not found: %s\n", customerName);
+//        free(customerName);
+//        free(reservation);
+//        return NULL;
+//    }
+//    free(customerName);
+//
+//    // Read customer type
+//    fread(&reservation->customer->type, sizeof(eCustomerType), 1, file);
+//
+//    // Read date
+//    fread(&reservation->date, sizeof(Date), 1, file);
+//
+//    fread(&reservation->priceOfOrder, sizeof(double), 1, file);
+//
+//    // Read purchased items
+//    int itemCount;
+//    fread(&itemCount, sizeof(int), 1, file);
+//    L_init(&reservation->purchasedItems);
+//    for (int j = 0; j < itemCount; j++)
+//    {
+//        PurchasedItem* item = (PurchasedItem*)malloc(sizeof(PurchasedItem));
+//        if (item == NULL)
+//        {
+//            printf("Memory allocation failed for purchased item.\n");
+//            freeReservationPtr(reservation);
+//            return NULL;
+//        }
+//        fread(item, sizeof(PurchasedItem), 1, file);
+//        L_insert(&reservation->purchasedItems, item);
+//    }
+//
+//    return reservation;
+//}
+
+
+
 // Function to load reservations from a binary file
-int loadReservationsFromBinaryFile(Sales* pSales, const char* filename)
+int loadReservationsArrayFromBinaryFile(Sales* pSales, const char* filename)
 {
     FILE* file = fopen(filename, "rb");
     if (file == NULL)
@@ -374,18 +581,12 @@ int loadReservationsFromBinaryFile(Sales* pSales, const char* filename)
     // Read each reservation from the file
     for (int i = 0; i < count; i++)
     {
-        Reservation* reservation = (Reservation*)malloc(sizeof(Reservation));
+        Reservation* reservation = loadReservationFromBinaryFile(pSales, file);
         if (reservation == NULL)
         {
-            printf("Memory allocation failed for reservation.\n");
             fclose(file);
             return 0;
         }
-
-        // Read reservation data from the file
-        fread(reservation, sizeof(Reservation), 1, file);
-        // Read other reservation fields as needed
-
         pSales->reservationArray[i] = reservation;
     }
 
@@ -395,7 +596,7 @@ int loadReservationsFromBinaryFile(Sales* pSales, const char* filename)
 }
 
 // Function to save reservations to a binary file
-int saveReservationsToBinaryFile(const Sales* pSales, const char* filename)
+int saveReservationsArrayToBinaryFile(const Sales* pSales, const char* filename)
 {
     FILE* file = fopen(filename, "wb");
     if (file == NULL)
@@ -411,8 +612,7 @@ int saveReservationsToBinaryFile(const Sales* pSales, const char* filename)
     for (int i = 0; i < pSales->reservationCount; i++)
     {
         Reservation* reservation = pSales->reservationArray[i];
-        fwrite(reservation, sizeof(Reservation), 1, file);
-        // Write other reservation fields as needed
+        saveReservationToBinaryFile(reservation, file);
     }
 
     fclose(file);

@@ -24,7 +24,6 @@ typedef struct
     int           ReservationCode;// will be the same as location in array 0 1 2 3....
     Customer*     customer;
     Date          date;
-
     double        priceOfOrder;
     LIST          purchasedItems;  //LIST*
 

@@ -17,6 +17,7 @@ static const char* CustomerTypeStr[eNomOfCustomerTypes]
 
 typedef struct
 {
+   // char                  id; //like IATA   
     char*                name;
     double               totalSpent;
     eCustomerType        type;
