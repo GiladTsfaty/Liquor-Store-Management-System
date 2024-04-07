@@ -5,6 +5,10 @@
 #include "Sales.h"
 #include "Filefunctions.h"
 
+typedef unsigned char BYTE;
+
+
+
 ///B inventory files ///
 int saveInventoryToBinaryFile(const Inventory* pInventory, const char* filename);
 int writeBeerArrToBFile(FILE* pFile, const Beer* pBeerArr, const int count);
@@ -31,13 +35,22 @@ int readCustomerListFromBFile(Sales* pSales, const FILE* fileName);
 
 
 // Functions for loading and saving reservations to/from binary files
-// 
+ 
 //int loadReservationsFromBinaryFile(Sales* pSales, const char* filename);
 //int saveReservationsToBinaryFile(const Sales* pSales, const char* filename);
 
-void saveReservationToBinaryFile(const Reservation* reservation, FILE* file);
-Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file);
-int loadReservationsArrayFromBinaryFile(Sales* pSales, const char* filename);
-int saveReservationsArrayToBinaryFile(const Sales* pSales, const char* filename);
+
+
+void			saveReservationToBinaryFile(const Reservation* reservation, FILE* file);
+Reservation*	loadReservationFromBinaryFile(Sales* pSales, FILE* file);
+int				loadReservationsArrayFromBinaryFile(Sales* pSales, const char* filename);
+int				saveReservationsArrayToBinaryFile(const Sales* pSales, const char* filename);
+
+/// Compress///
+
+int	 writeStringToCompressFile(const char* str, FILE* fp, const char* msg);
+
+int savePurchasedItemToCompressedFile(const PurchasedItem* pItem, FILE* fp);
+int loadPurchasedItemFromCompressedFile(PurchasedItem* pItem, FILE* fp);
 
 

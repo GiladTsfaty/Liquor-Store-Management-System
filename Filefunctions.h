@@ -30,14 +30,20 @@ int   saveCustomerListToTextFile(const Sales* pSales, const char* fileName);
 
 
 // Functions for loading and saving reservations to/from text files
+
+void			saveReservationToFile(const Reservation* reservation, FILE* file);
+Reservation*	loadReservationFromFile(Sales* pSales, FILE* file);
+int				loadReservationsArrayFromTextFile(Sales* pSales, const char* filename);
+int				saveReservationsArrayToTextFile(const Sales* pSales, const char* filename);
+
+
+
+
+
+
+
 //int loadReservationsFromTextFile(Sales* pSales, const char* filename);
 //int saveReservationsToTextFile(const Sales* pSales, const char* filename);
-
-void saveReservationToFile(const Reservation* reservation, FILE* file);
-Reservation* loadReservationFromFile(Sales* pSales, FILE* file);
-int loadReservationsArrayFromTextFile(Sales* pSales, const char* filename);
-int saveReservationsArrayToTextFile(const Sales* pSales, const char* filename);
-
 
 
 //int writeAirlineToBFile(FILE* pFile, const Airline* pComp);

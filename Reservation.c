@@ -11,13 +11,44 @@
 
 
 
+//void initPurchasedItem(PurchasedItem* pItems)
+//{
+//	pItems->amount = 0;
+//	pItems->cost = 0;
+//	pItems->serial = 0;
+//
+//}
+
 void initPurchasedItem(PurchasedItem* pItems)
 {
-	pItems->amount = 0;
-	pItems->cost = 0;
 	pItems->serial = 0;
-
+	pItems->amount = 0;
+	pItems->costInt = 0;
+	pItems->costDec = 0;
 }
+
+
+
+//void printPurchasedItem(const void* pItemVoid)//NODE
+//{
+//    // Cast from void* to the appropriate type
+//    const PurchasedItem* pItem = (const PurchasedItem*)pItemVoid;
+//
+//    // Print the details of the PurchasedItem
+//    printf("Item Serial: %d, Amount: %d, Cost: $%.2f\n",
+//           pItem->serial, pItem->amount, pItem->cost);
+//}
+
+void printPurchasedItem(const void* pItemVoid)
+{
+	const PurchasedItem* pItem = (const PurchasedItem*)pItemVoid;
+	double cost = pItem->costInt + (double)pItem->costDec / 100.0;
+	printf("Item Serial: %d, Amount: %d, Cost: $%.2f\n",
+		pItem->serial, pItem->amount, cost);
+}
+
+
+
 
 void initReservation(Reservation* pRes, Customer* pCus) {
 	
@@ -38,15 +69,8 @@ void initReservation(Reservation* pRes, Customer* pCus) {
 
 
 
-void printPurchasedItem(const void* pItemVoid)//NODE
-{
-    // Cast from void* to the appropriate type
-    const PurchasedItem* pItem = (const PurchasedItem*)pItemVoid;
 
-    // Print the details of the PurchasedItem
-    printf("Item Serial: %d, Amount: %d, Cost: $%.2f\n",
-           pItem->serial, pItem->amount, pItem->cost);
-}
+
 
 
 void printReservation(const Reservation* pRes)
