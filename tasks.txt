@@ -9,4 +9,9 @@ finish invetnory + methods
    else wont read client name  
 -compress one stuct.
 
-
+-B_search
+-q_sort
+- general func*3(i think we have 2)
+-main
+-project report
+-fix errors 
