@@ -747,6 +747,6 @@ void freeSales(Sales* pSales)
 {
 	L_free((LIST*) & pSales->customersList, (void (*)(void*)) freeCustomer);//free clients
 
-	//L_free(&(pSales->reservationList, freereservation);// free reservations 
+	// free reservations 
 
 }

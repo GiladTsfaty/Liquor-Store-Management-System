@@ -21,3 +21,11 @@ void initShop(Shop* pShop)
     pShop->netBudget = 3500;
 
 }
+
+void freeShop(Shop* pShop)
+{
+
+    freeSales(pShop->salesDepartment);
+    freeInventory(pShop->inventory);
+
+}

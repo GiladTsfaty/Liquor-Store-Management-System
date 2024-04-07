@@ -12,5 +12,8 @@ typedef struct
 }Shop;
 
 void initShop(Shop* pShop);
+void freeShop(Shop* pShop);
 
+saveShopToTextFile(Shop* pShop);
+saveShopToBianryFile(Shop* pShop);
 
