@@ -547,14 +547,26 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
             continue;
         }
 
+        //PurchasedItem* newItem = (PurchasedItem*)malloc(sizeof(PurchasedItem));
+        //if (newItem != NULL)
+        //{
+        //    newItem->serial = serialNumber;
+        //    newItem->amount = numBottles;
+        //    newItem->cost = cost;
+        //    L_insert(&pNewReservation->purchasedItems, newItem);//add .head.key//L_insert_rese 
+        //}
+
         PurchasedItem* newItem = (PurchasedItem*)malloc(sizeof(PurchasedItem));
         if (newItem != NULL)
         {
             newItem->serial = serialNumber;
             newItem->amount = numBottles;
-            newItem->cost = cost;
-            L_insert(&pNewReservation->purchasedItems, newItem);//add .head.key//L_insert_rese 
+            newItem->costInt = (int)cost;
+            newItem->costDec = (int)((cost - newItem->costInt) * 100);
+            L_insert(&pNewReservation->purchasedItems, newItem);
         }
+
+
         else
         {
             printf("Memory allocation failed for newItem.\n");

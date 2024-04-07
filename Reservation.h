@@ -10,13 +10,22 @@
 
 
 
-//#define MAX_RES_CODE_NUM 1000
+////#define MAX_RES_CODE_NUM 1000
+//typedef struct
+//{
+//    int serial;         // Serial number of the drink  ////for compression - 3 digits
+//    int amount;         // Amount purchased            ////for compression - up to 10
+//    double cost;        // Cost of the purchased item ////for compression  - up to 10,000
+//} PurchasedItem;  //i will compress here
+
 typedef struct
 {
-    int serial;         // Serial number of the drink  ////for compression - 3 digits
-    int amount;         // Amount purchased            ////for compression - up to 10
-    double cost;        // Cost of the purchased item ////for compression  - up to 10,000
-} PurchasedItem;  //i will compress here
+    unsigned int serial;    // Serial number of the drink (0-999)
+    unsigned int amount;    // Amount purchased (0-10)
+    unsigned int costInt;   // Integer part of the cost (0-10000)
+    unsigned int costDec;   // Decimal part of the cost (0-99)
+} PurchasedItem;
+
 
 
 typedef struct
@@ -29,12 +38,13 @@ typedef struct
 
 }Reservation;
 
+
+
 void initPurchasedItem(PurchasedItem* pItems);
+void printPurchasedItem(const void* pItemVoid);
+
 
 void initReservation(Reservation* pRes,Customer* pCus);
-
-
-
 void printReservation(const Reservation* pRes);
 void printReservationPtr(void* pResPtr );
 

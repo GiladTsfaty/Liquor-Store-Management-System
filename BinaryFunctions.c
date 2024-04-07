@@ -437,13 +437,29 @@ void saveReservationToBinaryFile(const Reservation* reservation, FILE* file)
     // Save purchased items
     int itemCount = L_length(&reservation->purchasedItems)-1;//-1
     fwrite(&itemCount, sizeof(int), 1, file);
-    NODE* pNode = reservation->purchasedItems.head.next;
+
+
+   /* NODE* pNode = reservation->purchasedItems.head.next;
     while (pNode != NULL)
     {
         PurchasedItem* item = (PurchasedItem*)pNode->key;
         fwrite(item, sizeof(PurchasedItem), 1, file);
         pNode = pNode->next;
+    }*/
+
+    NODE* pNode = reservation->purchasedItems.head.next;
+    while (pNode != NULL)
+    {
+        PurchasedItem* item = (PurchasedItem*)pNode->key;
+        if (!savePurchasedItemToCompressedFile(item, file))
+        {
+            printf("Error saving purchased item to file\n");
+            return;
+        }
+        pNode = pNode->next;
     }
+
+
 }
 
 // Function to load a single reservation from a binary file
@@ -479,15 +495,39 @@ Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file)
     int itemCount;
     fread(&itemCount, sizeof(int), 1, file);
     L_init(&reservation->purchasedItems);
-    for (int j = 0; j < itemCount; j++)
+
+
+    /*for (int j = 0; j < itemCount; j++)
     {
         PurchasedItem* item = (PurchasedItem*)malloc(sizeof(PurchasedItem));
         fread(item, sizeof(PurchasedItem), 1, file);
         L_insert(&reservation->purchasedItems, item);
     }
 
+    return reservation;*/
+
+
+    for (int j = 0; j < itemCount; j++)
+    {
+        PurchasedItem* item = (PurchasedItem*)malloc(sizeof(PurchasedItem));
+        if (!loadPurchasedItemFromCompressedFile(item, file))
+        {
+            printf("Error loading purchased item from file\n");
+            freeReservationPtr(reservation);
+            return NULL;
+        }
+        L_insert(&reservation->purchasedItems, item);
+    }
+
     return reservation;
+
+
 }
+
+
+
+
+
 
 //// Function to load a single reservation from a binary file
 //Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file)
@@ -622,7 +662,7 @@ int saveReservationsArrayToBinaryFile(const Sales* pSales, const char* filename)
 
 
 
-int	 writeStringToComprassFile(const char* str, FILE* fp, const char* msg)
+int	 writeStringToCompressFile(const char* str, FILE* fp, const char* msg)
 {
 
     if (!writeCharsToFile(str, strlen(str), fp, msg))
@@ -631,3 +671,67 @@ int	 writeStringToComprassFile(const char* str, FILE* fp, const char* msg)
 
     return 1;
 }
+
+
+
+
+
+///from 1-4
+int savePurchasedItemToCompressedFile(const PurchasedItem* pItem, FILE* fp)
+{
+    BYTE compressedData[5];
+
+    // Compress serial number (0-999)
+    compressedData[0] = (pItem->serial >> 2) & 0xFF;
+    compressedData[1] = (pItem->serial & 0x3) << 6;
+
+    // Compress amount (0-10)
+    compressedData[1] |= (pItem->amount << 2);
+
+    // Compress cost integer part (0-10000)
+    compressedData[1] |= (pItem->costInt >> 8) & 0x3;
+    compressedData[2] = pItem->costInt & 0xFF;
+
+    // Compress cost decimal part (0-99)
+    compressedData[3] = pItem->costDec;
+
+    // Write compressed data to file
+    if (fwrite(compressedData, sizeof(BYTE), 4, fp) != 4)
+        return 0;
+
+    return 1;
+}
+
+
+int loadPurchasedItemFromCompressedFile(PurchasedItem* pItem, FILE* fp)
+{
+    BYTE compressedData[5];
+
+    // Read compressed data from file
+    if (fread(compressedData, sizeof(BYTE), 4, fp) != 4)
+        return 0;
+
+    // Decompress serial number
+    pItem->serial = (compressedData[0] << 2) | (compressedData[1] >> 6);
+
+    // Decompress amount
+    pItem->amount = (compressedData[1] >> 2) & 0xF;
+
+    // Decompress cost integer part
+    pItem->costInt = ((compressedData[1] & 0x3) << 8) | compressedData[2];
+
+    // Decompress cost decimal part
+    pItem->costDec = compressedData[3];
+
+    return 1;
+}
+
+
+
+///////!!!compress-explantion!!!///// we need to make sure the "parts" of PurchasedItem stay in range 
+/*  the PurchasedItem struct will be compressed using bitwise operations 
+when saving to a file and decompressed when loading from a file. 
+The compression scheme used here packs
+the serial number (0-999), amount (0-10),
+cost integer part (0-10000), and cost decimal part (0-99) 
+into 4 bytes.   */

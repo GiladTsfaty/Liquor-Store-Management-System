@@ -544,13 +544,24 @@ void saveReservationToFile(const Reservation* reservation, FILE* file)
     // Save purchased items
     int itemCount = L_length(&reservation->purchasedItems)-1;//-1
     fprintf(file, "%d\n", itemCount);
-    NODE* pNode = reservation->purchasedItems.head.next;
+
+    /*NODE* pNode = reservation->purchasedItems.head.next;
     while (pNode != NULL)
     {
         PurchasedItem* item = (PurchasedItem*)pNode->key;
         fprintf(file, "%d %d %.2f\n", item->serial, item->amount, item->cost);
         pNode = pNode->next;
+    }*/
+
+    NODE* pNode = reservation->purchasedItems.head.next;
+    while (pNode != NULL)
+    {
+        PurchasedItem* item = (PurchasedItem*)pNode->key;
+        fprintf(file, "%d %d %d %d\n", item->serial, item->amount, item->costInt, item->costDec);
+        pNode = pNode->next;
     }
+
+
 }
 
 // Function to load a single reservation from a file
@@ -594,14 +605,27 @@ Reservation* loadReservationFromFile(Sales* pSales, FILE* file)
     int itemCount;
     fscanf(file, "%d\n", &itemCount);
     L_init(&reservation->purchasedItems);
-    for (int j = 0; j < itemCount; j++)
+
+
+   /* for (int j = 0; j < itemCount; j++)
     {
         PurchasedItem* item = (PurchasedItem*)malloc(sizeof(PurchasedItem));
         fscanf(file, "%d %d %lf\n", &item->serial, &item->amount, &item->cost);
         L_insert(&reservation->purchasedItems, item);
     }
 
+    return reservation;*/
+
+    for (int j = 0; j < itemCount; j++)
+    {
+        PurchasedItem* item = (PurchasedItem*)malloc(sizeof(PurchasedItem));
+        fscanf(file, "%d %d %d %d\n", &item->serial, &item->amount, &item->costInt, &item->costDec);
+        L_insert(&reservation->purchasedItems, item);
+    }
+
     return reservation;
+
+
 }
 
 
@@ -641,6 +665,7 @@ int loadReservationsArrayFromTextFile(Sales* pSales, const char* filename)
         }
         pSales->reservationArray[i] = reservation;
     }
+
 
     pSales->reservationCount = count;
     fclose(file);
