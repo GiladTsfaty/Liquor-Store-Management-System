@@ -72,11 +72,11 @@ int main() {
    //saveReservationsArrayToTextFile(&sales, RESERVATIONS_ARR_TEXT_FILE_LOAD_NAME);
    //saveReservationsArrayToBinaryFile(&sales, RESERVATIONS_ARR_BINARY_FILE_LOAD_NAME);
 
-   //loadReservationsArrayFromTextFile(&sales, RESERVATIONS_ARR_TEXT_FILE_LOAD_NAME);
+   loadReservationsArrayFromTextFile(&sales, RESERVATIONS_ARR_TEXT_FILE_LOAD_NAME);
    loadReservationsArrayFromBinaryFile(&sales, RESERVATIONS_ARR_BINARY_FILE_LOAD_NAME);
    printReservationsArr(sales.reservationArray, sales.reservationCount);
-  // saveReservationsArrayToTextFile(&sales, RESERVATIONS_ARR_TEXT_FILE_SAVE_NAME);
-    saveReservationsArrayToBinaryFile(&sales, RESERVATIONS_ARR_BINARY_FILE_SAVE_NAME);
+   saveReservationsArrayToTextFile(&sales, RESERVATIONS_ARR_TEXT_FILE_SAVE_NAME);
+   saveReservationsArrayToBinaryFile(&sales, RESERVATIONS_ARR_BINARY_FILE_SAVE_NAME);
 
 
 

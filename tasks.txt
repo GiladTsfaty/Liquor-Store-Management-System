@@ -15,3 +15,4 @@ finish invetnory + methods
 -main
 -project report
 -fix errors 
+-make sure all that she asked for exists
