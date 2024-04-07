@@ -25,7 +25,7 @@ int readWhiskeyArrFromBFile(FILE* pFile, Whiskey* pWhiskeyArr, const int count);
 int readWineFromBFile(FILE* pFile, Wine* pWine);
 int readWineArrFromBFile(FILE* pFile, Wine* pWineArr, int count);
 
-///B inventory files ///
+///B customer files ///
 
 
 
