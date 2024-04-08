@@ -11,9 +11,10 @@ typedef struct
 
 }Shop;
 
-void initShop(Shop* pShop);
+void initSystemFromFiles(Shop* pShop, Sales* pSales, Inventory* pInventory);
+void initShop(Shop *pShop, Inventory *pInventory, Sales *pSales, int initialBudget);
 void freeShop(Shop* pShop);
 
-saveShopToTextFile(Shop* pShop);
-saveShopToBianryFile(Shop* pShop);
+//saveShopToTextFile(Shop* pShop);
+//saveShopToBianryFile(Shop* pShop);
 

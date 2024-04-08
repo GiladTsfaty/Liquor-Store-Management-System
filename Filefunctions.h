@@ -15,6 +15,7 @@ int	  readIntFromFile(int* val, FILE* fp, const char* msg);
 int   readDoubleFromFile(double* pVal, FILE* fp, const char* msg);
 
 void  readInventoryFromFile(Inventory* pInventory, const char* filename);
+int initInventoryFromTextFile(Inventory* pInventory, const char* filename);
 
 ///customer text files ///
 

@@ -26,7 +26,7 @@ void setInventoryDefaults(Inventory* pInventory);
 int  addBeer(Inventory* pInventory);
 int  addWine(Inventory* pInventory);
 int  addWhiskey(Inventory* pInventory);
-void initInventoryFromFile(Inventory* pInventory, const char* filename);
+//void initInventoryFromFile(Inventory* pInventory, const char* filename);
 void printInventory(const Inventory* pInventory);
 int isSerialNumberUnique(void* arr, int count, int serialNumber, int elementSize, int (*getSerialNumber)(void*));
 int getUniqueSerialNumber(void* arr, int count, int minSerial, int maxSerial, int elementSize, int (*getSerialNumber)(void*));

@@ -102,31 +102,7 @@ int writeWineArrToBFile(FILE* pFile, const Wine* pWineArr, const int count) {
 
 
 
-void initInventoryFromBinaryFile(Inventory* pInventory, const char* filename)
-{
-    FILE* pFile = fopen(filename, "rb");
-    if (!pFile) return;
 
-    // Read beer array
-    if (fread(&pInventory->beersCount, sizeof(int), 1, pFile) != 1) return;
-    pInventory->beerArray = (Beer*)malloc(pInventory->beersCount * sizeof(Beer));
-    if (!pInventory->beerArray) return;
-    if (!readBeerArrFromBFile(pFile, pInventory->beerArray, pInventory->beersCount)) return;
-
-    // Read whiskey array
-    if (fread(&pInventory->whiskeysCount, sizeof(int), 1, pFile) != 1) return;
-    pInventory->whiskeyArray = (Whiskey*)malloc(pInventory->whiskeysCount * sizeof(Whiskey));
-    if (!pInventory->whiskeyArray) return;
-    if (!readWhiskeyArrFromBFile(pFile, pInventory->whiskeyArray, pInventory->whiskeysCount)) return;
-
-    // Read wine array
-    if (fread(&pInventory->winesCount, sizeof(int), 1, pFile) != 1) return;
-    pInventory->wineArray = (Wine*)malloc(pInventory->winesCount * sizeof(Wine));
-    if (!pInventory->wineArray) return;
-    if (!readWineArrFromBFile(pFile, pInventory->wineArray, pInventory->winesCount)) return;
-
-    fclose(pFile);
-}
 
 
 
@@ -213,7 +189,62 @@ int readWineArrFromBFile(FILE* pFile, Wine* pWineArr, const int count)
 ///B inventory files ///
 
 
+int initInventoryFromBinaryFile(Inventory* pInventory, const char* filename)
+{
+    FILE* pFile = fopen(filename, "rb");
+    if (!pFile) {
+        printf("Failed to open file: %s\n", filename);
+        return 0;  // Return 0 to indicate failure
+    }
 
+    // Read beer array
+    if (fread(&pInventory->beersCount, sizeof(int), 1, pFile) != 1) {
+        fclose(pFile);
+        return 0;  // Return 0 to indicate failure
+    }
+    pInventory->beerArray = (Beer*)malloc(pInventory->beersCount * sizeof(Beer));
+    if (!pInventory->beerArray) {
+        fclose(pFile);
+        return 0;  // Return 0 to indicate failure
+    }
+    if (!readBeerArrFromBFile(pFile, pInventory->beerArray, pInventory->beersCount)) {
+        fclose(pFile);
+        return 0;  // Return 0 to indicate failure
+    }
+
+    // Read whiskey array
+    if (fread(&pInventory->whiskeysCount, sizeof(int), 1, pFile) != 1) {
+        fclose(pFile);
+        return 0;  // Return 0 to indicate failure
+    }
+    pInventory->whiskeyArray = (Whiskey*)malloc(pInventory->whiskeysCount * sizeof(Whiskey));
+    if (!pInventory->whiskeyArray) {
+        fclose(pFile);
+        return 0;  // Return 0 to indicate failure
+    }
+    if (!readWhiskeyArrFromBFile(pFile, pInventory->whiskeyArray, pInventory->whiskeysCount)) {
+        fclose(pFile);
+        return 0;  // Return 0 to indicate failure
+    }
+
+    // Read wine array
+    if (fread(&pInventory->winesCount, sizeof(int), 1, pFile) != 1) {
+        fclose(pFile);
+        return 0;  // Return 0 to indicate failure
+    }
+    pInventory->wineArray = (Wine*)malloc(pInventory->winesCount * sizeof(Wine));
+    if (!pInventory->wineArray) {
+        fclose(pFile);
+        return 0;  // Return 0 to indicate failure
+    }
+    if (!readWineArrFromBFile(pFile, pInventory->wineArray, pInventory->winesCount)) {
+        fclose(pFile);
+        return 0;  // Return 0 to indicate failure
+    }
+
+    fclose(pFile);
+    return 1;  // Return 1 to indicate success
+}
 
 
 

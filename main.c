@@ -1,6 +1,6 @@
 #define _CRTDBG_MAP_ALLOC
 
-#include <crtdbg.h>
+//#include <crtdbg.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -18,6 +18,7 @@
 #include "list.h"
 #include "Reservation.h"
 #include "Date.h"
+#include "BinaryFunctions.h"
 
 /////inventory files ///
 //#define INVENTORY_FILE_NAME "Inventory.txt"
@@ -224,129 +225,146 @@
 
 
 
-int main()
-{
-    Shop theShop;//only shop
-    Sales sales;
+int main() {
+    Shop shop;
     Inventory inventory;
+    Sales sales;
+    int initialBudget = 3500;
 
-   
-    int loadOption;
-    int isSystemLoaded = 0;
 
-    while (!isSystemLoaded)
-    {
-        printf("HELLO AND WELLCOME TO THE LIQUOR STORE:\n");
-        printf("Choose how to load the system:\n");
-        printf("1 - Load from text files\n");
-        printf("2 - Load from binary files\n");
-        scanf("%d", &loadOption);
+    initShop(&shop, &inventory, &sales, initialBudget);
 
-        switch (loadOption)
-        {
-        case 1:
-            if (initSystemFromTextFiles(&sales, &inventory))
-            {
-                printf("System loaded successfully from text files.\n");
-                isSystemLoaded = 1;
-            }
-            else
-            {
-                printf("Error loading system from text files.\n");
-            }
-            break;
-        case 2:
-            if (initSystemFromBinaryFiles(&sales, &inventory))
-            {
-                printf("System loaded successfully from binary files.\n");
-                isSystemLoaded = 1;
-            }
-            else
-            {
-                printf("Error loading system from binary files.\n");
-            }
-            break;
-        default:
-            printf("Invalid option. Please try again.\n");
-            break;
-        }
-    }
+    initSystemFromFiles(&shop, &sales, &inventory);
+//    saveReservationsArrayToBinaryFile(&sales, "BinaryReservation.bin");
+
+    printInventory(&inventory);
+    printAllCustomers(&sales);
+    printReservation(sales.reservationArray[0]);
 
 
 
-
-    int option;
-    int stop = 0;
-
-    do
-    {
-        option = menu();
-        switch (option)
-        {
-        case ePrintInventory:
-            printInventory(&inventory);
-            break;
-        case ePrintReservations:
-            printReservationsArr(&theShop.salesDepartment->reservationArray, theShop.salesDepartment->reservationCount);
-            break;
-        case ePrintCustomers:
-            printAllCustomers(&theShop.salesDepartment);
-            break;
-        case eAddBeveragesToInventory:
-            if (!addBeveragesToInventory(&inventory))
-                printf("Error adding beverages to inventory\n");
-            break;
-        case eAddClient:
-            if (!addNewCustomer(&theShop.salesDepartment))
-                printf("Error adding client\n");
-            break;
-        case eMakeReservation:
-            if (!addNewReservationToArray2(&theShop.salesDepartment, &theShop.inventory,getCustomerForReservation(&theShop.salesDepartment)));//not good template
-                printf("Error making reservation\n");
-            break;
-        case eSortReservationArray:
-            sortReservations(&sales);
-            break;
-        case eFindReservation:
-            findReservation(&sales);
-            break;
-        case ecreativeFunc1:
-            // Call creative function 1
-            break;
-        case ecreativeFunc2:
-            // Call creative function 2
-            break;
-        case EXIT:
-            printf("Bye bye\n");
-            stop = 1;
-            break;
-        default:
-            printf("Wrong option\n");
-            break;
-        }
-    } while (!stop);
-
-    saveShopToTextFile(&theShop);
-    saveShopToBianryFile(&theShop);
-
-    freeShop(&theShop);
-
-    printf("before dump\n");
-    _CrtDumpMemoryLeaks();
-    return 1;
+//    int loadOption;
+//    int isSystemLoaded = 0;
+//
+//    while (!isSystemLoaded)
+//    {
+//        printf("HELLO AND WELLCOME TO THE LIQUOR STORE:\n");
+//        printf("Choose how to load the system:\n");
+//        printf("1 - Load from text files\n");
+//        printf("2 - Load from binary files\n");
+//        scanf("%d", &loadOption);
+//
+//        switch (loadOption)
+//        {
+//        case 1:
+//            if (initSystemFromTextFiles(&sales, &inventory))
+//            {
+//                printf("System loaded successfully from text files.\n");
+//                isSystemLoaded = 1;
+//            }
+//            else
+//            {
+//                printf("Error loading system from text files.\n");
+//            }
+//            break;
+//        case 2:
+//            if (initSystemFromBinaryFiles(&sales, &inventory))
+//            {
+//                printf("System loaded successfully from binary files.\n");
+//                isSystemLoaded = 1;
+//            }
+//            else
+//            {
+//                printf("Error loading system from binary files.\n");
+//            }
+//            break;
+//        default:
+//            printf("Invalid option. Please try again.\n");
+//            break;
+//        }
+//    }
+//
+//
+//
+//
+//    int option;
+//    int stop = 0;
+//
+//    do
+//    {
+//        option = menu();
+//        switch (option)
+//        {
+//        case ePrintInventory:
+//            printInventory(&inventory);
+//            break;
+//        case ePrintReservations:
+//            printReservationsArr(&theShop.salesDepartment->reservationArray, theShop.salesDepartment->reservationCount);
+//            break;
+//        case ePrintCustomers:
+//            printAllCustomers(&theShop.salesDepartment);
+//            break;
+//        case eAddBeveragesToInventory:
+//            if (!addBeveragesToInventory(&inventory))
+//                printf("Error adding beverages to inventory\n");
+//            break;
+//        case eAddClient:
+//            if (!addNewCustomer(&theShop.salesDepartment))
+//                printf("Error adding client\n");
+//            break;
+//        case eMakeReservation:
+//            if (!addNewReservationToArray2(&theShop.salesDepartment, &theShop.inventory,getCustomerForReservation(&theShop.salesDepartment)));//not good template
+//                printf("Error making reservation\n");
+//            break;
+//        case eSortReservationArray:
+//            sortReservations(&sales);
+//            break;
+//        case eFindReservation:
+//            findReservation(&sales);
+//            break;
+//        case ecreativeFunc1:
+//            // Call creative function 1
+//            break;
+//        case ecreativeFunc2:
+//            // Call creative function 2
+//            break;
+//        case EXIT:
+//            printf("Bye bye\n");
+//            stop = 1;
+//            break;
+//        default:
+//            printf("Wrong option\n");
+//            break;
+//        }
+//    } while (!stop);
+//
+//    saveShopToTextFile(&theShop);
+//    saveShopToBianryFile(&theShop);
+//
+//<<<<<<< HEAD
+//    freeShop(&theShop);
+//=======
+////    _CrtDumpMemoryLeaks();//dont delete put in comment
+//
+//>>>>>>> fd534e4 (justForSAFE)
+//
+//    printf("before dump\n");
+//    _CrtDumpMemoryLeaks();
+//    return 1;
+//}
 }
 
-int menu()
-{
-	int option;
-	printf("\n\n");
-	printf("Please choose one of the following options\n");
-	for (int i = 0; i < eNofOptions; i++)
-		printf("%d - %s\n", i, str[i]);
-	printf("%d - Quit\n", EXIT);
-	scanf("%d", &option);
-	//clean buffer
-	char tav;
-	scanf("%c", &tav);
-	return option;
-}
+//int menu()
+//{
+//	int option;
+//	printf("\n\n");
+//	printf("Please choose one of the following options\n");
+//	for (int i = 0; i < eNofOptions; i++)
+//		printf("%d - %s\n", i, str[i]);
+//	printf("%d - Quit\n", EXIT);
+//	scanf("%d", &option);
+//	//clean buffer
+//	char tav;
+//	scanf("%c", &tav);
+//	return option;
+//}

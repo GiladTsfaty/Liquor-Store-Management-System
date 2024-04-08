@@ -133,6 +133,12 @@ build CMakeFiles/final_repo.dir/BinaryFiles.c.o: C_COMPILER__final_repo_unscanne
   OBJECT_DIR = CMakeFiles/final_repo.dir
   OBJECT_FILE_DIR = CMakeFiles/final_repo.dir
 
+build CMakeFiles/final_repo.dir/BinaryFunctions.c.o: C_COMPILER__final_repo_unscanned_Debug /Users/itaysoldin/Desktop/final_repo/BinaryFunctions.c || cmake_object_order_depends_target_final_repo
+  DEP_FILE = CMakeFiles/final_repo.dir/BinaryFunctions.c.o.d
+  FLAGS = -g -std=gnu11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -mmacosx-version-min=13.0 -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/final_repo.dir
+  OBJECT_FILE_DIR = CMakeFiles/final_repo.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target final_repo
@@ -141,7 +147,7 @@ build CMakeFiles/final_repo.dir/BinaryFiles.c.o: C_COMPILER__final_repo_unscanne
 #############################################
 # Link the executable final_repo
 
-build final_repo: C_EXECUTABLE_LINKER__final_repo_Debug CMakeFiles/final_repo.dir/main.c.o CMakeFiles/final_repo.dir/Inventory.c.o CMakeFiles/final_repo.dir/GeneralFunctions.c.o CMakeFiles/final_repo.dir/Beer.c.o CMakeFiles/final_repo.dir/Wine.c.o CMakeFiles/final_repo.dir/List.c.o CMakeFiles/final_repo.dir/Customer.c.o CMakeFiles/final_repo.dir/Sales.c.o CMakeFiles/final_repo.dir/Reservation.c.o CMakeFiles/final_repo.dir/Date.c.o CMakeFiles/final_repo.dir/Shop.c.o CMakeFiles/final_repo.dir/Whiskey.c.o CMakeFiles/final_repo.dir/Filefunctions.c.o CMakeFiles/final_repo.dir/BinaryFiles.c.o
+build final_repo: C_EXECUTABLE_LINKER__final_repo_Debug CMakeFiles/final_repo.dir/main.c.o CMakeFiles/final_repo.dir/Inventory.c.o CMakeFiles/final_repo.dir/GeneralFunctions.c.o CMakeFiles/final_repo.dir/Beer.c.o CMakeFiles/final_repo.dir/Wine.c.o CMakeFiles/final_repo.dir/List.c.o CMakeFiles/final_repo.dir/Customer.c.o CMakeFiles/final_repo.dir/Sales.c.o CMakeFiles/final_repo.dir/Reservation.c.o CMakeFiles/final_repo.dir/Date.c.o CMakeFiles/final_repo.dir/Shop.c.o CMakeFiles/final_repo.dir/Whiskey.c.o CMakeFiles/final_repo.dir/Filefunctions.c.o CMakeFiles/final_repo.dir/BinaryFiles.c.o CMakeFiles/final_repo.dir/BinaryFunctions.c.o
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk -mmacosx-version-min=13.0
   OBJECT_DIR = CMakeFiles/final_repo.dir
   POST_BUILD = :
