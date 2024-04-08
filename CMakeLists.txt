@@ -22,4 +22,5 @@ add_executable(final_repo main.c
         Whiskey.c
         Filefunctions.c
         BinaryFiles.h
-        BinaryFiles.c)
+        BinaryFiles.c
+        BinaryFunctions.c)

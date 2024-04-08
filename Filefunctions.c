@@ -64,7 +64,98 @@ void readLine(FILE* file, char* buffer, int bufferSize) {
         buffer[0] = '\0'; // Set the buffer to an empty string
     }
 }
+int initInventoryFromTextFile(Inventory* pInventory, const char* filename)
+{
+    FILE* fp = fopen(filename, "r");
+    if (!fp) {
+        perror("Unable to open file");
+        return 0;
+    }
 
+    char line[256];
+    int itemCount;
+
+    // Read Beers
+    if (fscanf(fp, "%d\n", &itemCount) != 1) {
+        fclose(fp);
+        return 0;
+    }
+    pInventory->beerArray = (Beer*)malloc(itemCount * sizeof(Beer));
+    pInventory->beersCount = itemCount;
+    for (int i = 0; i < itemCount; ++i) {
+        char tempBrand[256];
+        readLine(fp, tempBrand, sizeof(tempBrand));
+        pInventory->beerArray[i].brand = (char*)malloc((strlen(tempBrand) + 1) * sizeof(char));
+        strcpy(pInventory->beerArray[i].brand, tempBrand);
+
+        if (fscanf(fp, "%d\n%d\n%d\n%d\n",
+                   &pInventory->beerArray[i].itemSerial,
+                   &pInventory->beerArray[i].amountAvailable,
+                   &pInventory->beerArray[i].price,
+                   &pInventory->beerArray[i].numOfSolds) != 4) {
+            fclose(fp);
+            return 0;
+        }
+
+        readLine(fp, line, sizeof(line));
+        parseBeerSize(line, &pInventory->beerArray[i].bSize);
+    }
+
+    // Read Whiskeys
+    if (fscanf(fp, "%d\n", &itemCount) != 1) {
+        fclose(fp);
+        return 0;
+    }
+    pInventory->whiskeyArray = (Whiskey*)malloc(itemCount * sizeof(Whiskey));
+    pInventory->whiskeysCount = itemCount;
+    for (int i = 0; i < itemCount; ++i) {
+        char tempBrand[256];
+        readLine(fp, tempBrand, sizeof(tempBrand));
+        pInventory->whiskeyArray[i].brand = (char*)malloc((strlen(tempBrand) + 1) * sizeof(char));
+        strcpy(pInventory->whiskeyArray[i].brand, tempBrand);
+
+        if (fscanf(fp, "%d\n%d\n%d\n%d\n",
+                   &pInventory->whiskeyArray[i].itemSerial,
+                   &pInventory->whiskeyArray[i].amountAvailable,
+                   &pInventory->whiskeyArray[i].price,
+                   &pInventory->whiskeyArray[i].numOfSolds) != 4) {
+            fclose(fp);
+            return 0;
+        }
+
+        readLine(fp, line, sizeof(line));
+        parseWhiskeyType(line, &pInventory->whiskeyArray[i].whiskeyType);
+    }
+
+    // Read Wines
+    if (fscanf(fp, "%d\n", &itemCount) != 1) {
+        fclose(fp);
+        return 0;
+    }
+    pInventory->wineArray = (Wine*)malloc(itemCount * sizeof(Wine));
+    pInventory->winesCount = itemCount;
+    for (int i = 0; i < itemCount; ++i) {
+        char tempBrand[256];
+        readLine(fp, tempBrand, sizeof(tempBrand));
+        pInventory->wineArray[i].brand = (char*)malloc((strlen(tempBrand) + 1) * sizeof(char));
+        strcpy(pInventory->wineArray[i].brand, tempBrand);
+
+        if (fscanf(fp, "%d\n%d\n%d\n%d\n",
+                   &pInventory->wineArray[i].itemSerial,
+                   &pInventory->wineArray[i].amountAvailable,
+                   &pInventory->wineArray[i].price,
+                   &pInventory->wineArray[i].numOfSolds) != 4) {
+            fclose(fp);
+            return 0;
+        }
+
+        readLine(fp, line, sizeof(line));
+        parseWineType(line, &pInventory->wineArray[i].wType);
+    }
+
+    fclose(fp);
+    return 1;
+}
 
 void readInventoryFromFile(Inventory* pInventory, const char* filename) {
     FILE* fp = fopen(filename, "r");
@@ -580,17 +671,21 @@ Reservation* loadReservationFromFile(Sales* pSales, FILE* file)
     // Read customer name
     char customerName[MAX_STR_LEN];
     fgets(customerName, MAX_STR_LEN, file);
-    customerName[strcspn(customerName, "\n")] = '\0';  // Remove trailing newline character
+    customerName[strcspn(customerName, "\n")] = '\0'; // Remove trailing newline character
     reservation->customer = findCustomerByName(pSales, customerName);
 
-    // Read customer type
+    if (reservation->customer == NULL) {
+        printf("Customer not found: %s\n", customerName);
+        free(reservation);
+        return NULL;
+    }
+
+// Read customer type
     char customerType[20];
     fgets(customerType, 20, file);
-    customerType[strcspn(customerType, "\n")] = '\0';  // Remove trailing newline character
-    for (int i = 0; i < eNomOfCustomerTypes; i++)
-    {
-        if (strcmp(customerType, CustomerTypeStr[i]) == 0)
-        {
+    customerType[strcspn(customerType, "\n")] = '\0'; // Remove trailing newline character
+    for (int i = 0; i < eNomOfCustomerTypes; i++) {
+        if (strcmp(customerType, CustomerTypeStr[i]) == 0) {
             reservation->customer->type = (eCustomerType)i;
             break;
         }
@@ -645,27 +740,22 @@ int loadReservationsArrayFromTextFile(Sales* pSales, const char* filename)
     int count;
     fscanf(file, "%d\n", &count);
 
-    // Allocate memory for the reservation array
-    pSales->reservationArray = (Reservation**)malloc(count * sizeof(Reservation*));
-    if (pSales->reservationArray == NULL)
-    {
+    pSales->reservationArray = (struct Reservation **) (Reservation **) malloc(count * sizeof(Reservation *));
+    if (pSales->reservationArray == NULL) {
         printf("Memory allocation failed for reservation array.\n");
         fclose(file);
         return 0;
     }
 
-    // Read each reservation from the file
-    for (int i = 0; i < count; i++)
-    {
+// Read each reservation from the file
+    for (int i = 0; i < count; i++) {
         Reservation* reservation = loadReservationFromFile(pSales, file);
-        if (reservation == NULL)
-        {
+        if (reservation == NULL) {
             fclose(file);
             return 0;
         }
-        pSales->reservationArray[i] = reservation;
+        pSales->reservationArray[i] = (struct Reservation *) reservation;
     }
-
 
     pSales->reservationCount = count;
     fclose(file);
