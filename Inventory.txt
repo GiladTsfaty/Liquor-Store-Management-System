@@ -4,13 +4,13 @@ GoldStar
 50
 8
 0
-Paint
+Pint
 IPA
 112
 50
 8
 0
-ImperialPaint
+ImperialPint
 Stout
 113
 8
