@@ -2,7 +2,7 @@
 //change funcs
 #include "Inventory.h"
 #include "Sales.h"
-
+#include "GeneralFunctions.h"
 
 int	 writeStringToFile(char* str, FILE* fp, const char* msg);
 int	 writeCharsToFile(char* arr, int size, FILE* fp, const char* msg);
@@ -14,8 +14,10 @@ int	  readCharsFromFile(char* arr, int size, FILE* fp, const char* msg);
 int	  readIntFromFile(int* val, FILE* fp, const char* msg);
 int   readDoubleFromFile(double* pVal, FILE* fp, const char* msg);
 
+
+
 void  readInventoryFromFile(Inventory* pInventory, const char* filename);
-int initInventoryFromTextFile(Inventory* pInventory, const char* filename);
+int   initInventoryFromTextFile(Inventory* pInventory, const char* filename);
 
 ///customer text files ///
 

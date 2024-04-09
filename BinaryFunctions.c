@@ -82,7 +82,7 @@ int writeWhiskeyArrToBFile(FILE* pFile, const Whiskey* pWhiskeyArr, const int co
 
 int writeWineToBFile(FILE* pFile, const Wine* pWine)
 {
-    int len = strlen(pWine->brand) + 1;
+    int len =(int)strlen(pWine->brand) + 1;
     if (fwrite(&len, sizeof(int), 1, pFile) != 1) return 0;
     if (fwrite(pWine->brand, sizeof(char), len, pFile) != len) return 0;
     if (fwrite(&pWine->itemSerial, sizeof(int), 1, pFile) != 1) return 0;
@@ -191,59 +191,63 @@ int readWineArrFromBFile(FILE* pFile, Wine* pWineArr, const int count)
 
 int initInventoryFromBinaryFile(Inventory* pInventory, const char* filename)
 {
-    FILE* pFile = fopen(filename, "rb");
-    if (!pFile) {
+    FILE* fp = fopen(filename, "rb");
+
+    if (!fp)
+    {
         printf("Failed to open file: %s\n", filename);
         return 0;  // Return 0 to indicate failure
     }
+    //CHECK_PRINT_RETURN_0(fp, "Failed to open file: %s\n", filename);
 
     // Read beer array
-    if (fread(&pInventory->beersCount, sizeof(int), 1, pFile) != 1) {
-        fclose(pFile);
-        return 0;  // Return 0 to indicate failure
+    if (fread(&pInventory->beersCount, sizeof(int), 1, fp) != 1) 
+    {
+        CLOSE_FILE_RETURN_0(fp); // Return 0 to indicate failure
     }
     pInventory->beerArray = (Beer*)malloc(pInventory->beersCount * sizeof(Beer));
-    if (!pInventory->beerArray) {
-        fclose(pFile);
-        return 0;  // Return 0 to indicate failure
+    if (!pInventory->beerArray)
+    {
+        CLOSE_FILE_RETURN_0(fp);  // Return 0 to indicate failure
     }
-    if (!readBeerArrFromBFile(pFile, pInventory->beerArray, pInventory->beersCount)) {
-        fclose(pFile);
-        return 0;  // Return 0 to indicate failure
+    if (!readBeerArrFromBFile(fp, pInventory->beerArray, pInventory->beersCount)) 
+    {
+        CLOSE_FILE_RETURN_0(fp);  // Return 0 to indicate failure
     }
 
     // Read whiskey array
-    if (fread(&pInventory->whiskeysCount, sizeof(int), 1, pFile) != 1) {
-        fclose(pFile);
-        return 0;  // Return 0 to indicate failure
+    if (fread(&pInventory->whiskeysCount, sizeof(int), 1, fp) != 1)
+    {
+        CLOSE_FILE_RETURN_0(fp); // Return 0 to indicate failure
     }
     pInventory->whiskeyArray = (Whiskey*)malloc(pInventory->whiskeysCount * sizeof(Whiskey));
-    if (!pInventory->whiskeyArray) {
-        fclose(pFile);
-        return 0;  // Return 0 to indicate failure
+    if (!pInventory->whiskeyArray) 
+    {
+        CLOSE_FILE_RETURN_0(fp);  // Return 0 to indicate failure
     }
-    if (!readWhiskeyArrFromBFile(pFile, pInventory->whiskeyArray, pInventory->whiskeysCount)) {
-        fclose(pFile);
-        return 0;  // Return 0 to indicate failure
+    if (!readWhiskeyArrFromBFile(fp, pInventory->whiskeyArray, pInventory->whiskeysCount))
+    {
+        CLOSE_FILE_RETURN_0(fp); // Return 0 to indicate failure
     }
 
     // Read wine array
-    if (fread(&pInventory->winesCount, sizeof(int), 1, pFile) != 1) {
-        fclose(pFile);
-        return 0;  // Return 0 to indicate failure
+    if (fread(&pInventory->winesCount, sizeof(int), 1, fp) != 1) 
+    {
+        CLOSE_FILE_RETURN_0(fp);  // Return 0 to indicate failure
     }
     pInventory->wineArray = (Wine*)malloc(pInventory->winesCount * sizeof(Wine));
-    if (!pInventory->wineArray) {
-        fclose(pFile);
-        return 0;  // Return 0 to indicate failure
+    if (!pInventory->wineArray)
+    {
+        CLOSE_FILE_RETURN_0(fp);  // Return 0 to indicate failure
     }
-    if (!readWineArrFromBFile(pFile, pInventory->wineArray, pInventory->winesCount)) {
-        fclose(pFile);
-        return 0;  // Return 0 to indicate failure
+    if (!readWineArrFromBFile(fp, pInventory->wineArray, pInventory->winesCount))
+    {
+        CLOSE_FILE_RETURN_0(fp);  // Return 0 to indicate failure
     }
 
-    fclose(pFile);
-    return 1;  // Return 1 to indicate success
+   /* fclose(fp);
+    return 1; */
+    CLOSE_FILE_RETURN_1(fp);// Return 1 to indicate success
 }
 
 
@@ -251,45 +255,43 @@ int initInventoryFromBinaryFile(Inventory* pInventory, const char* filename)
 
 int writeCustomerListToBFile(const Sales* pSales, FILE* fileName)
 {
-    FILE* pFile = fopen(fileName, "wb");
-    if (!pFile)
+    FILE* fp = fopen(fileName, "wb");
+    /*if (!fp)
     {
         printf("Error opening file for writing customer list.\n");
         return 0;
-    }
+    }*/
+    CHECK_PRINT_RETURN_0(fp, "Error opening file for writing customer list.")
 
     int count = L_length(&pSales->customersList) - 1;
-    if (!writeIntToFile(count, pFile, "Error writing customer count"))
+    if (!writeIntToFile(count, fp, "Error writing customer count"))
     {
-        fclose(pFile);
-        return 0;
+        CLOSE_FILE_RETURN_0(fp);
     }
 
     NODE* pNode = pSales->customersList.head.next;
     while (pNode != NULL)
     {
         Customer* pCustomer = (Customer*)pNode->key;
-        if (!writeStringToFile(pCustomer->name, pFile, "Error writing customer name"))
+        if (!writeStringToFile(pCustomer->name, fp, "Error writing customer name"))
         {
-            fclose(pFile);
-            return 0;
+            CLOSE_FILE_RETURN_0(fp);
         }
-        if (!writeDoubleToFile(pCustomer->totalSpent, pFile, "Error writing customer total spent"))
+        if (!writeDoubleToFile(pCustomer->totalSpent, fp, "Error writing customer total spent"))
         {
-            fclose(pFile);
-            return 0;
+            CLOSE_FILE_RETURN_0(fp);
         }
-        if (!writeIntToFile(pCustomer->type, pFile, "Error writing customer type"))
+        if (!writeIntToFile(pCustomer->type, fp, "Error writing customer type"))
         {
-            fclose(pFile);
-            return 0;
+            CLOSE_FILE_RETURN_0(fp);
         }
 
         pNode = pNode->next;
     }
 
-    fclose(pFile);
-    return 1;
+    /*fclose(fp);
+    return 1;*/
+    CLOSE_FILE_RETURN_1(fp);
 }
 
 
@@ -298,18 +300,19 @@ int writeCustomerListToBFile(const Sales* pSales, FILE* fileName)
 
 int readCustomerListFromBFile(Sales* pSales, const FILE* fileName)
 {
-    FILE* pFile = fopen(fileName, "rb");
-    if (!pFile)
+    FILE* fp = fopen(fileName, "rb");
+
+   /* if (!fp)
     {
         printf("Error opening file for reading customer list.\n");
         return 0;
-    }
+    }*/
+    CHECK_PRINT_RETURN_0(fp, "Error opening file for reading customer list.");
 
     int count;
-    if (!readIntFromFile(&count, pFile, "Error reading customer count"))
+    if (!readIntFromFile(&count, fp, "Error reading customer count"))
     {
-        fclose(pFile);
-        return 0;
+        CLOSE_FILE_RETURN_0(fp);
     }
 
     L_init(&pSales->customersList);
@@ -319,39 +322,35 @@ int readCustomerListFromBFile(Sales* pSales, const FILE* fileName)
         Customer* pCustomer = (Customer*)malloc(sizeof(Customer));
         if (!pCustomer)
         {
-            fclose(pFile);
-            return 0;
+            CLOSE_FILE_RETURN_0(fp);
         }
 
-        pCustomer->name = readStringFromFile(pFile, "Error reading customer name");
+        pCustomer->name = readStringFromFile(fp, "Error reading customer name");
         if (!pCustomer->name)
         {
             free(pCustomer);
-            fclose(pFile);
-            return 0;
+            CLOSE_FILE_RETURN_0(fp);
         }
 
 
 
         //double totalSpent;
-        if (!readDoubleFromFile(&pCustomer->totalSpent, pFile, "Error reading customer total spent"))
+        if (!readDoubleFromFile(&pCustomer->totalSpent, fp, "Error reading customer total spent"))
         {
             free(pCustomer->name);
             free(pCustomer);
-            fclose(pFile);
-            return 0;
+            CLOSE_FILE_RETURN_0(fp);
         }
         //pCustomer->totalSpent = ;
 
 
 
         int type;
-        if (!readIntFromFile(&type, pFile, "Error reading customer type"))
+        if (!readIntFromFile(&type, fp, "Error reading customer type"))
         {
             free(pCustomer->name);
             free(pCustomer);
-            fclose(pFile);
-            return 0;
+            CLOSE_FILE_RETURN_0(fp);
         }
         pCustomer->type = (eCustomerType)type;
 
@@ -370,85 +369,15 @@ int readCustomerListFromBFile(Sales* pSales, const FILE* fileName)
         }
     }
 
-    fclose(pFile);
-    return 1;
+    /*fclose(fp);
+    return 1;*/
+    CLOSE_FILE_RETURN_1(fp);
 }
 
 
 
 
 //// reservation///
-
-//// Function to load reservations from a binary file
-//int loadReservationsFromBinaryFile(Sales* pSales, const char* filename)
-//{
-//    FILE* file = fopen(filename, "rb");
-//    if (file == NULL)
-//    {
-//        printf("Failed to open file: %s\n", filename);
-//        return 0;
-//    }
-//
-//    // Read the number of reservations
-//    int count;
-//    fread(&count, sizeof(int), 1, file);
-//
-//    // Allocate memory for the reservation array
-//    pSales->reservationArray = (Reservation**)malloc(count * sizeof(Reservation*));
-//    if (pSales->reservationArray == NULL)
-//    {
-//        printf("Memory allocation failed for reservation array.\n");
-//        fclose(file);
-//        return 0;
-//    }
-//
-//    // Read each reservation from the file
-//    for (int i = 0; i < count; i++)
-//    {
-//        Reservation* reservation = (Reservation*)malloc(sizeof(Reservation));
-//        if (reservation == NULL)
-//        {
-//            printf("Memory allocation failed for reservation.\n");
-//            fclose(file);
-//            return 0;
-//        }
-//
-//        // Read reservation data from the file
-//        fread(reservation, sizeof(Reservation), 1, file);
-//        // Read other reservation fields as needed
-//
-//        pSales->reservationArray[i] = reservation;
-//    }
-//
-//    pSales->reservationCount = count;
-//    fclose(file);
-//    return 1;
-//}
-//
-//// Function to save reservations to a binary file
-//int saveReservationsToBinaryFile(const Sales* pSales, const char* filename)
-//{
-//    FILE* file = fopen(filename, "wb");
-//    if (file == NULL)
-//    {
-//        printf("Failed to open file: %s\n", filename);
-//        return 0;
-//    }
-//
-//    // Write the number of reservations
-//    fwrite(&pSales->reservationCount, sizeof(int), 1, file);
-//
-//    // Write each reservation to the file
-//    for (int i = 0; i < pSales->reservationCount; i++)
-//    {
-//        Reservation* reservation = pSales->reservationArray[i];
-//        fwrite(reservation, sizeof(Reservation), 1, file);
-//        // Write other reservation fields as needed
-//    }
-//
-//    fclose(file);
-//    return 1;
-//}
 
 
 
@@ -469,14 +398,6 @@ void saveReservationToBinaryFile(const Reservation* reservation, FILE* file)
     int itemCount = L_length(&reservation->purchasedItems)-1;//-1
     fwrite(&itemCount, sizeof(int), 1, file);
 
-
-   /* NODE* pNode = reservation->purchasedItems.head.next;
-    while (pNode != NULL)
-    {
-        PurchasedItem* item = (PurchasedItem*)pNode->key;
-        fwrite(item, sizeof(PurchasedItem), 1, file);
-        pNode = pNode->next;
-    }*/
 
     NODE* pNode = reservation->purchasedItems.head.next;
     while (pNode != NULL)
@@ -503,6 +424,7 @@ Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file)
         return NULL;
     }
 
+
     // Read reservation data from the file
     fread(&reservation->ReservationCode, sizeof(int), 1, file);
 
@@ -528,14 +450,7 @@ Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file)
     L_init(&reservation->purchasedItems);
 
 
-    /*for (int j = 0; j < itemCount; j++)
-    {
-        PurchasedItem* item = (PurchasedItem*)malloc(sizeof(PurchasedItem));
-        fread(item, sizeof(PurchasedItem), 1, file);
-        L_insert(&reservation->purchasedItems, item);
-    }
-
-    return reservation;*/
+   
 
 
     for (int j = 0; j < itemCount; j++)
@@ -560,134 +475,74 @@ Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file)
 
 
 
-//// Function to load a single reservation from a binary file
-//Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file)
-//{
-//    Reservation* reservation = (Reservation*)malloc(sizeof(Reservation));
-//    if (reservation == NULL)
-//    {
-//        printf("Memory allocation failed for reservation.\n");
-//        return NULL;
-//    }
-//
-//    // Read reservation data from the file
-//    fread(&reservation->ReservationCode, sizeof(int), 1, file);
-//
-//    // Read customer name
-//    int nameLength;
-//    fread(&nameLength, sizeof(int), 1, file);
-//    char* customerName = (char*)malloc(nameLength * sizeof(char));
-//    if (customerName == NULL)
-//    {
-//        printf("Memory allocation failed for customer name.\n");
-//        free(reservation);
-//        return NULL;
-//    }
-//    fread(customerName, sizeof(char), nameLength, file);
-//
-//    // Find the customer by name
-//    reservation->customer = findCustomerByName(pSales, customerName);
-//    if (reservation->customer == NULL)
-//    {
-//        printf("Customer not found: %s\n", customerName);
-//        free(customerName);
-//        free(reservation);
-//        return NULL;
-//    }
-//    free(customerName);
-//
-//    // Read customer type
-//    fread(&reservation->customer->type, sizeof(eCustomerType), 1, file);
-//
-//    // Read date
-//    fread(&reservation->date, sizeof(Date), 1, file);
-//
-//    fread(&reservation->priceOfOrder, sizeof(double), 1, file);
-//
-//    // Read purchased items
-//    int itemCount;
-//    fread(&itemCount, sizeof(int), 1, file);
-//    L_init(&reservation->purchasedItems);
-//    for (int j = 0; j < itemCount; j++)
-//    {
-//        PurchasedItem* item = (PurchasedItem*)malloc(sizeof(PurchasedItem));
-//        if (item == NULL)
-//        {
-//            printf("Memory allocation failed for purchased item.\n");
-//            freeReservationPtr(reservation);
-//            return NULL;
-//        }
-//        fread(item, sizeof(PurchasedItem), 1, file);
-//        L_insert(&reservation->purchasedItems, item);
-//    }
-//
-//    return reservation;
-//}
-
 
 
 // Function to load reservations from a binary file
 int loadReservationsArrayFromBinaryFile(Sales* pSales, const char* filename)
 {
-    FILE* file = fopen(filename, "rb");
-    if (file == NULL)
+    FILE* fp = fopen(filename, "rb");
+    if (fp == NULL)
     {
         printf("Failed to open file: %s\n", filename);
         return 0;
     }
+   // CHECK_PRINT_RETURN_0(fp, "Failed to open file: %s", filename);
 
     // Read the number of reservations
     int count;
-    fread(&count, sizeof(int), 1, file);
+    fread(&count, sizeof(int), 1, fp);
 
     // Allocate memory for the reservation array
     pSales->reservationArray = (Reservation**)malloc(count * sizeof(Reservation*));
     if (pSales->reservationArray == NULL)
     {
         printf("Memory allocation failed for reservation array.\n");
-        fclose(file);
-        return 0;
+        CLOSE_FILE_RETURN_0(fp)
     }
 
     // Read each reservation from the file
     for (int i = 0; i < count; i++)
     {
-        Reservation* reservation = loadReservationFromBinaryFile(pSales, file);
+        Reservation* reservation = loadReservationFromBinaryFile(pSales, fp);
         if (reservation == NULL)
         {
-            fclose(file);
-            return 0;
+            CLOSE_FILE_RETURN_0(fp)
         }
         pSales->reservationArray[i] = reservation;
     }
 
     pSales->reservationCount = count;
-    fclose(file);
-    return 1;
+    /*fclose(fp);
+    return 1;*/
+    CLOSE_FILE_RETURN_1(fp);
 }
+
+
+
 
 // Function to save reservations to a binary file
 int saveReservationsArrayToBinaryFile(const Sales* pSales, const char* filename)
 {
-    FILE* file = fopen(filename, "wb");
-    if (file == NULL)
+    FILE* fp = fopen(filename, "wb");
+    if (fp == NULL)
     {
         printf("Failed to open file: %s\n", filename);
         return 0;
     }
-
+    //CHECK_PRINT_RETURN_0(fp, "Failed to open file: %s", filename);
     // Write the number of reservations
-    fwrite(&pSales->reservationCount, sizeof(int), 1, file);
+    fwrite(&pSales->reservationCount, sizeof(int), 1, fp);
 
     // Write each reservation to the file
     for (int i = 0; i < pSales->reservationCount; i++)
     {
         Reservation* reservation = pSales->reservationArray[i];
-        saveReservationToBinaryFile(reservation, file);
+        saveReservationToBinaryFile(reservation, fp);
     }
 
-    fclose(file);
-    return 1;
+   /* fclose(fp);
+    return 1;*/
+    CLOSE_FILE_RETURN_1(fp);
 }
 
 

@@ -240,6 +240,8 @@ int main() {
     printInventory(&inventory);
     printAllCustomers(&sales);
     printReservation(sales.reservationArray[0]);
+    printReservationsArr(&sales,sales.reservationCount);
+     //addNewReservationToArray2(&sales,&inventory,);
 
 
 

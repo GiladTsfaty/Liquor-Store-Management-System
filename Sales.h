@@ -33,7 +33,6 @@ void        initSales(Sales* pSales, Inventory* pInventory);
 void        freeSales(Sales* pSales);
 
 
-/// <summary>
 /// Client funcs
 int         addNewCustomer(Sales* pSales);
 Customer*   initCustomer(Sales* pSales);
@@ -41,26 +40,19 @@ Customer*   findCustomerByName(const Sales* pSales, const char* name);
 int         uniqeNameCheck(const char* name, const Sales* pSales);
 int         customerCompare(const void* data1, const void* data2);//name comperator
 //int         pickCustomerFromList(const Sales* pSales);//print all clients 
-
 void        printAllCustomers(const Sales* pSales);
-
 int		    insertNewCustomerToList(LIST* pList, Customer* pCustomer);
 
 
 
-/// <summary>
+
 /// /Res funcs
  
 //void         initReservationArray();
-
 Customer*   getCustomerForReservation(Sales* pSales);
-
-
 //int         addNewReservationToArray(Sales* pSales, Customer* pCustomer, char* itemsList, int itemsPrice);
 int         addNewReservationToArray2(Sales* pSales, Inventory* pInventory,Customer* pCustomer);
-
 void        printReservationsArr(struct Reservation** array ,int size);
-
 void        freeReservationsArr(struct Reservation** array, int size);
 
 

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "GeneralFunctions.h"
 #include "BinaryFunctions.h"
 #include "Filefunctions.h"
 #include "General.h"
@@ -64,21 +65,27 @@ void readLine(FILE* file, char* buffer, int bufferSize) {
         buffer[0] = '\0'; // Set the buffer to an empty string
     }
 }
+
+
+
+
 int initInventoryFromTextFile(Inventory* pInventory, const char* filename)
 {
     FILE* fp = fopen(filename, "r");
-    if (!fp) {
+    if (!fp)
+    {
         perror("Unable to open file");
         return 0;
     }
+    //CHECK_PRINT_RETURN_0(fp,"Unable to open file" );
 
     char line[256];
     int itemCount;
 
     // Read Beers
-    if (fscanf(fp, "%d\n", &itemCount) != 1) {
-        fclose(fp);
-        return 0;
+    if (fscanf(fp, "%d\n", &itemCount) != 1)
+    {
+        CLOSE_FILE_RETURN_0(fp);
     }
     pInventory->beerArray = (Beer*)malloc(itemCount * sizeof(Beer));
     pInventory->beersCount = itemCount;
@@ -93,8 +100,7 @@ int initInventoryFromTextFile(Inventory* pInventory, const char* filename)
                    &pInventory->beerArray[i].amountAvailable,
                    &pInventory->beerArray[i].price,
                    &pInventory->beerArray[i].numOfSolds) != 4) {
-            fclose(fp);
-            return 0;
+            CLOSE_FILE_RETURN_0(fp);
         }
 
         readLine(fp, line, sizeof(line));
@@ -103,8 +109,7 @@ int initInventoryFromTextFile(Inventory* pInventory, const char* filename)
 
     // Read Whiskeys
     if (fscanf(fp, "%d\n", &itemCount) != 1) {
-        fclose(fp);
-        return 0;
+        CLOSE_FILE_RETURN_0(fp);
     }
     pInventory->whiskeyArray = (Whiskey*)malloc(itemCount * sizeof(Whiskey));
     pInventory->whiskeysCount = itemCount;
@@ -119,8 +124,7 @@ int initInventoryFromTextFile(Inventory* pInventory, const char* filename)
                    &pInventory->whiskeyArray[i].amountAvailable,
                    &pInventory->whiskeyArray[i].price,
                    &pInventory->whiskeyArray[i].numOfSolds) != 4) {
-            fclose(fp);
-            return 0;
+            CLOSE_FILE_RETURN_0(fp);
         }
 
         readLine(fp, line, sizeof(line));
@@ -128,9 +132,9 @@ int initInventoryFromTextFile(Inventory* pInventory, const char* filename)
     }
 
     // Read Wines
-    if (fscanf(fp, "%d\n", &itemCount) != 1) {
-        fclose(fp);
-        return 0;
+    if (fscanf(fp, "%d\n", &itemCount) != 1) 
+    {
+        CLOSE_FILE_RETURN_0(fp);
     }
     pInventory->wineArray = (Wine*)malloc(itemCount * sizeof(Wine));
     pInventory->winesCount = itemCount;
@@ -145,25 +149,26 @@ int initInventoryFromTextFile(Inventory* pInventory, const char* filename)
                    &pInventory->wineArray[i].amountAvailable,
                    &pInventory->wineArray[i].price,
                    &pInventory->wineArray[i].numOfSolds) != 4) {
-            fclose(fp);
-            return 0;
+            CLOSE_FILE_RETURN_0(fp);
         }
 
         readLine(fp, line, sizeof(line));
         parseWineType(line, &pInventory->wineArray[i].wType);
     }
 
-    fclose(fp);
-    return 1;
+    /*fclose(fp);
+    return 1;*/
+    CLOSE_FILE_RETURN_1(fp);
 }
 
 void readInventoryFromFile(Inventory* pInventory, const char* filename) {
     FILE* fp = fopen(filename, "r");
-    if (!fp) {
+    if (!fp) 
+    {
         perror("Unable to open file");
         return;
     }
-
+    
     char line[256];
     int itemCount;
 
@@ -336,11 +341,11 @@ int readDoubleFromFile(double* pVal, FILE* fp, const char* msg)
     if (fread(pVal, sizeof(double), 1, fp) != 1)
     {
         puts(msg);
-        fclose(fp);
-        return 0;
+        CLOSE_FILE_RETURN_0(fp);
     }
     return 1;
 }
+
 
 
 
@@ -408,11 +413,12 @@ int initCustomerListFromTextFile(Sales* pSales, const char* fileName)
 {
     FILE* fp;
     fp = fopen(fileName, "r");
-    if (!fp)
+    /*if (!fp)
     {
         printf("Error opening customer list file\n");
         return 0;
-    }
+    }*/
+    CHECK_PRINT_RETURN_0(fp,"Error opening customer list file");
 
     L_init(&pSales->customersList);//&
 
@@ -433,47 +439,49 @@ int initCustomerListFromTextFile(Sales* pSales, const char* fileName)
         if (!loadCustomerFromTextFile(pCustomer, fp))
         {
             printf("Error loading customer from file\n");
-            fclose(fp);
-            return 0;
+            CLOSE_FILE_RETURN_0(fp);
         }
 
         insertNewCustomerToList(&pSales->customersList, pCustomer);
 
     }
 
-    fclose(fp);
-    return 1;
+   /* fclose(fp);
+    return 1;*/
+    CLOSE_FILE_RETURN_1(fp);
 }
 
 int saveCustomerListToTextFile(const Sales* pSales, const char* fileName)
 {
 
 
-    FILE* file;
+    FILE* fp;
 
-    file = fopen(fileName, "w"); //open to write 
-    if (!file)
+    fp = fopen(fileName, "w"); //open to write 
+    /*if (!fp)
     {
         printf("cant open file to write in \n");
         return 0;
-    }
+    }*/
+    CHECK_PRINT_RETURN_0(fp, "cant open file to write in ");
 
-    fprintf(file, "%d\n", L_length(&(pSales->customersList)) - 1);// first line num of clients/length of list
+
+    fprintf(fp, "%d\n", L_length(&(pSales->customersList)) - 1);// first line num of clients/length of list
 
     NODE* pNode = (pSales->customersList.head.next); //first member of list 
     while (pNode) {
-        if (!saveCustomerToFile(pNode->key, file))
+        if (!saveCustomerToFile(pNode->key, fp))
         {
             printf("cant write customer to file\n");
-            fclose(file);
-            return 0;
+            CLOSE_FILE_RETURN_0(fp);
         }
         pNode = pNode->next;
 
 
     }
-    fclose(file);
-    return 1; //success
+   /* fclose(fp);
+    return 1;*/
+    CLOSE_FILE_RETURN_1(fp);//success
 
 
 }
@@ -483,142 +491,7 @@ int saveCustomerListToTextFile(const Sales* pSales, const char* fileName)
 
 
 ///resevation///
-//
-//// Function to load reservations from a text file
-//int loadReservationsFromTextFile(Sales* pSales, const char* filename)
-//{
-//    FILE* file = fopen(filename, "r");
-//    if (file == NULL)
-//    {
-//        printf("Failed to open file: %s\n", filename);
-//        return 0;
-//    }
-//
-//    // Read the number of reservations
-//    int count;
-//    fscanf(file, "%d", &count);
-//
-//    // Allocate memory for the reservation array
-//    pSales->reservationArray = (Reservation**)malloc(count * sizeof(Reservation*));
-//    if (pSales->reservationArray == NULL)
-//    {
-//        printf("Memory allocation failed for reservation array.\n");
-//        fclose(file);
-//        return 0;
-//    }
-//
-//    // Read each reservation from the file
-//    for (int i = 0; i < count; i++)
-//    {
-//        Reservation* reservation = (Reservation*)malloc(sizeof(Reservation));
-//        if (reservation == NULL)
-//        {
-//            printf("Memory allocation failed for reservation.\n");
-//            fclose(file);
-//            return 0;
-//        }
-//
-//        // Read reservation data from the file
-//        fscanf(file, "%d %d %lf", &reservation->ReservationCode, &reservation->customer->type, &reservation->priceOfOrder);
-//        // Read other reservation fields as needed
-//
-//        pSales->reservationArray[i] = reservation;
-//    }
-//
-//    pSales->reservationCount = count;
-//    fclose(file);
-//    return 1;
-//}
-//
-//// Function to save reservations to a text file
-//int saveReservationsToTextFile(const Sales* pSales, const char* filename)
-//{
-//    FILE* file = fopen(filename, "w");
-//    if (file == NULL)
-//    {
-//        printf("Failed to open file: %s\n", filename);
-//        return 0;
-//    }
-//
-//    // Write the number of reservations
-//    fprintf(file, "%d\n", pSales->reservationCount);
-//
-//    // Write each reservation to the file
-//    for (int i = 0; i < pSales->reservationCount; i++)
-//    {
-//        Reservation* reservation = pSales->reservationArray[i];
-//        fprintf(file, "%d %d %lf\n", reservation->ReservationCode, reservation->customer->type, reservation->priceOfOrder);
-//        // Write other reservation fields as needed
-//    }
-//
-//    fclose(file);
-//    return 1;
-//}
 
-
-
-//
-//// Function to save a single reservation to a file
-//void saveReservationToFile(const Reservation* reservation, FILE* file)
-//{
-//    fprintf(file, "%d\n", reservation->ReservationCode);
-//    fprintf(file, "%s\n", reservation->customer->name);
-//    fprintf(file, "%d\n", reservation->customer->type);
-//    fprintf(file, "%d %d %d\n", reservation->date.day, reservation->date.month, reservation->date.year);
-//    fprintf(file, "%.2f\n", reservation->priceOfOrder);
-//
-//    // Save purchased items
-//    int itemCount = L_length(&reservation->purchasedItems)-1;//-1?
-//    fprintf(file, "%d\n", itemCount);
-//    NODE* pNode = reservation->purchasedItems.head.next;
-//    while (pNode != NULL)
-//    {
-//        PurchasedItem* item = (PurchasedItem*)pNode->key;
-//        fprintf(file, "%d %d %.2f\n", item->serial, item->amount, item->cost);
-//        pNode = pNode->next;
-//    }
-//}
-//
-//// Function to load a single reservation from a file
-//Reservation* loadReservationFromFile(Sales* pSales, FILE* file)
-//{
-//    Reservation* reservation = (Reservation*)malloc(sizeof(Reservation));
-//    if (reservation == NULL)
-//    {
-//        printf("Memory allocation failed for reservation.\n");
-//        return NULL;
-//    }
-//
-//    // Read reservation data from the file
-//    fscanf(file, "%d\n", &reservation->ReservationCode);
-//
-//    // Read customer name
-//    char customerName[MAX_STR_LEN];
-//    fgets(customerName, MAX_STR_LEN, file);
-//    customerName[strcspn(customerName, "\n")] = '\0';  // Remove trailing newline character
-//    reservation->customer = findCustomerByName(pSales, customerName);
-//
-//    // Read customer type
-//    fscanf(file, "%d\n", &reservation->customer->type);
-//
-//    // Read date
-//    fscanf(file, "%d %d %d\n", &reservation->date.day, &reservation->date.month, &reservation->date.year);
-//
-//    fscanf(file, "%lf\n", &reservation->priceOfOrder);
-//
-//    // Read purchased items
-//    int itemCount;
-//    fscanf(file, "%d\n", &itemCount);
-//    L_init(&reservation->purchasedItems);
-//    for (int j = 0; j < itemCount; j++)
-//    {
-//        PurchasedItem* item = (PurchasedItem*)malloc(sizeof(PurchasedItem));
-//        fscanf(file, "%d %d %lf\n", &item->serial, &item->amount, &item->cost);
-//        L_insert(&reservation->purchasedItems, item);
-//    }
-//
-//    return reservation;
-//}
 
 
 
@@ -702,15 +575,6 @@ Reservation* loadReservationFromFile(Sales* pSales, FILE* file)
     L_init(&reservation->purchasedItems);
 
 
-   /* for (int j = 0; j < itemCount; j++)
-    {
-        PurchasedItem* item = (PurchasedItem*)malloc(sizeof(PurchasedItem));
-        fscanf(file, "%d %d %lf\n", &item->serial, &item->amount, &item->cost);
-        L_insert(&reservation->purchasedItems, item);
-    }
-
-    return reservation;*/
-
     for (int j = 0; j < itemCount; j++)
     {
         PurchasedItem* item = (PurchasedItem*)malloc(sizeof(PurchasedItem));
@@ -729,61 +593,65 @@ Reservation* loadReservationFromFile(Sales* pSales, FILE* file)
 // Function to load reservations from a text file
 int loadReservationsArrayFromTextFile(Sales* pSales, const char* filename)
 {
-    FILE* file = fopen(filename, "r");
-    if (file == NULL)
+    FILE* fp = fopen(filename, "r");
+    if (fp == NULL)
     {
         printf("Failed to open file: %s\n", filename);
         return 0;
     }
+    //CHECK_PRINT_RETURN_0(fp, "Failed to open file: %s", filename);
 
     // Read the number of reservations
     int count;
-    fscanf(file, "%d\n", &count);
+    fscanf(fp, "%d\n", &count);
 
     pSales->reservationArray = (struct Reservation **) (Reservation **) malloc(count * sizeof(Reservation *));
-    if (pSales->reservationArray == NULL) {
+    if (pSales->reservationArray == NULL) 
+    {
         printf("Memory allocation failed for reservation array.\n");
-        fclose(file);
-        return 0;
+        CLOSE_FILE_RETURN_0(fp);
     }
 
 // Read each reservation from the file
     for (int i = 0; i < count; i++) {
-        Reservation* reservation = loadReservationFromFile(pSales, file);
-        if (reservation == NULL) {
-            fclose(file);
-            return 0;
+        Reservation* reservation = loadReservationFromFile(pSales, fp);
+        if (reservation == NULL)
+        {
+            CLOSE_FILE_RETURN_0(fp);
         }
         pSales->reservationArray[i] = (struct Reservation *) reservation;
     }
 
     pSales->reservationCount = count;
-    fclose(file);
-    return 1;
+   /* fclose(fp);
+    return 1;*/
+    CLOSE_FILE_RETURN_1(fp);
 }
 
 // Function to save reservations to a text file
 int saveReservationsArrayToTextFile(const Sales* pSales, const char* filename)
 {
-    FILE* file = fopen(filename, "w");
-    if (file == NULL)
+    FILE* fp = fopen(filename, "w");
+    if (fp == NULL)
     {
         printf("Failed to open file: %s\n", filename);
         return 0;
     }
-
+   // CHECK_PRINT_RETURN_0(fp, "Failed to open file: %s", filename);
+   // 
     // Write the number of reservations
-    fprintf(file, "%d\n", pSales->reservationCount);
+    fprintf(fp, "%d\n", pSales->reservationCount);
 
     // Write each reservation to the file
     for (int i = 0; i < pSales->reservationCount; i++)
     {
         Reservation* reservation = pSales->reservationArray[i];
-        saveReservationToFile(reservation, file);
+        saveReservationToFile(reservation, fp);
     }
 
-    fclose(file);
-    return 1;
+    /*fclose(fp);
+    return 1;*/
+    CLOSE_FILE_RETURN_1(fp);
 }
 
 
@@ -808,9 +676,139 @@ int saveReservationsArrayToTextFile(const Sales* pSales, const char* filename)
 
 
 
-
-
-
+//
+//// Function to load reservations from a text file
+//int loadReservationsFromTextFile(Sales* pSales, const char* filename)
+//{
+//    FILE* file = fopen(filename, "r");
+//    if (file == NULL)
+//    {
+//        printf("Failed to open file: %s\n", filename);
+//        return 0;
+//    }
+//
+//    // Read the number of reservations
+//    int count;
+//    fscanf(file, "%d", &count);
+//
+//    // Allocate memory for the reservation array
+//    pSales->reservationArray = (Reservation**)malloc(count * sizeof(Reservation*));
+//    if (pSales->reservationArray == NULL)
+//    {
+//        printf("Memory allocation failed for reservation array.\n");
+//        fclose(file);
+//        return 0;
+//    }
+//
+//    // Read each reservation from the file
+//    for (int i = 0; i < count; i++)
+//    {
+//        Reservation* reservation = (Reservation*)malloc(sizeof(Reservation));
+//        if (reservation == NULL)
+//        {
+//            printf("Memory allocation failed for reservation.\n");
+//            fclose(file);
+//            return 0;
+//        }
+//
+//        // Read reservation data from the file
+//        fscanf(file, "%d %d %lf", &reservation->ReservationCode, &reservation->customer->type, &reservation->priceOfOrder);
+//        // Read other reservation fields as needed
+//
+//        pSales->reservationArray[i] = reservation;
+//    }
+//
+//    pSales->reservationCount = count;
+//    fclose(file);
+//    return 1;
+//}
+//
+//// Function to save reservations to a text file
+//int saveReservationsToTextFile(const Sales* pSales, const char* filename)
+//{
+//    FILE* file = fopen(filename, "w");
+//    if (file == NULL)
+//    {
+//        printf("Failed to open file: %s\n", filename);
+//        return 0;
+//    }
+//
+//    // Write the number of reservations
+//    fprintf(file, "%d\n", pSales->reservationCount);
+//
+//    // Write each reservation to the file
+//    for (int i = 0; i < pSales->reservationCount; i++)
+//    {
+//        Reservation* reservation = pSales->reservationArray[i];
+//        fprintf(file, "%d %d %lf\n", reservation->ReservationCode, reservation->customer->type, reservation->priceOfOrder);
+//        // Write other reservation fields as needed
+//    }
+//
+//    fclose(file);
+//    return 1;
+//}
+//
+//// Function to save a single reservation to a file
+//void saveReservationToFile(const Reservation* reservation, FILE* file)
+//{
+//    fprintf(file, "%d\n", reservation->ReservationCode);
+//    fprintf(file, "%s\n", reservation->customer->name);
+//    fprintf(file, "%d\n", reservation->customer->type);
+//    fprintf(file, "%d %d %d\n", reservation->date.day, reservation->date.month, reservation->date.year);
+//    fprintf(file, "%.2f\n", reservation->priceOfOrder);
+//
+//    // Save purchased items
+//    int itemCount = L_length(&reservation->purchasedItems)-1;//-1?
+//    fprintf(file, "%d\n", itemCount);
+//    NODE* pNode = reservation->purchasedItems.head.next;
+//    while (pNode != NULL)
+//    {
+//        PurchasedItem* item = (PurchasedItem*)pNode->key;
+//        fprintf(file, "%d %d %.2f\n", item->serial, item->amount, item->cost);
+//        pNode = pNode->next;
+//    }
+//}
+//
+//// Function to load a single reservation from a file
+//Reservation* loadReservationFromFile(Sales* pSales, FILE* file)
+//{
+//    Reservation* reservation = (Reservation*)malloc(sizeof(Reservation));
+//    if (reservation == NULL)
+//    {
+//        printf("Memory allocation failed for reservation.\n");
+//        return NULL;
+//    }
+//
+//    // Read reservation data from the file
+//    fscanf(file, "%d\n", &reservation->ReservationCode);
+//
+//    // Read customer name
+//    char customerName[MAX_STR_LEN];
+//    fgets(customerName, MAX_STR_LEN, file);
+//    customerName[strcspn(customerName, "\n")] = '\0';  // Remove trailing newline character
+//    reservation->customer = findCustomerByName(pSales, customerName);
+//
+//    // Read customer type
+//    fscanf(file, "%d\n", &reservation->customer->type);
+//
+//    // Read date
+//    fscanf(file, "%d %d %d\n", &reservation->date.day, &reservation->date.month, &reservation->date.year);
+//
+//    fscanf(file, "%lf\n", &reservation->priceOfOrder);
+//
+//    // Read purchased items
+//    int itemCount;
+//    fscanf(file, "%d\n", &itemCount);
+//    L_init(&reservation->purchasedItems);
+//    for (int j = 0; j < itemCount; j++)
+//    {
+//        PurchasedItem* item = (PurchasedItem*)malloc(sizeof(PurchasedItem));
+//        fscanf(file, "%d %d %lf\n", &item->serial, &item->amount, &item->cost);
+//        L_insert(&reservation->purchasedItems, item);
+//    }
+//
+//    return reservation;
+//}
 
 
 //int readCustomerListFromBFile(Sales* pSales, const FILE* fileName) 
@@ -889,17 +887,6 @@ int saveReservationsArrayToTextFile(const Sales* pSales, const char* filename)
 //
 //
 //}
-
-
-
-
-
-
-
-
-
-
-
 
 
 //
