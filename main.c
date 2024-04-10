@@ -61,8 +61,8 @@ int main()
                 printf("Error adding client\n");
             break;
         case eMakeReservation:
-            if (!addNewReservationToArray2(theShop.salesDepartment, theShop.inventory,getCustomerForReservation(theShop.salesDepartment)));//not good template
-                printf("Error making reservation\n");
+            if (!addNewReservationToArray2(theShop.salesDepartment, theShop.inventory,getCustomerForReservation(theShop.salesDepartment)))//not good template
+                    printf("Error making reservation\n");
             break;
         case eSortReservationArray:
             sortReservations(&sales);
@@ -116,6 +116,11 @@ int menu()
 	scanf("%c", &tav);
 	return option;
 }
+
+
+
+
+
 
 
 
@@ -401,3 +406,5 @@ int menu()
 //
 //}
 
+
+/////SOLDIN THE GOAT//////
