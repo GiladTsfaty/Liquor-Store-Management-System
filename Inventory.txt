@@ -4,13 +4,13 @@ GoldStar
 50
 8
 0
-Pint
+ThirdLiter
 IPA
 112
 50
 8
 0
-ImperialPint
+ThirdLiter
 Stout
 113
 8

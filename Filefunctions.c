@@ -7,8 +7,11 @@
 #include "Filefunctions.h"
 
 
-void parseBeerSize(const char* sizeStr, eBeerSize* size) {
-    if (strcmp(sizeStr, "Paint") == 0)
+void parseBeerSize(const char* sizeStr, eBeerSize* size)
+{
+    if (strcmp(sizeStr, "ThirdLiter") == 0)//this was missing
+        *size = eThirdLiter;
+    else if (strcmp(sizeStr, "Paint") == 0)
         *size = ePaint;
     else if (strcmp(sizeStr, "ImperialPaint") == 0)
         *size = eImperialPaint;
@@ -73,10 +76,10 @@ int initInventoryFromTextFile(Inventory* pInventory, const char* filename)
         return 0;
     }
     //CHECK_PRINT_RETURN_0(fp,"Unable to open file" );
-
+    
     char line[256];
     int itemCount;
-
+    
     // Read Beers
     if (fscanf(fp, "%d\n", &itemCount) != 1)
     {
@@ -89,7 +92,7 @@ int initInventoryFromTextFile(Inventory* pInventory, const char* filename)
         readLine(fp, tempBrand, sizeof(tempBrand));
         pInventory->beerArray[i].brand = (char*)malloc((strlen(tempBrand) + 1) * sizeof(char));
         strcpy(pInventory->beerArray[i].brand, tempBrand);
-
+    
         if (fscanf(fp, "%d\n%d\n%d\n%d\n",
                    &pInventory->beerArray[i].itemSerial,
                    &pInventory->beerArray[i].amountAvailable,
@@ -97,10 +100,13 @@ int initInventoryFromTextFile(Inventory* pInventory, const char* filename)
                    &pInventory->beerArray[i].numOfSolds) != 4) {
             CLOSE_FILE_RETURN_0(fp);
         }
-
+    
         readLine(fp, line, sizeof(line));
         parseBeerSize(line, &pInventory->beerArray[i].bSize);
     }
+
+
+  
 
     // Read Whiskeys
     if (fscanf(fp, "%d\n", &itemCount) != 1) {
@@ -157,6 +163,49 @@ int initInventoryFromTextFile(Inventory* pInventory, const char* filename)
 }
 
 
+
+
+int saveInventoryToTextFile(const Inventory* pInventory, const char* filename)
+{
+    FILE* fp = fopen(filename, "w");
+    /*if (fp == NULL) 
+    {
+        printf("Failed to open file: %s");
+        return 0;
+    }*/
+    CHECK_PRINT_RETURN_0(fp, "Failed to open file");
+
+    // Write Beers
+    fprintf(fp, "%d\n", pInventory->beersCount);
+    for (int i = 0; i < pInventory->beersCount; i++) {
+        const Beer* pBeer = &pInventory->beerArray[i];
+        fprintf(fp, "%s\n", pBeer->brand);
+        fprintf(fp, "%d\n%d\n%d\n%d\n", pBeer->itemSerial, pBeer->amountAvailable, pBeer->price, pBeer->numOfSolds);
+        fprintf(fp, "%s\n", BeerSizeStr[pBeer->bSize]);//!!
+    }
+
+    // Write Whiskeys
+    fprintf(fp, "%d\n", pInventory->whiskeysCount);
+    for (int i = 0; i < pInventory->whiskeysCount; i++) {
+        const Whiskey* pWhiskey = &pInventory->whiskeyArray[i];
+        fprintf(fp, "%s\n", pWhiskey->brand);
+        fprintf(fp, "%d\n%d\n%d\n%d\n", pWhiskey->itemSerial, pWhiskey->amountAvailable, pWhiskey->price, pWhiskey->numOfSolds);
+        fprintf(fp, "%s\n", WhiskeyTypeStr[pWhiskey->whiskeyType]);
+    }
+
+    // Write Wines
+    fprintf(fp, "%d\n", pInventory->winesCount);
+    for (int i = 0; i < pInventory->winesCount; i++) {
+        const Wine* pWine = &pInventory->wineArray[i];
+        fprintf(fp, "%s\n", pWine->brand);
+        fprintf(fp, "%d\n%d\n%d\n%d\n", pWine->itemSerial, pWine->amountAvailable, pWine->price, pWine->numOfSolds);
+        fprintf(fp, "%s\n", WineTypeStr[pWine->wType]);
+    }
+
+   /* fclose(fp);
+    return 1;*/
+    CLOSE_FILE_RETURN_1(fp);
+}
 
 
 
@@ -236,6 +285,11 @@ void readInventoryFromFile(Inventory* pInventory, const char* filename) {
 
     fclose(fp);
 }
+
+
+
+
+
 
 
 
