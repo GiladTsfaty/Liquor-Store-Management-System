@@ -23,6 +23,25 @@ void initShop(Shop *pShop, Inventory *pInventory, Sales *pSales, int initialBudg
     pShop->netBudget = initialBudget;
 }
 
+int saveShopToTextFile(Shop* pShop, FILE* inventoryFileName, FILE* customerFileName, FILE* reservationFileName)
+{
+    saveSalesToTextFile(pShop->salesDepartment,customerFileName,reservationFileName);
+   //saveInventoryToTextFile(pShop, inventoryFileName);
+    return 1;
+}
+
+int saveShopToBianryFile(Shop* pShop, FILE* inventoryFileName, FILE* customerFileName, FILE* reservationFileName)
+{
+    saveSalesToBinaryFile(pShop->salesDepartment, customerFileName, reservationFileName);
+    saveInventoryToBinaryFile(pShop->inventory, inventoryFileName);
+
+    return 1;
+}
+
+
+
+
+
 //void initSystemFromFiles(Shop* pShop, Sales* pSales, Inventory* pInventory)
 //{
 //    int choice;
@@ -149,6 +168,11 @@ void initSystemFromFiles(Shop* pShop, Sales* pSales, Inventory* pInventory)
     // Initialize the shop with the loaded inventory and sales
     initShop(pShop, pInventory, pSales, 0);
 }
+
+
+
+
+
 
 
 void freeShop(Shop* pShop)

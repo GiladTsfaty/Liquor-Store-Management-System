@@ -1,7 +1,8 @@
 #pragma once
 
 #include <stdio.h>
-#include "Inventory.h"
+
+
 
 # define VIP_THRESH 1000
 # define MAX_STR_LEN 255

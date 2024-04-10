@@ -1,11 +1,12 @@
 #pragma once
 
 
-
 #include "Customer.h"
 #include "Reservation.h"
 #include "Inventory.h"
 #include "list.h"
+
+
 
 
 #define ERROR 0
@@ -28,9 +29,16 @@ typedef struct
 }Sales;
 
 
-void        initSalesFromFile(Sales* pSales, const char* fileName);
+//void        initSalesFromFile(Sales* pSales, const char* fileName);
+
 void        initSales(Sales* pSales, Inventory* pInventory);
+
+int         saveSalesToTextFile(Sales* pSales, FILE* customerFileName, FILE* reservationFileName);// change to FILE*
+int         saveSalesToBinaryFile(Sales* pSales, FILE* customerFileName, FILE* reservationFileName);
+
 void        freeSales(Sales* pSales);
+
+
 
 
 /// Client funcs
@@ -39,14 +47,14 @@ Customer*   initCustomer(Sales* pSales);
 Customer*   findCustomerByName(const Sales* pSales, const char* name);
 int         uniqeNameCheck(const char* name, const Sales* pSales);
 int         customerCompare(const void* data1, const void* data2);//name comperator
-//int         pickCustomerFromList(const Sales* pSales);//print all clients 
 void        printAllCustomers(const Sales* pSales);
 int		    insertNewCustomerToList(LIST* pList, Customer* pCustomer);
 
+//int         pickCustomerFromList(const Sales* pSales);//print all clients 
 
 
 
-/// /Res funcs
+///Res funcs
  
 //void         initReservationArray();
 Customer*   getCustomerForReservation(Sales* pSales);

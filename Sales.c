@@ -9,7 +9,8 @@
 #include "GeneralFunctions.h"
 #include "Customer.h"
 
-
+#include "Filefunctions.h"
+#include "BinaryFiles.h"
 
 void initSales(Sales* pSales, Inventory* pInventory)
 {
@@ -31,6 +32,22 @@ void initSales(Sales* pSales, Inventory* pInventory)
     pSales->ReservationSortOpt = eNew;
     pSales->reservationCount = 0;
     pSales->reservationArray = NULL;
+}
+
+int saveSalesToTextFile(Sales* pSales, FILE* customerFileName, FILE* reservationFileName)
+{
+     saveCustomerListToTextFile(pSales, customerFileName);
+     saveReservationsArrayToTextFile(pSales, reservationFileName);
+            
+   
+    return 1;
+}
+
+int saveSalesToBinaryFile(Sales* pSales, FILE* customerFileName, FILE* reservationFileName)
+{
+    writeCustomerListToBFile(pSales, customerFileName);
+    saveReservationsArrayToBinaryFile(pSales, reservationFileName);
+    return 1;
 }
 
 
@@ -563,7 +580,7 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
             newItem->amount = numBottles;
             newItem->costInt = (int)cost;
             newItem->costDec = (int)((cost - newItem->costInt) * 100);
-            L_insert(&pNewReservation->purchasedItems, newItem);
+            L_insert(&pNewReservation->purchasedItems, newItem);//fix
         }
 
 

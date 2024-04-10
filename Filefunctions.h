@@ -1,8 +1,14 @@
 #pragma once
-//change funcs
-#include "Inventory.h"
+
+
 #include "Sales.h"
+#include "Inventory.h"
 #include "GeneralFunctions.h"
+#include "BinaryFunctions.h"
+#include "Wine.h"
+#include "Beer.h"
+#include "Whiskey.h"
+
 
 int	 writeStringToFile(char* str, FILE* fp, const char* msg);
 int	 writeCharsToFile(char* arr, int size, FILE* fp, const char* msg);
@@ -16,7 +22,7 @@ int   readDoubleFromFile(double* pVal, FILE* fp, const char* msg);
 
 
 
-void  readInventoryFromFile(Inventory* pInventory, const char* filename);
+void  readInventoryFromFile(Inventory* pInventory, const char* filename);// change to FILE*
 int   initInventoryFromTextFile(Inventory* pInventory, const char* filename);
 
 ///customer text files ///
@@ -27,7 +33,7 @@ int   saveCustomerToFile(Customer* pCustomer, FILE* fp);
 
 
 int   initCustomerListFromTextFile(Sales* pSales, const char* fileName);// change to FILE*
-int   saveCustomerListToTextFile(const Sales* pSales, const char* fileName);
+int   saveCustomerListToTextFile(const Sales* pSales,  char* fileName);
 
 
 
@@ -36,7 +42,8 @@ int   saveCustomerListToTextFile(const Sales* pSales, const char* fileName);
 
 void			saveReservationToFile(const Reservation* reservation, FILE* file);
 Reservation*	loadReservationFromFile(Sales* pSales, FILE* file);
-int				loadReservationsArrayFromTextFile(Sales* pSales, const char* filename);
+
+int				loadReservationsArrayFromTextFile(Sales* pSales, const char* filename);// change to FILE*
 int				saveReservationsArrayToTextFile(const Sales* pSales, const char* filename);
 
 

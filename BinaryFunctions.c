@@ -2,9 +2,8 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "Inventory.h"
+
 #include "BinaryFunctions.h"
-#include "Filefunctions.h"
 
 ///B inventory files ///
 
@@ -253,7 +252,7 @@ int initInventoryFromBinaryFile(Inventory* pInventory, const char* filename)
 
 
 
-int writeCustomerListToBFile(const Sales* pSales, FILE* fileName)
+int writeCustomerListToBFile(const Sales* pSales, const char* fileName)
 {
     FILE* fp = fopen(fileName, "wb");
     /*if (!fp)
@@ -298,7 +297,7 @@ int writeCustomerListToBFile(const Sales* pSales, FILE* fileName)
 
 
 
-int readCustomerListFromBFile(Sales* pSales, const FILE* fileName)
+int readCustomerListFromBFile(Sales* pSales, const char* fileName)
 {
     FILE* fp = fopen(fileName, "rb");
 
@@ -481,12 +480,12 @@ Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file)
 int loadReservationsArrayFromBinaryFile(Sales* pSales, const char* filename)
 {
     FILE* fp = fopen(filename, "rb");
-    if (fp == NULL)
+    /*if (fp == NULL)
     {
-        printf("Failed to open file: %s\n", filename);
+        printf("Failed to open file\n");
         return 0;
-    }
-   // CHECK_PRINT_RETURN_0(fp, "Failed to open file: %s", filename);
+    }*/
+    CHECK_PRINT_RETURN_0(fp, "Failed to open file");
 
     // Read the number of reservations
     int count;
@@ -524,12 +523,12 @@ int loadReservationsArrayFromBinaryFile(Sales* pSales, const char* filename)
 int saveReservationsArrayToBinaryFile(const Sales* pSales, const char* filename)
 {
     FILE* fp = fopen(filename, "wb");
-    if (fp == NULL)
+   /* if (fp == NULL)
     {
-        printf("Failed to open file: %s\n", filename);
+        printf("Failed to open file\n");
         return 0;
-    }
-    //CHECK_PRINT_RETURN_0(fp, "Failed to open file: %s", filename);
+    }*/
+    CHECK_PRINT_RETURN_0(fp, "Failed to open file");
     // Write the number of reservations
     fwrite(&pSales->reservationCount, sizeof(int), 1, fp);
 

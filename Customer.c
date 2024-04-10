@@ -1,14 +1,14 @@
 
-#include "Customer.h"
-#include "list.h"
-#include "GeneralFunctions.h"
 
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
 
-
+#include "Customer.h"
+#include "list.h"
+#include "Inventory.h"
+#include "GeneralFunctions.h"
 
 Customer* returnBlanckCustomer(Customer* pCustomer)
 {
