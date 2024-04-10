@@ -26,7 +26,8 @@ void initShop(Shop *pShop, Inventory *pInventory, Sales *pSales, int initialBudg
 int saveShopToTextFile(Shop* pShop, FILE* inventoryFileName, FILE* customerFileName, FILE* reservationFileName)
 {
     saveSalesToTextFile(pShop->salesDepartment,customerFileName,reservationFileName);
-   //saveInventoryToTextFile(pShop, inventoryFileName);
+    saveInventoryToTextFile(pShop->inventory, inventoryFileName);
+
     return 1;
 }
 
