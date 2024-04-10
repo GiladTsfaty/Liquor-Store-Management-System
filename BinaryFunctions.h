@@ -2,8 +2,8 @@
 
 #include <stdio.h>
 #include "Inventory.h"
-#include "Sales.h"
 #include "Filefunctions.h"
+#include "Sales.h"
 
 typedef unsigned char BYTE;
 
@@ -30,8 +30,8 @@ int readWineArrFromBFile(FILE* pFile, Wine* pWineArr, int count);
 
 
 
-int writeCustomerListToBFile(const Sales* pSales, FILE* fileName);
-int readCustomerListFromBFile(Sales* pSales, const FILE* fileName);
+int writeCustomerListToBFile(const Sales* pSales, const char* fileName);
+int readCustomerListFromBFile(Sales* pSales, const char* fileName);
 
 
 
@@ -44,7 +44,8 @@ int readCustomerListFromBFile(Sales* pSales, const FILE* fileName);
 
 void			saveReservationToBinaryFile(const Reservation* reservation, FILE* file);
 Reservation*	loadReservationFromBinaryFile(Sales* pSales, FILE* file);
-int				loadReservationsArrayFromBinaryFile(Sales* pSales, const char* filename);
+
+int				loadReservationsArrayFromBinaryFile(Sales* pSales, const char* filename);// change to FILE*
 int				saveReservationsArrayToBinaryFile(const Sales* pSales, const char* filename);
 
 /// Compress///

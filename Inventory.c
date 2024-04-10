@@ -152,21 +152,56 @@ int getUniqueSerialNumber(void* arr, int count, int minSerial, int maxSerial, in
     return serialNumber;
 }
 
+
+//
+//void freeInventory(Inventory* inventory) {
+//    // Free memory for beer brands
+//    for (int i = 0; i < inventory->beersCount; i++) 
+//    {
+//        free(inventory->beerArray[i].brand);
+//    }
+//    free(inventory->beerArray);
+//
+//    // Free memory for whiskey brands
+//    for (int i = 0; i < inventory->whiskeysCount; i++)
+//    {
+//        free(inventory->whiskeyArray[i].brand);
+//    }
+//    free(inventory->whiskeyArray);
+//
+//    // Free memory for wine brands
+//    for (int i = 0; i < inventory->winesCount; i++)
+//    {
+//        free(inventory->wineArray[i].brand);
+//    }
+//    free(inventory->wineArray);
+//}
+
+
 void freeInventory(Inventory* inventory) {
     // Free memory for beer brands
-    for (int i = 0; i < inventory->beersCount; i++) {
+    for (int i = 0; i < inventory->beersCount; i++)
+    {
+        // Initialize brand to NULL before freeing memory
+        inventory->beerArray[i].brand = NULL;
         free(inventory->beerArray[i].brand);
     }
     free(inventory->beerArray);
 
     // Free memory for whiskey brands
-    for (int i = 0; i < inventory->whiskeysCount; i++) {
+    for (int i = 0; i < inventory->whiskeysCount; i++)
+    {
+        // Initialize brand to NULL before freeing memory
+        inventory->whiskeyArray[i].brand = NULL;
         free(inventory->whiskeyArray[i].brand);
     }
     free(inventory->whiskeyArray);
 
     // Free memory for wine brands
-    for (int i = 0; i < inventory->winesCount; i++) {
+    for (int i = 0; i < inventory->winesCount; i++)
+    {
+        // Initialize brand to NULL before freeing memory
+        inventory->wineArray[i].brand = NULL;
         free(inventory->wineArray[i].brand);
     }
     free(inventory->wineArray);

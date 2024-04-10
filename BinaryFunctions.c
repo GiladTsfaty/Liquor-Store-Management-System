@@ -2,9 +2,8 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "Inventory.h"
+
 #include "BinaryFunctions.h"
-#include "Filefunctions.h"
 
 ///B inventory files ///
 
@@ -33,7 +32,7 @@ int saveInventoryToBinaryFile(const Inventory* pInventory, const char* filename)
 
 int writeBeerToBFile(FILE* pFile, const Beer* pBeer)
 {
-    int len = strlen(pBeer->brand) + 1;
+    int len = (int)strlen(pBeer->brand) + 1;
     if (fwrite(&len, sizeof(int), 1, pFile) != 1) return 0;
     if (fwrite(pBeer->brand, sizeof(char), len, pFile) != len) return 0;
     if (fwrite(&pBeer->itemSerial, sizeof(int), 1, pFile) != 1) return 0;
@@ -57,7 +56,7 @@ int writeBeerArrToBFile(FILE* pFile, const Beer* pBeerArr, const int count)
 
 int writeWhiskeyToBFile(FILE* pFile, const Whiskey* pWhiskey)
 {
-    int len = strlen(pWhiskey->brand) + 1;
+    int len = (int)strlen(pWhiskey->brand) + 1;
     if (fwrite(&len, sizeof(int), 1, pFile) != 1) return 0;
     if (fwrite(pWhiskey->brand, sizeof(char), len, pFile) != len) return 0;
     if (fwrite(&pWhiskey->itemSerial, sizeof(int), 1, pFile) != 1) return 0;
@@ -253,7 +252,7 @@ int initInventoryFromBinaryFile(Inventory* pInventory, const char* filename)
 
 
 
-int writeCustomerListToBFile(const Sales* pSales, FILE* fileName)
+int writeCustomerListToBFile(const Sales* pSales, const char* fileName)
 {
     FILE* fp = fopen(fileName, "wb");
     /*if (!fp)
@@ -298,7 +297,7 @@ int writeCustomerListToBFile(const Sales* pSales, FILE* fileName)
 
 
 
-int readCustomerListFromBFile(Sales* pSales, const FILE* fileName)
+int readCustomerListFromBFile(Sales* pSales, const char* fileName)
 {
     FILE* fp = fopen(fileName, "rb");
 
@@ -386,7 +385,7 @@ void saveReservationToBinaryFile(const Reservation* reservation, FILE* file)
 {
     fwrite(&reservation->ReservationCode, sizeof(int), 1, file);
 
-    int nameLength = strlen(reservation->customer->name) + 1;
+    int nameLength =(int) strlen(reservation->customer->name) + 1;
     fwrite(&nameLength, sizeof(int), 1, file);
     fwrite(reservation->customer->name, sizeof(char), nameLength, file);
 
@@ -481,12 +480,12 @@ Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file)
 int loadReservationsArrayFromBinaryFile(Sales* pSales, const char* filename)
 {
     FILE* fp = fopen(filename, "rb");
-    if (fp == NULL)
+    /*if (fp == NULL)
     {
-        printf("Failed to open file: %s\n", filename);
+        printf("Failed to open file\n");
         return 0;
-    }
-   // CHECK_PRINT_RETURN_0(fp, "Failed to open file: %s", filename);
+    }*/
+    CHECK_PRINT_RETURN_0(fp, "Failed to open file");
 
     // Read the number of reservations
     int count;
@@ -524,12 +523,12 @@ int loadReservationsArrayFromBinaryFile(Sales* pSales, const char* filename)
 int saveReservationsArrayToBinaryFile(const Sales* pSales, const char* filename)
 {
     FILE* fp = fopen(filename, "wb");
-    if (fp == NULL)
+   /* if (fp == NULL)
     {
-        printf("Failed to open file: %s\n", filename);
+        printf("Failed to open file\n");
         return 0;
-    }
-    //CHECK_PRINT_RETURN_0(fp, "Failed to open file: %s", filename);
+    }*/
+    CHECK_PRINT_RETURN_0(fp, "Failed to open file");
     // Write the number of reservations
     fwrite(&pSales->reservationCount, sizeof(int), 1, fp);
 
@@ -551,7 +550,7 @@ int saveReservationsArrayToBinaryFile(const Sales* pSales, const char* filename)
 int	 writeStringToCompressFile(const char* str, FILE* fp, const char* msg)
 {
 
-    if (!writeCharsToFile(str, strlen(str), fp, msg))
+    if (!writeCharsToFile(str, (int)strlen(str), fp, msg))
         return 0;
 
 
