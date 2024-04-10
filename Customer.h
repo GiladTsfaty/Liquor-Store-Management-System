@@ -28,6 +28,11 @@ Customer* returnBlanckCustomer(Customer* pCustomer)  ;
 
 int  initCustomerWithoutName(Customer* pCustomer);
 int  printCustomer( const Customer* pCustomer);
-int  getCustomerName( Customer* pCustomer);
 int  isSameCustomerName(const Customer* pCustomer1,const Customer* pCustomer2);
 void freeCustomer(Customer* pCustomer);
+
+int   getCustomerName(Customer* pCustomer);
+char* allocateRightLength(char** wordsArray, int count, int totalLength);
+void  changeNameOneWord(char* name, const char* word);
+void  changeName(char* name, int count, char** wordsArray);
+

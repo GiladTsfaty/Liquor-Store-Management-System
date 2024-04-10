@@ -57,77 +57,98 @@ void freeCustomer(Customer* pCustomer)
 
 
 
-//int		loadCustomerFromTextFile(Customer* pCustomer, FILE* fp)
-//{
+
+
+
+
+
+
+
+//
+//char* allocateRightLength(char** wordsArray, int count, int totalLength) {
+//    if (count == 1)
+//        totalLength += (int)strlen(wordsArray[0]);
+//    else {
+//        if (count % 2 == 0)
+//            totalLength += (count - 1) * 2 + 1;
+//        else
+//            totalLength += count;
+//    }
+//
+//    char* name = (char*)calloc(totalLength, sizeof(char));
+//    if (!name) {
+//        for (int i = 0; i < count; i++)
+//            free(wordsArray[i]);
+//        free(wordsArray);
+//        return NULL;
+//    }
+//
+//    return name;
+//}
+//
+//void changeNameOneWord(char* name, const char* word) {
+//    int len = (int)strlen(word);
+//    int index = 0;
+//    for (int i = 0; i < len - 1; i++) {
+//        name[index++] = toupper(word[i]);
+//        name[index++] = SEP_CHAR;
+//    }
+//
+//    name[index] = toupper(word[len - 1]);
+//}
+//
+//void changeName(char* name, int count, char** wordsArray) {
+//    for (int i = 0; i < count; i++) {
+//        wordsArray[i][0] = toupper(wordsArray[i][0]);
+//        strcat(name, wordsArray[i]);
+//        if (i != count - 1) { //not last
+//            strcat(name, " ");
+//            if (count % 2 == 0)
+//                strcat(name, " ");
+//        }
+//    }
+//}
+//
+//int getCustomerName(Customer* pCustomer) {
 //    char temp[MAX_STR_LEN];
+//    char** wordsArray = NULL;
+//    int totalLength = 0;
+//    int count = 0;
 //
-//    if (!pCustomer)
+//    while (count == 0) {
+//        printf("Enter customer name\n");
+//        myGets(temp, MAX_STR_LEN);
+//        wordsArray = splitCharsToWords(temp, &count, &totalLength);
+//    }
+//
+//    pCustomer->name = allocateRightLength(wordsArray, count, totalLength);
+//    if (!pCustomer->name) {
+//        printf("Memory allocation failed.\n");
+//        for (int i = 0; i < count; i++)
+//            free(wordsArray[i]);
+//        free(wordsArray);
 //        return 0;
+//    }
 //
-//    do {
-//        myGetsFile(temp, MAX_STR_LEN, fp);
+//    if (count == 1)
+//        changeNameOneWord(pCustomer->name, wordsArray[0]);
+//    else
+//        changeName(pCustomer->name, count, wordsArray);
 //
-//    } while (strlen(temp) < 2);
-//    pCustomer->name = getDynStr(temp);
-//
-//    do {
-//        myGetsFile(temp, MAX_STR_LEN, fp);
-//
-//    } while (strlen(temp) < 2);
-//    pCustomer->country = getDynStr(temp);
-//
-//    fscanf(fp, "%s", pCustomer->code);
+//    // Clean temp data
+//    for (int i = 0; i < count; i++)
+//        free(wordsArray[i]);
+//    free(wordsArray);
 //    return 1;
 //}
 
 
 
 
-char* allocateRightLength(char** wordsArray, int count, int totalLength) {
-    if (count == 1)
-        totalLength += (int)strlen(wordsArray[0]);
-    else {
-        if (count % 2 == 0)
-            totalLength += (count - 1) * 2 + 1;
-        else
-            totalLength += count;
-    }
+/// I changed the funcs to do - Jhon  , Jhon_Doe ///
 
-    char* name = (char*)calloc(totalLength, sizeof(char));
-    if (!name) {
-        for (int i = 0; i < count; i++)
-            free(wordsArray[i]);
-        free(wordsArray);
-        return NULL;
-    }
-
-    return name;
-}
-
-void changeNameOneWord(char* name, const char* word) {
-    int len = (int)strlen(word);
-    int index = 0;
-    for (int i = 0; i < len - 1; i++) {
-        name[index++] = toupper(word[i]);
-        name[index++] = SEP_CHAR;
-    }
-
-    name[index] = toupper(word[len - 1]);
-}
-
-void changeName(char* name, int count, char** wordsArray) {
-    for (int i = 0; i < count; i++) {
-        wordsArray[i][0] = toupper(wordsArray[i][0]);
-        strcat(name, wordsArray[i]);
-        if (i != count - 1) { //not last
-            strcat(name, " ");
-            if (count % 2 == 0)
-                strcat(name, " ");
-        }
-    }
-}
-
-int getCustomerName(Customer* pCustomer) {
+int getCustomerName(Customer* pCustomer)
+{
     char temp[MAX_STR_LEN];
     char** wordsArray = NULL;
     int totalLength = 0;
@@ -160,62 +181,43 @@ int getCustomerName(Customer* pCustomer) {
     return 1;
 }
 
+char* allocateRightLength(char** wordsArray, int count, int totalLength) 
+{
+    if (count == 1)
+        totalLength += (int)strlen(wordsArray[0]);
+    else {
+        totalLength += (count - 1); // Add space for underscores
+    }
 
+    char* name = (char*)calloc(totalLength + 1, sizeof(char)); // +1 for null terminator
+    if (!name) {
+        for (int i = 0; i < count; i++)
+            free(wordsArray[i]);
+        free(wordsArray);
+        return NULL;
+    }
 
+    return name;
+}
 
+void changeNameOneWord(char* name, const char* word)
+{
+    int len = (int)strlen(word);
+    name[0] = toupper(word[0]);
+    for (int i = 1; i < len; i++) {
+        name[i] = tolower(word[i]);
+    }
+}
 
-
-//
-//
-//int getCustomerName(Customer* pCustomer) {
-//    char input[MAX_STR_LEN];
-//    printf("Please enter your name (e.g., john doe): ");
-//    fgets(input, sizeof(input), stdin);
-//    // Remove newline character at the end if present
-//    input[strcspn(input, "\n")] = '\0';
-//
-//    // Allocate memory for the formatted name
-//    char* formattedName = (char*)calloc(strlen(input), sizeof(char));
-//    if (!formattedName)
-//    {
-//        printf("Memory allocation failed.\n");
-//        free(formattedName);
-//        return 0;
-//    }
-//
-//    // Convert to CamelCase
-//    strcpy(formattedName, input);
-//    convertToCamelCase(formattedName);
-//    // Replace spaces with underscore
-//    replaceSpacesWithUnderscore(formattedName);
-//
-//    pCustomer->name = formattedName;
-//    return 1;
-//}
-//
-//
-//
-//void convertToCamelCase(char* str) {
-//    int i;
-//    // Capitalize the first letter of each word
-//    for (i = 0; str[i] != '\0'; i++) {
-//        // If it's the first character or the previous character is a space
-//        if (i == 0 || str[i - 1] == ' ') {
-//            str[i] = toupper(str[i]);
-//        }
-//        else {
-//            str[i] = tolower(str[i]);
-//        }
-//    }
-//}
-//
-//void replaceSpacesWithUnderscore(char* str) {
-//    int i;
-//    // Replace spaces with underscore
-//    for (i = 0; str[i] != '\0'; i++) {
-//        if (str[i] == ' ') {
-//            str[i] = '_';
-//        }
-//    }
-//}
-
+void changeName(char* name, int count, char** wordsArray) {
+    for (int i = 0; i < count; i++) {
+        wordsArray[i][0] = toupper(wordsArray[i][0]);
+        for (int j = 1; j < strlen(wordsArray[i]); j++) {
+            wordsArray[i][j] = tolower(wordsArray[i][j]);
+        }
+        strcat(name, wordsArray[i]);
+        if (i != count - 1) { // Not the last word
+            strcat(name, "_");
+        }
+    }
+}

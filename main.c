@@ -221,7 +221,15 @@
 //
 //}
 
-
+//
+//i want to change the customer name
+//modify the functions so that
+//
+//if one word - capitalize the first letter all other letters lower case, like - Jhon
+//
+//if 2 or more words - capitalize the first letter of every word 
+//,all other letters lower case and put an "_" insted of eny blank space ,
+//like - Jhon_Doe
 
 
 
@@ -232,17 +240,23 @@ int main() {
     int initialBudget = 3500;
 
 
-    initShop(&shop, &inventory, &sales, initialBudget);
+    initShop(&shop, &inventory, &sales, initialBudget);//why init twice?
 
-    initSystemFromFiles(&shop, &sales, &inventory);
-//    saveReservationsArrayToBinaryFile(&sales, "BinaryReservation.bin");
+    //initSystemFromFiles(&shop, &sales, &inventory);
 
-    printInventory(&inventory);
-    printAllCustomers(&sales);
-    printReservation(sales.reservationArray[0]);
-    printReservationsArr(&sales,sales.reservationCount);
-     //addNewReservationToArray2(&sales,&inventory,);
 
+    //printInventory(&inventory);
+    //printAllCustomers(&sales);
+    //printReservation(sales.reservationArray[0]);
+    //printReservationsArr(sales.reservationArray,sales.reservationCount);
+    //addNewReservationToArray2(&sales,&inventory,);
+    //saveReservationsArrayToBinaryFile(shop.salesDepartment, RESERVATIONS_ARR_BINARY_FILE_SAVE_NAME);
+
+
+    Customer c;
+    initSales(shop.salesDepartment, shop.inventory);
+    addNewCustomer(shop.salesDepartment);
+    printCustomer(shop.salesDepartment->customersList.head.next->key);
 
 
 //    int loadOption;
