@@ -549,7 +549,7 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
         printf("Enter the number of bottles: ");
         scanf("%d", &numBottles);
 
-        // Find the drink in the inventory and update the cost
+        // Find the drink in the inventory and update the cost //we need to add UPDATE AMOUNT SOLD
         double cost = 0.0;
         if (choice == 0)
             cost = findBeerBySerialAndUpdate(pInventory, serialNumber, numBottles);

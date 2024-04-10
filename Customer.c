@@ -200,13 +200,27 @@ char* allocateRightLength(char** wordsArray, int count, int totalLength)
     return name;
 }
 
+//void changeNameOneWord(char* name, const char* word)
+//{
+//    int len = (int)strlen(word);
+//    name[0] = toupper(word[0]);
+//    for (int i = 1; i < len; i++) 
+//    {
+//        name[i] = tolower(word[i]);
+//    }
+//}
 void changeNameOneWord(char* name, const char* word)
 {
     int len = (int)strlen(word);
+
     name[0] = toupper(word[0]);
-    for (int i = 1; i < len; i++) {
+
+    for (int i = 1; i < len; i++)
+    {
         name[i] = tolower(word[i]);
     }
+
+    name[len] = '\0'; // Null-terminate the string
 }
 
 void changeName(char* name, int count, char** wordsArray) {
