@@ -165,7 +165,7 @@ int initInventoryFromTextFile(Inventory* pInventory, const char* filename)
 
 
 
-int saveInventoryToTextFile(const Inventory* pInventory, const char* filename)
+int saveInventoryToTextFile(const Inventory* pInventory, char* filename)
 {
     FILE* fp = fopen(filename, "w");
     /*if (fp == NULL) 
@@ -1026,7 +1026,7 @@ int loadReservationsArrayFromTextFile(Sales* pSales, const char* filename)
 }
 
 // Function to save reservations to a text file
-int saveReservationsArrayToTextFile(const Sales* pSales, const char* filename)
+int saveReservationsArrayToTextFile(const Sales* pSales,  char* filename)
 {
     FILE* fp = fopen(filename, "w");
     /*if (fp == NULL)

@@ -82,7 +82,8 @@ void printReservation(const Reservation* pRes)
 	printf(", %s made a Reservation,  REScode: %d, , in the amount of %.2f$. \n", pRes->customer->name,
 		pRes->ReservationCode,pRes->priceOfOrder);
     printf("The Items are:\n");
-    L_print((LIST*)&pRes->purchasedItems, (void(*)(const void*))printPurchasedItem);
+
+    L_print((LIST*)&pRes->purchasedItems, (void(*)(const void*))printPurchasedItem);//change
 	
 }
 
@@ -96,6 +97,7 @@ void printReservationPtr(void* pResPtr)
 void freeReservationPtr(void* pResPtr)
 {
 	 Reservation* temp = *(Reservation**)pResPtr;
+	 L_free((LIST*)&temp->purchasedItems, (void (*)(void*)) free); // Free purchased items list
 	 free(temp);
 }
 

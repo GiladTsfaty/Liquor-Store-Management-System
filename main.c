@@ -1,6 +1,6 @@
 #define _CRTDBG_MAP_ALLOC
 
-//#include <crtdbg.h>
+#include <crtdbg.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -28,8 +28,8 @@ int main()
 {
     printf("HELLO AND WELLCOME TO THE LIQUOR STORE:\n");
     Shop theShop;
-    Inventory inventory;
-    Sales sales;
+    Inventory inventory;//init in sales
+    Sales sales;//init in sales
     int initialBudget = 3500;
 
     initSystemFromFiles(&theShop, &sales, &inventory);
@@ -90,15 +90,16 @@ int main()
     saveShopToTextFile(&theShop,(FILE*) INVENTORY_FILE_NAME, (FILE*)CUSTOMER_LIST_TEXT_FILE_SAVE_NAME, (FILE*)RESERVATIONS_ARR_TEXT_FILE_SAVE_NAME);
     saveShopToBianryFile(&theShop, (FILE*)INVENTORY_BINARY_FILE_NAME, (FILE*)CUSTOMER_LIST_BINARY_FILE_SAVE_NAME, (FILE*)RESERVATIONS_ARR_BINARY_FILE_SAVE_NAME);
 
-////<<<<<<< HEAD
-//    freeShop(&theShop);
-////=======
-//    
-//
-////>>>>>>> fd534e4 (justForSAFE)
+    //freeInventory(&inventory);
+    //freeSales(&sales);
+    freeShop(&theShop);
+   
 
-    printf("before dump\n");
-//    _CrtDumpMemoryLeaks();
+
+////>>>>>>> fd534e4 (justForSAFE)//what is this?
+
+    printf("before memory dump\n");
+    _CrtDumpMemoryLeaks();
     return 1;
 }
 

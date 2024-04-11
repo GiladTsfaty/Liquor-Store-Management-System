@@ -252,7 +252,7 @@ int initInventoryFromBinaryFile(Inventory* pInventory, const char* filename)
 
 
 
-int writeCustomerListToBFile(const Sales* pSales, const char* fileName)
+int writeCustomerListToBFile(const Sales* pSales, char* fileName)
 {
     FILE* fp = fopen(fileName, "wb");
     /*if (!fp)
@@ -427,6 +427,8 @@ Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file)
     // Read reservation data from the file
     fread(&reservation->ReservationCode, sizeof(int), 1, file);
 
+
+
     // Read customer name
     int nameLength;
     fread(&nameLength, sizeof(int), 1, file);
@@ -434,6 +436,8 @@ Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file)
     fread(customerName, sizeof(char), nameLength, file);
     reservation->customer = findCustomerByName(pSales, customerName);
     free(customerName);
+    
+
 
     // Read customer type
     fread(&reservation->customer->type, sizeof(eCustomerType), 1, file);
@@ -520,7 +524,7 @@ int loadReservationsArrayFromBinaryFile(Sales* pSales, const char* filename)
 
 
 // Function to save reservations to a binary file
-int saveReservationsArrayToBinaryFile(const Sales* pSales, const char* filename)
+int saveReservationsArrayToBinaryFile(const Sales* pSales,  char* filename)
 {
     FILE* fp = fopen(filename, "wb");
    /* if (fp == NULL)
@@ -564,7 +568,7 @@ int	 writeStringToCompressFile(const char* str, FILE* fp, const char* msg)
 ///from 1-4
 int savePurchasedItemToCompressedFile(const PurchasedItem* pItem, FILE* fp)
 {
-    BYTE compressedData[5];
+    BYTE compressedData[5] = {0};//= {0}
 
     // Compress serial number (0-999)
     compressedData[0] = (pItem->serial >> 2) & 0xFF;
