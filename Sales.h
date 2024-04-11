@@ -22,7 +22,7 @@ static const char* sortOptStr[eNofSortOpt];
 typedef struct
 {
     LIST                    customersList;//list*??
-    struct Reservation**    reservationArray;
+    struct Reservation**    reservationArray;//
     int                     reservationCount;
     eSortOption	            ReservationSortOpt;
     Inventory*              inventory;
@@ -60,8 +60,9 @@ int		    insertNewCustomerToList(LIST* pList, Customer* pCustomer);
 Customer*   getCustomerForReservation(Sales* pSales);
 //int         addNewReservationToArray(Sales* pSales, Customer* pCustomer, char* itemsList, int itemsPrice);
 int         addNewReservationToArray2(Sales* pSales, Inventory* pInventory,Customer* pCustomer);
-void        printReservationsArr(struct Reservation** array ,int size);
-void        freeReservationsArr(struct Reservation** array, int size);
+void        printReservationsArr(struct Reservation** array ,int size);//
+
+void        freeReservationsArr(struct Reservation** array, int size);//struct
 
 
 

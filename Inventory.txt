@@ -13,9 +13,9 @@ IPA
 ThirdLiter
 Stout
 113
-8
+2
 50
-0
+6
 Jug
 2
 Macallan

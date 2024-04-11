@@ -28,7 +28,7 @@ void parseWineType(const char* typeStr, eWineType* type);
 
 void  readInventoryFromFile(Inventory* pInventory, const char* filename);//what is the diff
 int   initInventoryFromTextFile(Inventory* pInventory, const char* filename);
-int   saveInventoryToTextFile(const Inventory* pInventory, const char* filename);
+int   saveInventoryToTextFile(const Inventory* pInventory,  char* filename);
 
 
 ///customer text files ///
@@ -48,7 +48,7 @@ void			saveReservationToFile(const Reservation* reservation, FILE* file);
 
 
 int				loadReservationsArrayFromTextFile(Sales* pSales, const char* filename);// change to FILE*
-int				saveReservationsArrayToTextFile(const Sales* pSales, const char* filename);
+int				saveReservationsArrayToTextFile(const Sales* pSales,  char* filename);
 
 
 

@@ -26,7 +26,7 @@ void initShop(Shop *pShop, Inventory *pInventory, Sales *pSales, int initialBudg
 int saveShopToTextFile(Shop* pShop, FILE* inventoryFileName, FILE* customerFileName, FILE* reservationFileName)
 {
     saveSalesToTextFile(pShop->salesDepartment,customerFileName,reservationFileName);
-    saveInventoryToTextFile(pShop->inventory, inventoryFileName);
+    saveInventoryToTextFile(pShop->inventory, (char*)inventoryFileName);
 
     return 1;
 }
@@ -34,7 +34,7 @@ int saveShopToTextFile(Shop* pShop, FILE* inventoryFileName, FILE* customerFileN
 int saveShopToBianryFile(Shop* pShop, FILE* inventoryFileName, FILE* customerFileName, FILE* reservationFileName)
 {
     saveSalesToBinaryFile(pShop->salesDepartment, customerFileName, reservationFileName);
-    saveInventoryToBinaryFile(pShop->inventory, inventoryFileName);
+    saveInventoryToBinaryFile(pShop->inventory, (char*)inventoryFileName);
 
     return 1;
 }

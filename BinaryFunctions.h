@@ -36,7 +36,7 @@ int saveInventoryToBinaryFile(const Inventory* pInventory, const char* filename)
 
 
 
-int writeCustomerListToBFile(const Sales* pSales, const char* fileName);
+int writeCustomerListToBFile(const Sales* pSales, char* fileName);
 int readCustomerListFromBFile(Sales* pSales, const char* fileName);
 
 
@@ -52,7 +52,7 @@ void			saveReservationToBinaryFile(const Reservation* reservation, FILE* file);
 Reservation*	loadReservationFromBinaryFile(Sales* pSales, FILE* file);
 
 int				loadReservationsArrayFromBinaryFile(Sales* pSales, const char* filename);// change to FILE*
-int				saveReservationsArrayToBinaryFile(const Sales* pSales, const char* filename);
+int				saveReservationsArrayToBinaryFile(const Sales* pSales,  char* filename);
 
 /// Compress///
 

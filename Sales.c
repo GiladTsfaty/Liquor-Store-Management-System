@@ -36,8 +36,8 @@ void initSales(Sales* pSales, Inventory* pInventory)
 
 int saveSalesToTextFile(Sales* pSales, FILE* customerFileName, FILE* reservationFileName)
 {
-     saveCustomerListToTextFile(pSales, customerFileName);
-     saveReservationsArrayToTextFile(pSales, reservationFileName);
+     saveCustomerListToTextFile(pSales, (char*)customerFileName);
+     saveReservationsArrayToTextFile(pSales, (char*)reservationFileName);
             
    
     return 1;
@@ -45,8 +45,8 @@ int saveSalesToTextFile(Sales* pSales, FILE* customerFileName, FILE* reservation
 
 int saveSalesToBinaryFile(Sales* pSales, FILE* customerFileName, FILE* reservationFileName)
 {
-    writeCustomerListToBFile(pSales, customerFileName);
-    saveReservationsArrayToBinaryFile(pSales, reservationFileName);
+    writeCustomerListToBFile(pSales, (char*)customerFileName);
+    saveReservationsArrayToBinaryFile(pSales, (char*)reservationFileName);
     return 1;
 }
 
@@ -645,10 +645,10 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
         pCustomer->type = eRegular;
 
     // Assign the resized array to the reservationArray
-    pSales->reservationArray = tempArray;
+    pSales->reservationArray = (struct Reservation**)tempArray;
 
     // Add the new reservation to the end of the array
-    pSales->reservationArray[pSales->reservationCount] = pNewReservation;
+    pSales->reservationArray[pSales->reservationCount] = (struct Reservation*)pNewReservation;
 
     // Increment the reservation count
     pSales->reservationCount++;
@@ -660,7 +660,7 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
 }
 
 
-void printReservationsArr(struct Reservation** array, int size)
+void printReservationsArr(struct Reservation** array, int size)//struct
 {
     if (!size)
     {
@@ -671,7 +671,7 @@ void printReservationsArr(struct Reservation** array, int size)
 
 }
 
-void freeReservationsArr(struct Reservation** array, int size)
+void freeReservationsArr(struct Reservation** array, int size)//struct
 {
 	generalArrayFunction(array, size, sizeof(Reservation*), freeReservationPtr);
 }
@@ -781,7 +781,6 @@ eSortOption showSortMenu()
 void freeSales(Sales* pSales)
 {
 	L_free((LIST*) & pSales->customersList, (void (*)(void*)) freeCustomer);//free clients
-
-	// free reservations 
-
+    freeReservationsArr(pSales->reservationArray,pSales->reservationCount);//free reservations 
+    free(pSales->reservationArray);
 }

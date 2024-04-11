@@ -50,9 +50,18 @@ int isSameCustomerName(const Customer* pCustomer1, const Customer* pCustomer2)//
 	return strcmp(pCustomer1->name, pCustomer2->name) == 0;
 }
 
+
+
+
+void freeCustomerVal(void* value)
+{
+    freeCustomer((Customer*)value);
+}
+
 void freeCustomer(Customer* pCustomer)
 {
     free(pCustomer->name);
+    free(pCustomer);
 }
 
 
