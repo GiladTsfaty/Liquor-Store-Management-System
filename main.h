@@ -14,10 +14,6 @@ typedef enum
     eNofOptions
 } eMenuOptions;
 
-// eLoadFromTextFile, eLoadFromBinaryFile,
-// eOrderClientList, 
-// 
-//   "Load from text file", "Load from binary file",
 
 
 
