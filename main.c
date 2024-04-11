@@ -87,7 +87,7 @@ int main()
     } while (!stop);
 
     saveShopToTextFile(&theShop,(FILE*) INVENTORY_FILE_NAME, (FILE*)CUSTOMER_LIST_TEXT_FILE_SAVE_NAME, (FILE*)RESERVATIONS_ARR_TEXT_FILE_SAVE_NAME);
-    saveShopToBianryFile(&theShop, (FILE*)INVENTORY_BINARY_FILE_NAME, (FILE*)CUSTOMER_LIST_BINARY_FILE_SAVE_NAME, (FILE*)RESERVATIONS_ARR_BINARY_FILE_SAVE_NAME);
+    saveShopToBianryFile(&theShop, (FILE*)INVENTORY_BINARY_FILE_NAME, (FILE*)CUSTOMER_LIST_BINARY_FILE_SAVE_NAME, (FILE*)RESERVATIONS_ARR_BINARY_FILE_SAVE_NAME);//(FILE*)CUSTOMER_LIST_BINARY_FILE_LOAD_NAME, (FILE*)RESERVATIONS_ARR_BINARY_FILE_LOAD_NAME//
 
     //freeInventory(&inventory);
     //freeSales(&sales);
@@ -101,6 +101,81 @@ int main()
     _CrtDumpMemoryLeaks();
     return 1;
 }
+
+
+
+
+void initSystemFromFiles(Shop* pShop, Sales* pSales, Inventory* pInventory)
+{
+    int choice;
+    int validChoice = 0;
+
+    while (!validChoice)
+    {
+        printf("Select the file format to load from:\n");
+        printf("1. Text files\n");
+        printf("2. Binary files\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+        case 1:
+            // Load from text files
+            if (!initCustomerListFromTextFile(pSales, "customer_list.txt"))//
+            {
+                printf("Failed to load customers from text file.\n");
+                return;
+            }
+            if (!initInventoryFromTextFile(pInventory, "Inventory.txt"))
+            {
+                printf("Failed to load inventory from text file.\n");
+                return;
+            }
+            if (!loadReservationsArrayFromTextFile(pSales, "reservation_arr.txt"))//
+            {
+                printf("Failed to load reservations from text file.\n");
+                return;
+            }
+            printf("System loaded successfully from text files.\n");
+            validChoice = 1;
+            break;
+
+        case 2:
+            // Load from binary files
+            if (!readCustomerListFromBFile(pSales, "BinaryCustomer.bin"))
+            {
+                printf("Failed to load customers from binary file.\n");
+                return;
+            }
+            if (!initInventoryFromBinaryFile(pInventory, "Inventory.bin"))
+            {
+                printf("Failed to load inventory from binary file.\n");
+                return;
+            }
+            if (!loadReservationsArrayFromBinaryFile(pSales, "BinaryReservation.bin"))
+            {
+                printf("Failed to load reservations from binary file.\n");
+                return;
+            }
+            printf("System loaded successfully from binary files.\n");
+            validChoice = 1;
+            break;
+
+        default:
+            printf("Invalid choice. Please try again.\n");
+            break;
+        }
+    }
+
+    // Initialize the shop with the loaded inventory and sales
+    initShop(pShop, pInventory, pSales, 0);
+}
+
+
+
+
+
 
 
 int menu()
@@ -117,16 +192,6 @@ int menu()
 	scanf("%c", &tav);
 	return option;
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -181,11 +246,6 @@ int menu()
            break;
        }
    }*/
-
-
-
-
-
 
 
 /////inventory files ///

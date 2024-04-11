@@ -1,7 +1,7 @@
 2
-G_I_L_A_D
-1200
-Vip
+Gilad
+88.00
+Regular
 Itay_Soldin
-800
+740.00
 Regular

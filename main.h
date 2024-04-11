@@ -47,7 +47,7 @@ const char* str[eNofOptions] = {
 
 
 
-
+void initSystemFromFiles(Shop* pShop, Sales* pSales, Inventory* pInventory);
 int menu();
 
 

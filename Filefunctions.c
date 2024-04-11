@@ -893,7 +893,98 @@ int saveCustomerListToTextFile(const Sales* pSales,  char* fileName)
 
 
 
-// Function to save a single reservation to a file
+//// Function to save a single reservation to a file
+//void saveReservationToFile(const Reservation* reservation, FILE* file)
+//{
+//    fprintf(file, "%d\n", reservation->ReservationCode);
+//    fprintf(file, "%s\n", reservation->customer->name);
+//    fprintf(file, "%s\n", CustomerTypeStr[reservation->customer->type]);
+//    fprintf(file, "%d %d %d\n", reservation->date.day, reservation->date.month, reservation->date.year);
+//    fprintf(file, "%.2f\n", reservation->priceOfOrder);
+//
+//    // Save purchased items
+//    int itemCount = L_length(&reservation->purchasedItems)-1;//-1
+//    fprintf(file, "%d\n", itemCount);
+//
+//    /*NODE* pNode = reservation->purchasedItems.head.next;
+//    while (pNode != NULL)
+//    {
+//        PurchasedItem* item = (PurchasedItem*)pNode->key;
+//        fprintf(file, "%d %d %.2f\n", item->serial, item->amount, item->cost);
+//        pNode = pNode->next;
+//    }*/
+//
+//    NODE* pNode = reservation->purchasedItems.head.next;
+//    while (pNode != NULL)
+//    {
+//        PurchasedItem* item = (PurchasedItem*)pNode->key;
+//        fprintf(file, "%d %d %d %d\n", item->serial, item->amount, item->costInt, item->costDec);
+//        pNode = pNode->next;
+//    }
+//
+//
+//}
+//
+//// Function to load a single reservation from a file
+//Reservation* loadReservationFromFile(Sales* pSales, FILE* file)
+//{
+//    Reservation* reservation = (Reservation*)malloc(sizeof(Reservation));
+//    if (reservation == NULL)
+//    {
+//        printf("Memory allocation failed for reservation.\n");
+//        return NULL;
+//    }
+//
+//    // Read reservation data from the file
+//    fscanf(file, "%d\n", &reservation->ReservationCode);
+//
+//    // Read customer name
+//    char customerName[MAX_STR_LEN];
+//    fgets(customerName, MAX_STR_LEN, file);
+//    customerName[strcspn(customerName, "\n")] = '\0'; // Remove trailing newline character
+//    reservation->customer = findCustomerByName(pSales, customerName);
+//
+//    if (reservation->customer == NULL) {
+//        printf("Customer not found: %s\n", customerName);
+//        free(reservation);
+//        return NULL;
+//    }
+//
+//// Read customer type
+//    char customerType[20];
+//    fgets(customerType, 20, file);
+//    customerType[strcspn(customerType, "\n")] = '\0'; // Remove trailing newline character
+//    for (int i = 0; i < eNomOfCustomerTypes; i++) {
+//        if (strcmp(customerType, CustomerTypeStr[i]) == 0) {
+//            reservation->customer->type = (eCustomerType)i;
+//            break;
+//        }
+//    }
+//
+//    // Read date
+//    fscanf(file, "%d %d %d\n", &reservation->date.day, &reservation->date.month, &reservation->date.year);
+//
+//    fscanf(file, "%lf\n", &reservation->priceOfOrder);
+//
+//    // Read purchased items
+//    int itemCount;
+//    fscanf(file, "%d\n", &itemCount);
+//    L_init(&reservation->purchasedItems);
+//
+//
+//    for (int j = 0; j < itemCount; j++)
+//    {
+//        PurchasedItem* item = (PurchasedItem*)malloc(sizeof(PurchasedItem));
+//        fscanf(file, "%d %d %d %d\n", &item->serial, &item->amount, &item->costInt, &item->costDec);
+//        L_insert(&reservation->purchasedItems, item);
+//    }
+//
+//    return reservation;
+//
+//
+//}
+
+
 void saveReservationToFile(const Reservation* reservation, FILE* file)
 {
     fprintf(file, "%d\n", reservation->ReservationCode);
@@ -903,29 +994,15 @@ void saveReservationToFile(const Reservation* reservation, FILE* file)
     fprintf(file, "%.2f\n", reservation->priceOfOrder);
 
     // Save purchased items
-    int itemCount = L_length(&reservation->purchasedItems)-1;//-1
-    fprintf(file, "%d\n", itemCount);
-
-    /*NODE* pNode = reservation->purchasedItems.head.next;
-    while (pNode != NULL)
-    {
-        PurchasedItem* item = (PurchasedItem*)pNode->key;
-        fprintf(file, "%d %d %.2f\n", item->serial, item->amount, item->cost);
-        pNode = pNode->next;
-    }*/
-
-    NODE* pNode = reservation->purchasedItems.head.next;
-    while (pNode != NULL)
-    {
-        PurchasedItem* item = (PurchasedItem*)pNode->key;
+    fprintf(file, "%d\n", reservation->numPurchasedItems);
+    for (int i = 0; i < reservation->numPurchasedItems; i++) {
+        PurchasedItem* item = &(reservation->purchasedItems[i]);
         fprintf(file, "%d %d %d %d\n", item->serial, item->amount, item->costInt, item->costDec);
-        pNode = pNode->next;
     }
-
-
 }
 
-// Function to load a single reservation from a file
+
+
 Reservation* loadReservationFromFile(Sales* pSales, FILE* file)
 {
     Reservation* reservation = (Reservation*)malloc(sizeof(Reservation));
@@ -950,7 +1027,7 @@ Reservation* loadReservationFromFile(Sales* pSales, FILE* file)
         return NULL;
     }
 
-// Read customer type
+    // Read customer type
     char customerType[20];
     fgets(customerType, 20, file);
     customerType[strcspn(customerType, "\n")] = '\0'; // Remove trailing newline character
@@ -967,22 +1044,26 @@ Reservation* loadReservationFromFile(Sales* pSales, FILE* file)
     fscanf(file, "%lf\n", &reservation->priceOfOrder);
 
     // Read purchased items
-    int itemCount;
-    fscanf(file, "%d\n", &itemCount);
-    L_init(&reservation->purchasedItems);
+    fscanf(file, "%d\n", &reservation->numPurchasedItems);
+    reservation->purchasedItems = (PurchasedItem*)malloc(reservation->numPurchasedItems * sizeof(PurchasedItem));
+    if (reservation->purchasedItems == NULL) {
+        printf("Memory allocation failed for purchased items.\n");
+        free(reservation);
+        return NULL;
+    }
 
-
-    for (int j = 0; j < itemCount; j++)
+    for (int j = 0; j < reservation->numPurchasedItems; j++)
     {
-        PurchasedItem* item = (PurchasedItem*)malloc(sizeof(PurchasedItem));
+        PurchasedItem* item = &(reservation->purchasedItems[j]);
         fscanf(file, "%d %d %d %d\n", &item->serial, &item->amount, &item->costInt, &item->costDec);
-        L_insert(&reservation->purchasedItems, item);
     }
 
     return reservation;
-
-
 }
+
+
+
+/////
 
 
 
@@ -1042,8 +1123,8 @@ int saveReservationsArrayToTextFile(const Sales* pSales,  char* filename)
     // Write each reservation to the file
     for (int i = 0; i < pSales->reservationCount; i++)
     {
-        Reservation* reservation = pSales->reservationArray[i];
-        saveReservationToFile(reservation, fp);
+        struct Reservation* reservation = pSales->reservationArray[i];//(struct)
+        saveReservationToFile((Reservation*)reservation, fp);//(Reservation*)
     }
 
     /*fclose(fp);

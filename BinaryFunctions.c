@@ -380,12 +380,105 @@ int readCustomerListFromBFile(Sales* pSales, const char* fileName)
 
 
 
-// Function to save a single reservation to a binary file
+//// Function to save a single reservation to a binary file
+//void saveReservationToBinaryFile(const Reservation* reservation, FILE* file)
+//{
+//    fwrite(&reservation->ReservationCode, sizeof(int), 1, file);
+//
+//    int nameLength =(int) strlen(reservation->customer->name) + 1;
+//    fwrite(&nameLength, sizeof(int), 1, file);
+//    fwrite(reservation->customer->name, sizeof(char), nameLength, file);
+//
+//    fwrite(&reservation->customer->type, sizeof(eCustomerType), 1, file);
+//    fwrite(&reservation->date, sizeof(Date), 1, file);
+//    fwrite(&reservation->priceOfOrder, sizeof(double), 1, file);
+//
+//    // Save purchased items
+//    int itemCount = L_length(&reservation->purchasedItems)-1;//-1
+//    fwrite(&itemCount, sizeof(int), 1, file);
+//
+//
+//    NODE* pNode = reservation->purchasedItems.head.next;
+//    while (pNode != NULL)
+//    {
+//        PurchasedItem* item = (PurchasedItem*)pNode->key;
+//        if (!savePurchasedItemToCompressedFile(item, file))
+//        {
+//            printf("Error saving purchased item to file\n");
+//            return;
+//        }
+//        pNode = pNode->next;
+//    }
+//
+//
+//}
+//
+//// Function to load a single reservation from a binary file
+//Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file)
+//{
+//    Reservation* reservation = (Reservation*)malloc(sizeof(Reservation));
+//    if (reservation == NULL)
+//    {
+//        printf("Memory allocation failed for reservation.\n");
+//        return NULL;
+//    }
+//
+//
+//    // Read reservation data from the file
+//    fread(&reservation->ReservationCode, sizeof(int), 1, file);
+//
+//
+//
+//    // Read customer name
+//    int nameLength;
+//    fread(&nameLength, sizeof(int), 1, file);
+//    char* customerName = (char*)malloc(nameLength * sizeof(char));
+//    fread(customerName, sizeof(char), nameLength, file);
+//    reservation->customer = findCustomerByName(pSales, customerName);
+//    free(customerName);
+//    
+//
+//
+//    // Read customer type
+//    fread(&reservation->customer->type, sizeof(eCustomerType), 1, file);
+//
+//    // Read date
+//    fread(&reservation->date, sizeof(Date), 1, file);
+//
+//    fread(&reservation->priceOfOrder, sizeof(double), 1, file);
+//
+//    // Read purchased items
+//    int itemCount;
+//    fread(&itemCount, sizeof(int), 1, file);
+//    L_init(&reservation->purchasedItems);
+//
+//
+//   
+//
+//
+//    for (int j = 0; j < itemCount; j++)
+//    {
+//        PurchasedItem* item = (PurchasedItem*)malloc(sizeof(PurchasedItem));
+//        if (!loadPurchasedItemFromCompressedFile(item, file))
+//        {
+//            printf("Error loading purchased item from file\n");
+//            freeReservationPtr(reservation);
+//            return NULL;
+//        }
+//        L_insert(&reservation->purchasedItems, item);
+//    }
+//
+//    return reservation;
+//
+//
+//}
+
+
 void saveReservationToBinaryFile(const Reservation* reservation, FILE* file)
 {
     fwrite(&reservation->ReservationCode, sizeof(int), 1, file);
 
-    int nameLength =(int) strlen(reservation->customer->name) + 1;
+    int nameLength = (int)strlen(reservation->customer->name) + 1;
     fwrite(&nameLength, sizeof(int), 1, file);
     fwrite(reservation->customer->name, sizeof(char), nameLength, file);
 
@@ -394,26 +487,12 @@ void saveReservationToBinaryFile(const Reservation* reservation, FILE* file)
     fwrite(&reservation->priceOfOrder, sizeof(double), 1, file);
 
     // Save purchased items
-    int itemCount = L_length(&reservation->purchasedItems)-1;//-1
-    fwrite(&itemCount, sizeof(int), 1, file);
-
-
-    NODE* pNode = reservation->purchasedItems.head.next;
-    while (pNode != NULL)
-    {
-        PurchasedItem* item = (PurchasedItem*)pNode->key;
-        if (!savePurchasedItemToCompressedFile(item, file))
-        {
-            printf("Error saving purchased item to file\n");
-            return;
-        }
-        pNode = pNode->next;
+    fwrite(&reservation->numPurchasedItems, sizeof(int), 1, file);
+    for (int i = 0; i < reservation->numPurchasedItems; i++) {
+        savePurchasedItemToCompressedFile(&reservation->purchasedItems[i], file);
     }
-
-
 }
 
-// Function to load a single reservation from a binary file
 Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file)
 {
     Reservation* reservation = (Reservation*)malloc(sizeof(Reservation));
@@ -423,11 +502,8 @@ Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file)
         return NULL;
     }
 
-
     // Read reservation data from the file
     fread(&reservation->ReservationCode, sizeof(int), 1, file);
-
-
 
     // Read customer name
     int nameLength;
@@ -436,8 +512,6 @@ Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file)
     fread(customerName, sizeof(char), nameLength, file);
     reservation->customer = findCustomerByName(pSales, customerName);
     free(customerName);
-    
-
 
     // Read customer type
     fread(&reservation->customer->type, sizeof(eCustomerType), 1, file);
@@ -448,35 +522,21 @@ Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file)
     fread(&reservation->priceOfOrder, sizeof(double), 1, file);
 
     // Read purchased items
-    int itemCount;
-    fread(&itemCount, sizeof(int), 1, file);
-    L_init(&reservation->purchasedItems);
-
-
-   
-
-
-    for (int j = 0; j < itemCount; j++)
-    {
-        PurchasedItem* item = (PurchasedItem*)malloc(sizeof(PurchasedItem));
-        if (!loadPurchasedItemFromCompressedFile(item, file))
-        {
-            printf("Error loading purchased item from file\n");
-            freeReservationPtr(reservation);
-            return NULL;
-        }
-        L_insert(&reservation->purchasedItems, item);
+    fread(&reservation->numPurchasedItems, sizeof(int), 1, file);
+    reservation->purchasedItems = (PurchasedItem*)malloc(reservation->numPurchasedItems * sizeof(PurchasedItem));
+    if (reservation->purchasedItems == NULL) {
+        printf("Memory allocation failed for purchased items.\n");
+        free(reservation);
+        return NULL;
+    }
+    for (int i = 0; i < reservation->numPurchasedItems; i++) {
+        loadPurchasedItemFromCompressedFile(&reservation->purchasedItems[i], file);
     }
 
     return reservation;
-
-
 }
 
-
-
-
-
+////
 
 
 
@@ -511,7 +571,7 @@ int loadReservationsArrayFromBinaryFile(Sales* pSales, const char* filename)
         {
             CLOSE_FILE_RETURN_0(fp)
         }
-        pSales->reservationArray[i] = reservation;
+        pSales->reservationArray[i] = (struct Reservation*)reservation;//(struct Reservation*)
     }
 
     pSales->reservationCount = count;
@@ -539,8 +599,8 @@ int saveReservationsArrayToBinaryFile(const Sales* pSales,  char* filename)
     // Write each reservation to the file
     for (int i = 0; i < pSales->reservationCount; i++)
     {
-        Reservation* reservation = pSales->reservationArray[i];
-        saveReservationToBinaryFile(reservation, fp);
+        struct Reservation* reservation = pSales->reservationArray[i];//struct
+        saveReservationToBinaryFile((Reservation*)reservation, fp);//(Reservation*)
     }
 
    /* fclose(fp);

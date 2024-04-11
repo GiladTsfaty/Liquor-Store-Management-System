@@ -8,7 +8,11 @@
 #include "Sales.h"
 
 
-
+//i want to change the  Reservation struct from :"LIST          purchasedItems;"
+//
+//to : "PurchasedItem*             purchasedItems; "
+//
+//and adapte all functions to work with it
 
 
 typedef struct
@@ -27,7 +31,9 @@ typedef struct
     Customer*     customer;
     Date          date;
     double        priceOfOrder;
-    LIST          purchasedItems;  //LIST* //not realy a list 
+    PurchasedItem* purchasedItems;  // Array of purchased items
+    int           numPurchasedItems; // Number of purchased items
+   // LIST          purchasedItems;  //LIST* //not realy a list 
 
 }Reservation;
 
