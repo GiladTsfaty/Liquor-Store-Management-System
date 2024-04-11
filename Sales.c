@@ -98,6 +98,7 @@ Customer* initCustomer(Sales* pSales)
 	}
 
 	initCustomerWithoutName(pCustomer);
+    insertNewCustomerToList(&pSales->customersList,pCustomer);
 	return pCustomer;
 }
 
@@ -216,117 +217,9 @@ int insertNewCustomerToList(LIST* pList, Customer* pCustomer)
 
 
 
-
 ////RESERVATIONS////
 
 
-
-
-
-
-
-//int addNewReservation(Sales* pSales)
-//{
-//
-//	Reservation* pRes = (Reservation*)calloc(1, sizeof(Reservation));
-//	if(!pRes)
-//		return 0;
-//
-//
-//	pSales->reservationArray = (Reservation**)realloc(pSales->reservationArray, (pSales->reservationCount + 1) * sizeof(Reservation*));//arr++
-//	if (!pSales->reservationArray)
-//	{
-//		free(pRes);
-//		return 0;
-//	}
-//
-//	pSales->reservationArray[pSales->reservationCount] = pRes;//added to end of arr 
-//	pSales->reservationCount++; //arr
-//	pSales->ReservationSortOpt = eNone;
-//	
-//	return 1;
-//}
-
-
-
-
-
-//int makeNewReservationForCustomer(Sales* pSales, Customer* pCustomer)
-//{
-//	Date d;
-//
-//	// Create a new Reservation object
-//	Reservation* pNewReservation = (Reservation*)malloc(sizeof(Reservation));
-//	if (!pNewReservation) {
-//		printf("Memory allocation failed for Reservation.\n");
-//		return 0;
-//	}
-//
-//	 pNewReservation->customer = pCustomer;
-//	 getCorrectDate(&pNewReservation->date);
-//	 pNewReservation->ReservationCode = 
-//
-//
-//	return 0;
-//}
-
-
-
-
-
-//int addNewReservationToArray(Sales* pSales, Customer* pCustomer, char* itemsList, int itemsPrice)
-//{
-//    // Allocate memory for a new Reservation object
-//    Reservation* pNewReservation = (Reservation*)calloc(1, sizeof(Reservation));
-//    if (!pNewReservation)
-//        return 0;
-//
-//    // Resize the reservationArray to accommodate the new reservation
-//    Reservation** tempArray;
-//    if (pSales->reservationArray == NULL)
-//    {
-//        // If reservationArray is NULL, allocate memory for the first reservation
-//        tempArray = (Reservation**)malloc(sizeof(Reservation*));
-//    }
-//    else
-//    {
-//        // If reservationArray is not NULL, reallocate memory to accommodate the new reservation
-//        tempArray = (Reservation**)realloc(pSales->reservationArray, (pSales->reservationCount + 1) * sizeof(Reservation*));
-//    }
-//
-//    if (!tempArray)
-//    {
-//        // Memory allocation failed, free the previously allocated Reservation object
-//        free(pNewReservation);
-//        return 0;
-//    }
-//
-//    pNewReservation->customer = pCustomer;
-//    getCorrectDate(&pNewReservation->date);
-//    pNewReservation->ReservationCode = pSales->reservationCount;
-//    pNewReservation->purchasedItems = itemsList;
-//    pNewReservation->priceOfOrder = itemsPrice;
-//    pCustomer->totalSpent += itemsPrice;
-//
-//    if (pCustomer->totalSpent >= VIP_THRESH)
-//        pCustomer->type = eVip;
-//    else
-//        pCustomer->type = eRegular;
-//
-//    // Assign the resized array to the reservationArray
-//    pSales->reservationArray = tempArray;
-//
-//    // Add the new reservation to the end of the array
-//    pSales->reservationArray[pSales->reservationCount] = pNewReservation;
-//
-//    // Increment the reservation count
-//    pSales->reservationCount++;
-//
-//    // Reset the reservation sorting option (if needed)
-//    pSales->ReservationSortOpt = eNone;
-//
-//    return 1; // Reservation added successfully
-//}
 
 // Function to print the list of beers
 void printBeerList(Inventory* pInventory)
@@ -418,44 +311,8 @@ double findWhiskeyBySerialAndUpdate(Inventory* pInventory, int serialNumber, int
     return 0.0;
 }
 
-//Customer* getCustomerForReservation(Sales* pSales)
-//{
-//    Customer* pCustomer = NULL;
-//    char choice;
-//    int validChoice = 0;
-//
-//    while (!validChoice) {
-//        //char name[MAX_NAME_LENGTH];
-//
-//        printf("New or existing customer? (n/e): ");
-//        scanf(" %c", &choice);
-//
-//        if (choice == 'n' || choice == 'N')
-//        {
-//            if (!addNewCustomer(pCustomer))
-//            {
-//                return NULL;
-//            }
-//
-//            return pCustomer;
-//            validChoice = 1;
-//        }
-//        else if (choice == 'e' || choice == 'E') {
-//            // Existing customer
-//            printAllCustomers(pSales);
-//            //printf("Enter customer name:\n");
-//            getCustomerName(pCustomer);
-//
-//            Customer*   pTempCustomer = findCustomerByName(pSales, pCustomer->name);
-//            if (pTempCustomer != NULL)
-//            {
-//                return pTempCustomer;
-//            }
-//            return NULL;
-//            validChoice = 1;
-//        }
-//    }
-//}
+
+
 
 Customer* getCustomerForReservation(Sales* pSales)
 {
@@ -484,7 +341,7 @@ Customer* getCustomerForReservation(Sales* pSales)
 
     if (choice == 'n') {
         // New customer
-        pCustomer = initCustomer(pSales);
+        pCustomer =  initCustomer(pSales);//addNewCustomer(pSales);//need to return
         return pCustomer;
     }
     else {
@@ -557,7 +414,7 @@ void addPurchasedItemToReservation(Reservation* pNewReservation, int serialNumbe
         newItem->amount = numBottles;
         newItem->costInt = (int)cost;
         newItem->costDec = (int)((cost - newItem->costInt) * 100);
-        L_insert(&pNewReservation->purchasedItems, newItem);
+        L_insert(&pNewReservation->purchasedItems, newItem);//fix maybe item not list 
     }
     else
     {
@@ -684,81 +541,112 @@ void freeReservationsArr(struct Reservation** array, int size)//struct
 
 
 
-
-
-
 void findReservation(const Sales* pSales) {
-	int(*compare)(const void* rese1, const void* rese2) = NULL; // Initialize to NULL
+    if (pSales->reservationCount == 0) {
+        printf("There are no reservations.\n");
+        return;
+    }
 
-	Reservation reservation = { 0 };
-	Reservation* pCurrentReservation = &reservation;
+    int(*compare)(const void* rese1, const void* rese2) = NULL;
 
-	switch (pSales->ReservationSortOpt) {
-	case eResCode:
-		printf("%s\t", "Reservation Code:"); // Corrected printing statement
-		compare = compareReseravationByReservatinCode;
-		break;
+    switch (pSales->ReservationSortOpt) {
+    case eResCode:
+        printf("Enter the Reservation Code: ");
+        compare = compareReseravationByReservatinCode;
+        break;
 
-	case eCustomerName:
-		printf("%s\t", "Customer Name:"); // Corrected printing statement
-		compare = compareReseravationByCustomerName; // Set the comparison function
-		break;
+    case eCustomerName:
+        printf("Enter the Customer Name: ");
+        compare = compareReseravationByCustomerName;
+        break;
 
-	case eDate:
-		printf("%s\t", "Date:");
-		compare = compareReseravationByDate; // Set the comparison function
-		break;
+    case eDate:
+        printf("Enter the Date (DD/MM/YYYY): ");
+        compare = compareReseravationByDate;
+        break;
 
-	default:
-		printf("Invalid ReservationSortOpt\n");
-		return; // Exit the function
-	}
+    default:
+        printf("Invalid - Reservations Are Not Sorted\n");
+        return;
+    }
 
-	if (compare != NULL) {
-		// Assuming bsearch is used to search the reservation in the sorted array
-		Reservation** pFoundReservation = bsearch(&pCurrentReservation, pSales->reservationArray, pSales->reservationCount, sizeof(Reservation*), compare);
-		if (pFoundReservation == NULL)
-			printf("Reservation was not found\n");
-		else {
-			printf("Reservation found: ");
-			// Assuming printReservation is a function to print reservation details
-			printReservation(*pFoundReservation);
-		}
-	}
-	else {
-		printf("The search cannot be performed, array not sorted\n");
-	}
+    Reservation tempReservation;
+    Reservation* pTempReservation = &tempReservation;
+
+    // Allocate memory for the customer field
+    pTempReservation->customer = (Customer*)malloc(sizeof(Customer));
+    if (pTempReservation->customer == NULL) {
+        printf("Memory allocation failed for customer.\n");
+        return;
+    }
+
+    switch (pSales->ReservationSortOpt) {
+    case eResCode:
+        scanf("%d", &pTempReservation->ReservationCode);
+        break;
+
+    case eCustomerName:
+        // Allocate memory for the customer name
+        pTempReservation->customer->name = (char*)malloc(sizeof(char) * MAX_STR_LEN);
+        if (pTempReservation->customer->name == NULL) {
+            printf("Memory allocation failed for customer name.\n");
+            free(pTempReservation->customer);
+            return;
+        }
+        scanf("%s", pTempReservation->customer->name);
+        break;
+
+    case eDate:
+        scanf("%d/%d/%d", &pTempReservation->date.day, &pTempReservation->date.month, &pTempReservation->date.year);
+        break;
+    }
+
+    Reservation** pFoundReservation = bsearch(&pTempReservation, pSales->reservationArray, pSales->reservationCount, sizeof(Reservation*), compare);
+
+    // Free the allocated memory for the customer field and name
+    free(pTempReservation->customer->name);
+    free(pTempReservation->customer);
+
+    if (pFoundReservation == NULL)
+        printf("Reservation was not found\n");
+    else {
+        printf("Reservation found:\n");
+        printReservation(*pFoundReservation);
+    }
 }
+
+
+
 
 
 
 void sortReservations(Sales* pSales)
 {
-	int(*compare)(const void* rese1, const void* rese2) = NULL;
-	Reservation r = { 0 };
-	Reservation* pReservation = &r;
+    int(*compare)(const void* rese1, const void* rese2) = NULL;
 
-	switch (pSales->ReservationSortOpt)
-	{
-	case eResCode:
-		printf("%s\t", "Reservation Code:"); // Corrected printing statement
+    eSortOption sortOption = showSortMenu();
+    pSales->ReservationSortOpt = sortOption;
 
-		compare = compareReseravationByReservatinCode;
-		break;
+    switch (sortOption)
+    {
+    case eResCode:
+        compare = compareReseravationByReservatinCode;
+        break;
 
-	case eCustomerName:
-		printf("%s\t", "Customer Name:"); // Corrected printing statement
-		compare = compareReseravationByCustomerName; // Set the comparison function
-		break;
-       
+    case eCustomerName:
+        compare = compareReseravationByCustomerName;
+        break;
 
-	case eDate:
-		getCorrectDate(&r.date);
-		compare = compareReseravationByDate;
-		break;
+    case eDate:
+        compare = compareReseravationByDate;
+        break;
 
-	}
+    default:
+        printf("Invalid sort option\n");
+        return;
+    }
 
+    qsort(pSales->reservationArray, pSales->reservationCount, sizeof(Reservation*), compare);
 }
 
 
@@ -774,6 +662,17 @@ eSortOption showSortMenu()
 
 	return (eSortOption)opt;
 }
+
+
+
+//i want to fix the sortReservations and findReservation functions.
+//
+//the sortReservations  meant to show  showSortMenu and based on the pick sort the reservation array by order of pick.
+//
+//
+//
+//findReservation meant to find and reservation
+
 
 
 

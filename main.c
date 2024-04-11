@@ -53,8 +53,7 @@ int main()
             printAllCustomers(theShop.salesDepartment);
             break;
         case eAddBeveragesToInventory:
-            addBeveragesToInventory(&inventory);
-            //if (!addBeveragesToInventory(&inventory))
+            if (!addBeveragesToInventory(&inventory))
                 printf("Error adding beverages to inventory\n");
             break;
         case eAddClient:

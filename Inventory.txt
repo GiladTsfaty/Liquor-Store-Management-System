@@ -13,11 +13,11 @@ IPA
 ThirdLiter
 Stout
 113
-2
+0
 50
-6
+8
 Jug
-2
+3
 Macallan
 221
 25
@@ -29,6 +29,12 @@ JohnnieWalker
 25
 80
 0
+Bourbon
+GILAD'S BOOZE
+223
+19
+222
+6
 Bourbon
 2
 Merlot

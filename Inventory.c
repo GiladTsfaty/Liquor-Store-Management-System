@@ -55,21 +55,51 @@ int addWhiskey(Inventory* pInventory)
     return 1;
 }
 
-void addBeveragesToInventory(Inventory* pInventory)
+//int addBeveragesToInventory(Inventory* pInventory)
+//{
+//    int choice;
+//    printf("Enter the type of beverage to add (0 for beer, 1 for wine, 2 for whiskey): ");
+//    scanf("%d", &choice);
+//
+//    if (choice == 0)
+//        addBeer(pInventory);
+//    else if (choice == 1)
+//        addWine(pInventory);
+//    else if (choice == 2)
+//        addWhiskey(pInventory);
+//    else
+//        printf("Invalid choice.\n");
+//
+//}
+
+int addBeveragesToInventory(Inventory* pInventory)
 {
     int choice;
-    printf("Enter the type of beverage to add (0 for beer, 1 for wine, 2 for whiskey): ");
-    scanf("%d", &choice);
+    while (1) {
+        printf("Enter the type of beverage to add (0 for beer, 1 for wine, 2 for whiskey): ");
+        scanf("%d", &choice);
 
-    if (choice == 0)
-        addBeer(pInventory);
-    else if (choice == 1)
-        addWine(pInventory);
-    else if (choice == 2)
-        addWhiskey(pInventory);
-    else
-        printf("Invalid choice.\n");
+        if (choice == 0) {
+            if (!addBeer(pInventory))
+                return 0;
+            return 1; // Return success
+        }
+        else if (choice == 1) {
+            if (!addWine(pInventory))
+                return 0;
+            return 1; // Return success
+        }
+        else if (choice == 2) {
+            if (!addWhiskey(pInventory))
+                return 0;
+            return 1; // Return success
+        }
+        else {
+            printf("Invalid choice.\n");
+        }
+    }
 }
+
 
 void initInventoryFromFile(Inventory* pInventory, const char* filename) {
     pInventory->beerArray = NULL;
