@@ -1,13 +1,7 @@
-4
-Alex
-100.00
+2
+Gilad
+88.00
 Regular
-G_I_L_A_D
-1200.00
-Vip
 Itay_Soldin
-800.00
-Regular
-Zander
-222.00
+740.00
 Regular

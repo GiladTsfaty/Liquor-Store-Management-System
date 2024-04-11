@@ -1,9 +1,9 @@
 3
 GoldStar
 111
-50
+49
 8
-0
+1
 ThirdLiter
 IPA
 112
