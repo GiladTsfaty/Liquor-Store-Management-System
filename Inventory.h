@@ -25,6 +25,7 @@ void initInventory(Inventory* pInventory);
 void setInventoryDefaults(Inventory* pInventory);
 int  addBeer(Inventory* pInventory);
 int  addWine(Inventory* pInventory);
+void addBeveragesToInventory(Inventory* pInventory);
 int  addWhiskey(Inventory* pInventory);
 //void initInventoryFromFile(Inventory* pInventory, const char* filename);
 void printInventory(const Inventory* pInventory);

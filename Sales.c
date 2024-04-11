@@ -369,6 +369,7 @@ double findBeerBySerialAndUpdate(Inventory* pInventory, int serialNumber, int nu
             {
                 double cost = pInventory->beerArray[i].price * numBottles;
                 pInventory->beerArray[i].amountAvailable -= numBottles;
+                pInventory->beerArray[i].numOfSolds += numBottles;
                 return cost;
             }
             break;
@@ -388,6 +389,7 @@ double findWineBySerialAndUpdate(Inventory* pInventory, int serialNumber, int nu
             {
                 double cost = pInventory->wineArray[i].price * numBottles;
                 pInventory->wineArray[i].amountAvailable -= numBottles;
+                pInventory->wineArray[i].numOfSolds += numBottles;
                 return cost;
             }
             break;
@@ -407,6 +409,7 @@ double findWhiskeyBySerialAndUpdate(Inventory* pInventory, int serialNumber, int
             {
                 double cost = pInventory->whiskeyArray[i].price * numBottles;
                 pInventory->whiskeyArray[i].amountAvailable -= numBottles;
+                pInventory->whiskeyArray[i].numOfSolds += numBottles;
                 return cost;
             }
             break;
@@ -507,6 +510,62 @@ Customer* getCustomerForReservation(Sales* pSales)
 
 
 // Function to add a new reservation to the array
+void printDrinkList(Inventory* pInventory, int choice)
+{
+    if (choice == 0)
+        printBeerList(pInventory);
+    else if (choice == 1)
+        printWineList(pInventory);
+    else if (choice == 2)
+        printWhiskeyList(pInventory);
+}
+
+int getDrinkSerialNumber()
+{
+    int serialNumber;
+    printf("Enter the serial number of the drink: ");
+    scanf("%d", &serialNumber);
+    return serialNumber;
+}
+
+int getNumBottles()
+{
+    int numBottles;
+    printf("Enter the number of bottles: ");
+    scanf("%d", &numBottles);
+    return numBottles;
+}
+
+double updateInventoryAndGetCost(Inventory* pInventory, int choice, int serialNumber, int numBottles)
+{
+    double cost = 0.0;
+    if (choice == 0)
+        cost = findBeerBySerialAndUpdate(pInventory, serialNumber, numBottles);
+    else if (choice == 1)
+        cost = findWineBySerialAndUpdate(pInventory, serialNumber, numBottles);
+    else if (choice == 2)
+        cost = findWhiskeyBySerialAndUpdate(pInventory, serialNumber, numBottles);
+    return cost;
+}
+
+void addPurchasedItemToReservation(Reservation* pNewReservation, int serialNumber, int numBottles, double cost)
+{
+    PurchasedItem* newItem = (PurchasedItem*)malloc(sizeof(PurchasedItem));
+    if (newItem != NULL)
+    {
+        newItem->serial = serialNumber;
+        newItem->amount = numBottles;
+        newItem->costInt = (int)cost;
+        newItem->costDec = (int)((cost - newItem->costInt) * 100);
+        L_insert(&pNewReservation->purchasedItems, newItem);
+    }
+    else
+    {
+        printf("Memory allocation failed for newItem.\n");
+        free(newItem);
+    }
+}
+
 int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pCustomer)
 {
     // Allocate memory for a new Reservation object
@@ -527,36 +586,16 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
         scanf("%d", &choice);
 
         // Print the list of drinks based on the user's choice
-        if (choice == 0)
-            printBeerList(pInventory);
-        else if (choice == 1)
-            printWineList(pInventory);
-        else if (choice == 2)
-            printWhiskeyList(pInventory);
-        else
-        {
-            printf("Invalid choice.\n");
-            continue;
-        }
+        printDrinkList(pInventory, choice);
 
         // Ask the user to enter the serial number of the drink
-        int serialNumber;
-        printf("Enter the serial number of the drink: ");
-        scanf("%d", &serialNumber);
+        int serialNumber = getDrinkSerialNumber();
 
         // Ask the user for the number of bottles
-        int numBottles;
-        printf("Enter the number of bottles: ");
-        scanf("%d", &numBottles);
+        int numBottles = getNumBottles();
 
-        // Find the drink in the inventory and update the cost //we need to add UPDATE AMOUNT SOLD
-        double cost = 0.0;
-        if (choice == 0)
-            cost = findBeerBySerialAndUpdate(pInventory, serialNumber, numBottles);
-        else if (choice == 1)
-            cost = findWineBySerialAndUpdate(pInventory, serialNumber, numBottles);
-        else if (choice == 2)
-            cost = findWhiskeyBySerialAndUpdate(pInventory, serialNumber, numBottles);
+        // Find the drink in the inventory and update the cost
+        double cost = updateInventoryAndGetCost(pInventory, choice, serialNumber, numBottles);
 
         if (cost == 0.0)
         {
@@ -564,31 +603,9 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
             continue;
         }
 
-        //PurchasedItem* newItem = (PurchasedItem*)malloc(sizeof(PurchasedItem));
-        //if (newItem != NULL)
-        //{
-        //    newItem->serial = serialNumber;
-        //    newItem->amount = numBottles;
-        //    newItem->cost = cost;
-        //    L_insert(&pNewReservation->purchasedItems, newItem);//add .head.key//L_insert_rese 
-        //}
+        // Add the purchased item to the reservation
+        addPurchasedItemToReservation(pNewReservation, serialNumber, numBottles, cost);
 
-        PurchasedItem* newItem = (PurchasedItem*)malloc(sizeof(PurchasedItem));
-        if (newItem != NULL)
-        {
-            newItem->serial = serialNumber;
-            newItem->amount = numBottles;
-            newItem->costInt = (int)cost;
-            newItem->costDec = (int)((cost - newItem->costInt) * 100);
-            L_insert(&pNewReservation->purchasedItems, newItem);//fix
-        }
-
-
-        else
-        {
-            printf("Memory allocation failed for newItem.\n");
-            free(newItem);
-        }
         totalCost += cost;
 
         // Ask the user if they want to add more items
@@ -641,6 +658,7 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
 
     return 1; // Reservation added successfully
 }
+
 
 void printReservationsArr(struct Reservation** array, int size)
 {
