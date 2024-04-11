@@ -15,7 +15,7 @@
 
 
 typedef enum { eNone, eResCode, eCustomerName, eDate, eNofSortOpt } eSortOption;
-static const char* sortOptStr[eNofSortOpt];
+static const char* sortOptStr[eNofSortOpt]={ "None", "Reservation Code", "Customer Name", "Date" };
 
 
 
@@ -50,12 +50,10 @@ int         customerCompare(const void* data1, const void* data2);//name compera
 void        printAllCustomers(const Sales* pSales);
 int		    insertNewCustomerToList(LIST* pList, Customer* pCustomer);
 
-//int         pickCustomerFromList(const Sales* pSales);//print all clients 
 
 
 
-///Res funcs
- 
+///Res funcs 
 //void         initReservationArray();
 Customer*   getCustomerForReservation(Sales* pSales);
 //int         addNewReservationToArray(Sales* pSales, Customer* pCustomer, char* itemsList, int itemsPrice);

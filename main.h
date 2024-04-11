@@ -18,7 +18,7 @@ typedef enum
 
 
 const char* str[eNofOptions] = {
-    "Print inventory", "Print reservations", "Print customers",
+    "Print inventory", "Print reservations", "Print all clients",
     "Add beverages to inventory", "Add client", "Make reservation",
     "Sort reservation array", "Find reservation",
     "Creative function 1", "Creative function 2"
