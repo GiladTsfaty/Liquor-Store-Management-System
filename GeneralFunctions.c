@@ -88,7 +88,7 @@ char** splitCharsToWords(char* str, int* pCount, int* pTotalLength)
 	word = strtok(temp, delimiters);
 	while (word != NULL)
 	{
-		wordsArray = (char**)realloc(wordsArray, (count + 1) * sizeof(char*));
+		wordsArray = (char**)realloc(wordsArray, (size_t)(count + 1) * sizeof(char*));//(size_t)
 		if (!wordsArray)
 			return 0;
 		wordsArray[count] = getDynStr(word);
@@ -102,11 +102,11 @@ char** splitCharsToWords(char* str, int* pCount, int* pTotalLength)
 
 
 
-void generalArrayFunction(void* arr, int size, int arrTypeSize, void(*func)(void* element)) //called: case print/free flights arr, case print/free planes arr 
+void generalArrayFunction(void* arr, int size, int arrTypeSize, void(*func)(void* element))  
 {
 	for (int i = 0; i < size; i++)
 	{
-		func((char*)(arr)+i * arrTypeSize); //cast to char to print plane/flight
+		func((char*)(arr)+i * arrTypeSize); 
 	}
 
 

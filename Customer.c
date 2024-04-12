@@ -198,7 +198,7 @@ char* allocateRightLength(char** wordsArray, int count, int totalLength)
         totalLength += (count - 1); // Add space for underscores
     }
 
-    char* name = (char*)calloc(totalLength + 1, sizeof(char)); // +1 for null terminator
+    char* name = (char*)calloc((size_t)totalLength + 1, sizeof(char)); // +1 for null terminator//(size_t)
     if (!name) {
         for (int i = 0; i < count; i++)
             free(wordsArray[i]);

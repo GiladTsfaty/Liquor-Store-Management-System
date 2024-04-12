@@ -27,7 +27,7 @@ void initInventory(Inventory* pInventory)
 
 int addBeer(Inventory* pInventory)
 {
-    pInventory->beerArray = (Beer*)realloc(pInventory->beerArray, (pInventory->beersCount + 1) * sizeof(Beer));
+    pInventory->beerArray = (Beer*)realloc(pInventory->beerArray, (size_t)(pInventory->beersCount + 1) * sizeof(Beer));//(size_t)
     if (!pInventory->beerArray)
         return 0;
     initBeer(&pInventory->beerArray[pInventory->beersCount], pInventory->beerArray, pInventory->beersCount);
@@ -37,7 +37,7 @@ int addBeer(Inventory* pInventory)
 
 int addWine(Inventory* pInventory)
 {
-    pInventory->wineArray = (Wine*)realloc(pInventory->wineArray, (pInventory->winesCount + 1) * sizeof(Wine));
+    pInventory->wineArray = (Wine*)realloc(pInventory->wineArray, (size_t)(pInventory->winesCount + 1) * sizeof(Wine));//(size_t)
     if (!pInventory->wineArray)
         return 0;
     initWine(&pInventory->wineArray[pInventory->winesCount], pInventory->wineArray, pInventory->winesCount);
@@ -47,7 +47,7 @@ int addWine(Inventory* pInventory)
 
 int addWhiskey(Inventory* pInventory)
 {
-    pInventory->whiskeyArray = (Whiskey*)realloc(pInventory->whiskeyArray, (pInventory->whiskeysCount + 1) * sizeof(Whiskey));
+    pInventory->whiskeyArray = (Whiskey*)realloc(pInventory->whiskeyArray, (size_t)(pInventory->whiskeysCount + 1) * sizeof(Whiskey));//(size_t)
     if (!pInventory->whiskeyArray)
         return 0;
     initWhiskey(&pInventory->whiskeyArray[pInventory->whiskeysCount], pInventory->whiskeyArray, pInventory->whiskeysCount);

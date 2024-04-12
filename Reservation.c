@@ -103,7 +103,8 @@ void printReservation(const Reservation* pRes)
 		pRes->ReservationCode, pRes->priceOfOrder);
 	printf("The Items are:\n");
 
-	for (int i = 0; i < pRes->numPurchasedItems; i++) {
+	for (int i = 0; i < pRes->numPurchasedItems; i++)
+	{
 		printPurchasedItem(&(pRes->purchasedItems[i]));
 	}
 }

@@ -492,12 +492,57 @@ void saveReservationToBinaryFile(const Reservation* reservation, FILE* file)
         savePurchasedItemToCompressedFile(&reservation->purchasedItems[i], file);
     }
 }
+//
+//Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file)
+//{
+//    Reservation* reservation = (Reservation*)malloc(sizeof(Reservation));
+//    if (reservation == NULL)
+//    {
+//        printf("Memory allocation failed for reservation.\n");
+//        return NULL;
+//    }
+//
+//    // Read reservation data from the file
+//    fread(&reservation->ReservationCode, sizeof(int), 1, file);
+//
+//    // Read customer name
+//    int nameLength;
+//    fread(&nameLength, sizeof(int), 1, file);
+//    char* customerName = (char*)malloc(nameLength * sizeof(char));
+//    fread(customerName, sizeof(char), nameLength, file);
+//    reservation->customer = findCustomerByName(pSales, customerName);
+//    free(customerName);
+//
+//    // Read customer type
+//    fread(&reservation->customer->type, sizeof(eCustomerType), 1, file);
+//
+//    // Read date
+//    fread(&reservation->date, sizeof(Date), 1, file);
+//
+//    fread(&reservation->priceOfOrder, sizeof(double), 1, file);
+//
+//    // Read purchased items
+//    fread(&reservation->numPurchasedItems, sizeof(int), 1, file);
+//    reservation->purchasedItems = (PurchasedItem*)malloc(reservation->numPurchasedItems * sizeof(PurchasedItem));
+//    if (reservation->purchasedItems == NULL) {
+//        printf("Memory allocation failed for purchased items.\n");
+//        free(reservation);
+//        return NULL;
+//    }
+//    for (int i = 0; i < reservation->numPurchasedItems; i++) {
+//        loadPurchasedItemFromCompressedFile(&reservation->purchasedItems[i], file);
+//    }
+//
+//    return reservation;
+//}
+//
+//
 
-Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file)
-{
+///changed func  loadReservationFromBinaryFile above
+
+Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file) {
     Reservation* reservation = (Reservation*)malloc(sizeof(Reservation));
-    if (reservation == NULL)
-    {
+    if (reservation == NULL) {
         printf("Memory allocation failed for reservation.\n");
         return NULL;
     }
@@ -508,8 +553,21 @@ Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file)
     // Read customer name
     int nameLength;
     fread(&nameLength, sizeof(int), 1, file);
+
     char* customerName = (char*)malloc(nameLength * sizeof(char));
-    fread(customerName, sizeof(char), nameLength, file);
+    if (customerName == NULL) {
+        printf("Memory allocation failed for customer name.\n");
+        free(reservation);
+        return NULL;
+    }
+
+    if (fread(customerName, sizeof(char), nameLength, file) != nameLength) {
+        printf("Error reading customer name from file.\n");
+        free(customerName);
+        free(reservation);
+        return NULL;
+    }
+
     reservation->customer = findCustomerByName(pSales, customerName);
     free(customerName);
 
@@ -523,18 +581,27 @@ Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file)
 
     // Read purchased items
     fread(&reservation->numPurchasedItems, sizeof(int), 1, file);
+
     reservation->purchasedItems = (PurchasedItem*)malloc(reservation->numPurchasedItems * sizeof(PurchasedItem));
     if (reservation->purchasedItems == NULL) {
         printf("Memory allocation failed for purchased items.\n");
         free(reservation);
         return NULL;
     }
+
     for (int i = 0; i < reservation->numPurchasedItems; i++) {
-        loadPurchasedItemFromCompressedFile(&reservation->purchasedItems[i], file);
+        if (!loadPurchasedItemFromCompressedFile(&reservation->purchasedItems[i], file)) {
+            printf("Error loading purchased item from compressed file.\n");
+            free(reservation->purchasedItems);
+            free(reservation);
+            return NULL;
+        }
     }
 
     return reservation;
 }
+
+
 
 ////
 
@@ -556,7 +623,7 @@ int loadReservationsArrayFromBinaryFile(Sales* pSales, const char* filename)
     fread(&count, sizeof(int), 1, fp);
 
     // Allocate memory for the reservation array
-    pSales->reservationArray = (Reservation**)malloc(count * sizeof(Reservation*));
+    pSales->reservationArray = (struct Reservation**)malloc(count * sizeof(Reservation*));//struct
     if (pSales->reservationArray == NULL)
     {
         printf("Memory allocation failed for reservation array.\n");
@@ -614,7 +681,7 @@ int saveReservationsArrayToBinaryFile(const Sales* pSales,  char* filename)
 int	 writeStringToCompressFile(const char* str, FILE* fp, const char* msg)
 {
 
-    if (!writeCharsToFile(str, (int)strlen(str), fp, msg))
+    if (!writeCharsToFile((char*)str, (int)strlen(str), fp, msg))//char*
         return 0;
 
 
