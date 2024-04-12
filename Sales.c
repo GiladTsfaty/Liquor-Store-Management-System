@@ -675,6 +675,81 @@ void freeReservationsArr(struct Reservation** array, int size)//struct
 
 
 
+//
+//
+//void findReservation(const Sales* pSales) {
+//    if (pSales->reservationCount == 0) {
+//        printf("There are no reservations.\n");
+//        return;
+//    }
+//
+//    int(*compare)(const void* rese1, const void* rese2) = NULL;
+//
+//    switch (pSales->ReservationSortOpt) {
+//    case eResCode:
+//        printf("Enter the Reservation Code: ");
+//        compare = compareReseravationByReservatinCode;
+//        break;
+//
+//    case eCustomerName:
+//        printf("Enter the Customer Name: ");
+//        compare = compareReseravationByCustomerName;
+//        break;
+//
+//    case eDate:
+//        printf("Enter the Date (DD/MM/YYYY): ");
+//        compare = compareReseravationByDate;
+//        break;
+//
+//    default:
+//        printf("Invalid - Reservations Are Not Sorted\n");
+//        return;
+//    }
+//
+//    Reservation tempReservation = { 0 };//= {0}
+//    Reservation* pTempReservation = &tempReservation;
+//
+//    // Allocate memory for the customer field
+//    pTempReservation->customer = (Customer*)malloc(sizeof(Customer));
+//    if (pTempReservation->customer == NULL) {
+//        printf("Memory allocation failed for customer.\n");
+//        return;
+//    }
+//
+//    switch (pSales->ReservationSortOpt) {
+//    case eResCode:
+//        scanf("%d", &pTempReservation->ReservationCode);
+//        break;
+//
+//    case eCustomerName:
+//        // Allocate memory for the customer name
+//        pTempReservation->customer->name = (char*)malloc(sizeof(char) * MAX_STR_LEN);
+//        if (pTempReservation->customer->name == NULL) {
+//            printf("Memory allocation failed for customer name.\n");
+//            free(pTempReservation->customer);
+//            return;
+//        }
+//        scanf("%s", pTempReservation->customer->name);
+//        break;
+//
+//    case eDate:
+//        scanf("%d/%d/%d", &pTempReservation->date.day, &pTempReservation->date.month, &pTempReservation->date.year);
+//        break;
+//    }
+//
+//    Reservation** pFoundReservation = bsearch(&pTempReservation, pSales->reservationArray, pSales->reservationCount, sizeof(Reservation*), compare);
+//
+//    // Free the allocated memory for the customer field and name
+//    free(pTempReservation->customer->name);
+//    free(pTempReservation->customer);//exp
+//
+//    if (pFoundReservation == NULL)
+//        printf("Reservation was not found\n");
+//    else {
+//        printf("Reservation found:\n");
+//        printReservation(*pFoundReservation);
+//    }
+//}
 
 
 void findReservation(const Sales* pSales) {
@@ -706,7 +781,7 @@ void findReservation(const Sales* pSales) {
         return;
     }
 
-    Reservation tempReservation = {0};//= {0}
+    Reservation tempReservation = { 0 };
     Reservation* pTempReservation = &tempReservation;
 
     // Allocate memory for the customer field
@@ -740,8 +815,10 @@ void findReservation(const Sales* pSales) {
     Reservation** pFoundReservation = bsearch(&pTempReservation, pSales->reservationArray, pSales->reservationCount, sizeof(Reservation*), compare);
 
     // Free the allocated memory for the customer field and name
-    free(pTempReservation->customer->name);
-    free(pTempReservation->customer);//exp
+    if (pSales->ReservationSortOpt == eCustomerName && pTempReservation->customer->name != NULL) {
+        free(pTempReservation->customer->name);
+    }
+    free(pTempReservation->customer);
 
     if (pFoundReservation == NULL)
         printf("Reservation was not found\n");
@@ -750,9 +827,6 @@ void findReservation(const Sales* pSales) {
         printReservation(*pFoundReservation);
     }
 }
-
-
-
 
 
 
