@@ -67,6 +67,233 @@ void readLine(FILE* file, char* buffer, int bufferSize) {
 
 
 
+///////
+//
+//
+//int initInventoryFromTextFile(Inventory* pInventory, const char* filename)
+//{
+//    FILE* fp = fopen(filename, "r");
+//    if (!fp)
+//    {
+//        perror("Unable to open file");
+//        return 0;
+//    }
+//    //CHECK_PRINT_RETURN_0(fp,"Unable to open file" );
+//    
+//    char line[256];
+//    int itemCount;
+//    
+//    // Read Beers
+//    if (fscanf(fp, "%d\n", &itemCount) != 1)
+//    {
+//        CLOSE_FILE_RETURN_0(fp);
+//    }
+//    pInventory->beerArray = (Beer*)malloc(itemCount * sizeof(Beer));
+//    pInventory->beersCount = itemCount;
+//    for (int i = 0; i < itemCount; ++i) {
+//        char tempBrand[256];
+//        readLine(fp, tempBrand, sizeof(tempBrand));
+//        pInventory->beerArray[i].brand = (char*)malloc((strlen(tempBrand) + 1) * sizeof(char));
+//        strcpy(pInventory->beerArray[i].brand, tempBrand);
+//    
+//        if (fscanf(fp, "%d\n%d\n%d\n%d\n",
+//                   &pInventory->beerArray[i].itemSerial,
+//                   &pInventory->beerArray[i].amountAvailable,
+//                   &pInventory->beerArray[i].price,
+//                   &pInventory->beerArray[i].numOfSolds) != 4) {
+//            CLOSE_FILE_RETURN_0(fp);
+//        }
+//    
+//        readLine(fp, line, sizeof(line));
+//        parseBeerSize(line, &pInventory->beerArray[i].bSize);
+//    }
+//
+//
+//  
+//
+//    // Read Whiskeys
+//    if (fscanf(fp, "%d\n", &itemCount) != 1) {
+//        CLOSE_FILE_RETURN_0(fp);
+//    }
+//    pInventory->whiskeyArray = (Whiskey*)malloc(itemCount * sizeof(Whiskey));
+//    pInventory->whiskeysCount = itemCount;
+//    for (int i = 0; i < itemCount; ++i) {
+//        char tempBrand[256];
+//        readLine(fp, tempBrand, sizeof(tempBrand));
+//        pInventory->whiskeyArray[i].brand = (char*)malloc((strlen(tempBrand) + 1) * sizeof(char));
+//        strcpy(pInventory->whiskeyArray[i].brand, tempBrand);
+//
+//        if (fscanf(fp, "%d\n%d\n%d\n%d\n",
+//                   &pInventory->whiskeyArray[i].itemSerial,
+//                   &pInventory->whiskeyArray[i].amountAvailable,
+//                   &pInventory->whiskeyArray[i].price,
+//                   &pInventory->whiskeyArray[i].numOfSolds) != 4) {
+//            CLOSE_FILE_RETURN_0(fp);
+//        }
+//
+//        readLine(fp, line, sizeof(line));
+//        parseWhiskeyType(line, &pInventory->whiskeyArray[i].whiskeyType);
+//    }
+//
+//    // Read Wines
+//    if (fscanf(fp, "%d\n", &itemCount) != 1) 
+//    {
+//        CLOSE_FILE_RETURN_0(fp);
+//    }
+//    pInventory->wineArray = (Wine*)malloc(itemCount * sizeof(Wine));
+//    pInventory->winesCount = itemCount;
+//    for (int i = 0; i < itemCount; ++i) {
+//        char tempBrand[256];
+//        readLine(fp, tempBrand, sizeof(tempBrand));
+//        pInventory->wineArray[i].brand = (char*)malloc((strlen(tempBrand) + 1) * sizeof(char));
+//        strcpy(pInventory->wineArray[i].brand, tempBrand);
+//
+//        if (fscanf(fp, "%d\n%d\n%d\n%d\n",
+//                   &pInventory->wineArray[i].itemSerial,
+//                   &pInventory->wineArray[i].amountAvailable,
+//                   &pInventory->wineArray[i].price,
+//                   &pInventory->wineArray[i].numOfSolds) != 4) {
+//            CLOSE_FILE_RETURN_0(fp);
+//        }
+//
+//        readLine(fp, line, sizeof(line));
+//        parseWineType(line, &pInventory->wineArray[i].wType);
+//    }
+//
+//    /*fclose(fp);
+//    return 1;*/
+//    CLOSE_FILE_RETURN_1(fp);
+//}
+//
+//
+//
+//
+//int saveInventoryToTextFile(const Inventory* pInventory, char* filename)
+//{
+//    FILE* fp = fopen(filename, "w");
+//    /*if (fp == NULL) 
+//    {
+//        printf("Failed to open file: %s");
+//        return 0;
+//    }*/
+//    CHECK_PRINT_RETURN_0(fp, "Failed to open file");
+//
+//    // Write Beers
+//    fprintf(fp, "%d\n", pInventory->beersCount);
+//    for (int i = 0; i < pInventory->beersCount; i++) {
+//        const Beer* pBeer = &pInventory->beerArray[i];
+//        fprintf(fp, "%s\n", pBeer->brand);
+//        fprintf(fp, "%d\n%d\n%d\n%d\n", pBeer->itemSerial, pBeer->amountAvailable, pBeer->price, pBeer->numOfSolds);
+//        fprintf(fp, "%s\n", BeerSizeStr[pBeer->bSize]);//!!
+//    }
+//
+//    // Write Whiskeys
+//    fprintf(fp, "%d\n", pInventory->whiskeysCount);
+//    for (int i = 0; i < pInventory->whiskeysCount; i++) {
+//        const Whiskey* pWhiskey = &pInventory->whiskeyArray[i];
+//        fprintf(fp, "%s\n", pWhiskey->brand);
+//        fprintf(fp, "%d\n%d\n%d\n%d\n", pWhiskey->itemSerial, pWhiskey->amountAvailable, pWhiskey->price, pWhiskey->numOfSolds);
+//        fprintf(fp, "%s\n", WhiskeyTypeStr[pWhiskey->whiskeyType]);
+//    }
+//
+//    // Write Wines
+//    fprintf(fp, "%d\n", pInventory->winesCount);
+//    for (int i = 0; i < pInventory->winesCount; i++) {
+//        const Wine* pWine = &pInventory->wineArray[i];
+//        fprintf(fp, "%s\n", pWine->brand);
+//        fprintf(fp, "%d\n%d\n%d\n%d\n", pWine->itemSerial, pWine->amountAvailable, pWine->price, pWine->numOfSolds);
+//        fprintf(fp, "%s\n", WineTypeStr[pWine->wType]);
+//    }
+//
+//   /* fclose(fp);
+//    return 1;*/
+//    CLOSE_FILE_RETURN_1(fp);
+//}
+//
+//
+//
+//
+//
+//
+//void readInventoryFromFile(Inventory* pInventory, const char* filename) {
+//    FILE* fp = fopen(filename, "r");
+//    if (!fp) 
+//    {
+//        perror("Unable to open file");
+//        return;
+//    }
+//    
+//    char line[256];
+//    int itemCount;
+//
+//    // Read Beers
+//    fscanf(fp, "%d\n", &itemCount); // Read the count of beer items
+//    pInventory->beerArray = (Beer*)malloc(itemCount * sizeof(Beer));
+//    pInventory->beersCount = itemCount;
+//    for (int i = 0; i < itemCount; ++i) {
+//        char tempBrand[256];
+//        readLine(fp, tempBrand, sizeof(tempBrand));
+//        pInventory->beerArray[i].brand = (char*)malloc((strlen(tempBrand) + 1) * sizeof(char));
+//        strcpy(pInventory->beerArray[i].brand, tempBrand);
+//
+//        fscanf(fp, "%d\n%d\n%d\n%d\n",
+//               &pInventory->beerArray[i].itemSerial,
+//               &pInventory->beerArray[i].amountAvailable,
+//               &pInventory->beerArray[i].price,
+//               &pInventory->beerArray[i].numOfSolds);
+//
+//        readLine(fp, line, sizeof(line)); // Read the beer size/type as string
+//        parseBeerSize(line, &pInventory->beerArray[i].bSize);
+//    }
+//
+//    // Read Whiskeys
+//    fscanf(fp, "%d\n", &itemCount); // Read the count of whiskey items
+//    pInventory->whiskeyArray = (Whiskey*)malloc(itemCount * sizeof(Whiskey));
+//    pInventory->whiskeysCount = itemCount;
+//    for (int i = 0; i < itemCount; ++i) {
+//        char tempBrand[256];
+//        readLine(fp, tempBrand, sizeof(tempBrand));
+//        pInventory->whiskeyArray[i].brand = (char*)malloc((strlen(tempBrand) + 1) * sizeof(char));
+//        strcpy(pInventory->whiskeyArray[i].brand, tempBrand);
+//
+//        fscanf(fp, "%d\n%d\n%d\n%d\n",
+//               &pInventory->whiskeyArray[i].itemSerial,
+//               &pInventory->whiskeyArray[i].amountAvailable,
+//               &pInventory->whiskeyArray[i].price,
+//               &pInventory->whiskeyArray[i].numOfSolds);
+//
+//        readLine(fp, line, sizeof(line)); // Read the whiskey type as string
+//        parseWhiskeyType(line, &pInventory->whiskeyArray[i].whiskeyType);
+//    }
+//
+//    // Read Wines
+//    fscanf(fp, "%d\n", &itemCount); // Read the count of wine items
+//    pInventory->wineArray = (Wine*)malloc(itemCount * sizeof(Wine));
+//    pInventory->winesCount = itemCount;
+//    for (int i = 0; i < itemCount; ++i) {
+//        char tempBrand[256];
+//        readLine(fp, tempBrand, sizeof(tempBrand));
+//        pInventory->wineArray[i].brand = (char*)malloc((strlen(tempBrand) + 1) * sizeof(char));
+//        strcpy(pInventory->wineArray[i].brand, tempBrand);
+//
+//        fscanf(fp, "%d\n%d\n%d\n%d\n",
+//               &pInventory->wineArray[i].itemSerial,
+//               &pInventory->wineArray[i].amountAvailable,
+//               &pInventory->wineArray[i].price,
+//               &pInventory->wineArray[i].numOfSolds);
+//
+//        readLine(fp, line, sizeof(line)); // Read the wine type as string
+//        parseWineType(line, &pInventory->wineArray[i].wType);
+//    }
+//
+//    fclose(fp);
+//}
+//
+///////
+
+///dont erase fixed somthing above
+
+
 int initInventoryFromTextFile(Inventory* pInventory, const char* filename)
 {
     FILE* fp = fopen(filename, "r");
@@ -75,56 +302,64 @@ int initInventoryFromTextFile(Inventory* pInventory, const char* filename)
         perror("Unable to open file");
         return 0;
     }
-    //CHECK_PRINT_RETURN_0(fp,"Unable to open file" );
-    
+
     char line[256];
     int itemCount;
-    
+
     // Read Beers
     if (fscanf(fp, "%d\n", &itemCount) != 1)
     {
         CLOSE_FILE_RETURN_0(fp);
     }
     pInventory->beerArray = (Beer*)malloc(itemCount * sizeof(Beer));
+    if (pInventory->beerArray == NULL) {
+        printf("Memory allocation failed for beer array.\n");
+        CLOSE_FILE_RETURN_0(fp);
+    }
     pInventory->beersCount = itemCount;
     for (int i = 0; i < itemCount; ++i) {
         char tempBrand[256];
         readLine(fp, tempBrand, sizeof(tempBrand));
         pInventory->beerArray[i].brand = (char*)malloc((strlen(tempBrand) + 1) * sizeof(char));
-        strcpy(pInventory->beerArray[i].brand, tempBrand);
-    
+        if (pInventory->beerArray[i].brand != NULL) {
+            strcpy(pInventory->beerArray[i].brand, tempBrand);
+        }
+
         if (fscanf(fp, "%d\n%d\n%d\n%d\n",
-                   &pInventory->beerArray[i].itemSerial,
-                   &pInventory->beerArray[i].amountAvailable,
-                   &pInventory->beerArray[i].price,
-                   &pInventory->beerArray[i].numOfSolds) != 4) {
+            &pInventory->beerArray[i].itemSerial,
+            &pInventory->beerArray[i].amountAvailable,
+            &pInventory->beerArray[i].price,
+            &pInventory->beerArray[i].numOfSolds) != 4) {
             CLOSE_FILE_RETURN_0(fp);
         }
-    
+
         readLine(fp, line, sizeof(line));
         parseBeerSize(line, &pInventory->beerArray[i].bSize);
     }
-
-
-  
 
     // Read Whiskeys
     if (fscanf(fp, "%d\n", &itemCount) != 1) {
         CLOSE_FILE_RETURN_0(fp);
     }
     pInventory->whiskeyArray = (Whiskey*)malloc(itemCount * sizeof(Whiskey));
+    if (pInventory->whiskeyArray == NULL) {
+        printf("Memory allocation failed for whiskey array.\n");
+        CLOSE_FILE_RETURN_0(fp);
+    }
     pInventory->whiskeysCount = itemCount;
     for (int i = 0; i < itemCount; ++i) {
         char tempBrand[256];
         readLine(fp, tempBrand, sizeof(tempBrand));
         pInventory->whiskeyArray[i].brand = (char*)malloc((strlen(tempBrand) + 1) * sizeof(char));
-        strcpy(pInventory->whiskeyArray[i].brand, tempBrand);
+        if (pInventory->whiskeyArray[i].brand != NULL) {
+            strcpy(pInventory->whiskeyArray[i].brand, tempBrand);
+        }
 
         if (fscanf(fp, "%d\n%d\n%d\n%d\n",
-                   &pInventory->whiskeyArray[i].itemSerial,
-                   &pInventory->whiskeyArray[i].amountAvailable,
-                   &pInventory->whiskeyArray[i].price,
-                   &pInventory->whiskeyArray[i].numOfSolds) != 4) {
+            &pInventory->whiskeyArray[i].itemSerial,
+            &pInventory->whiskeyArray[i].amountAvailable,
+            &pInventory->whiskeyArray[i].price,
+            &pInventory->whiskeyArray[i].numOfSolds) != 4) {
             CLOSE_FILE_RETURN_0(fp);
         }
 
@@ -133,23 +368,29 @@ int initInventoryFromTextFile(Inventory* pInventory, const char* filename)
     }
 
     // Read Wines
-    if (fscanf(fp, "%d\n", &itemCount) != 1) 
+    if (fscanf(fp, "%d\n", &itemCount) != 1)
     {
         CLOSE_FILE_RETURN_0(fp);
     }
     pInventory->wineArray = (Wine*)malloc(itemCount * sizeof(Wine));
+    if (pInventory->wineArray == NULL) {
+        printf("Memory allocation failed for wine array.\n");
+        CLOSE_FILE_RETURN_0(fp);
+    }
     pInventory->winesCount = itemCount;
     for (int i = 0; i < itemCount; ++i) {
         char tempBrand[256];
         readLine(fp, tempBrand, sizeof(tempBrand));
         pInventory->wineArray[i].brand = (char*)malloc((strlen(tempBrand) + 1) * sizeof(char));
-        strcpy(pInventory->wineArray[i].brand, tempBrand);
+        if (pInventory->wineArray[i].brand != NULL) {
+            strcpy(pInventory->wineArray[i].brand, tempBrand);
+        }
 
         if (fscanf(fp, "%d\n%d\n%d\n%d\n",
-                   &pInventory->wineArray[i].itemSerial,
-                   &pInventory->wineArray[i].amountAvailable,
-                   &pInventory->wineArray[i].price,
-                   &pInventory->wineArray[i].numOfSolds) != 4) {
+            &pInventory->wineArray[i].itemSerial,
+            &pInventory->wineArray[i].amountAvailable,
+            &pInventory->wineArray[i].price,
+            &pInventory->wineArray[i].numOfSolds) != 4) {
             CLOSE_FILE_RETURN_0(fp);
         }
 
@@ -157,12 +398,8 @@ int initInventoryFromTextFile(Inventory* pInventory, const char* filename)
         parseWineType(line, &pInventory->wineArray[i].wType);
     }
 
-    /*fclose(fp);
-    return 1;*/
     CLOSE_FILE_RETURN_1(fp);
 }
-
-
 
 
 int saveInventoryToTextFile(const Inventory* pInventory, char* filename)
@@ -208,36 +445,39 @@ int saveInventoryToTextFile(const Inventory* pInventory, char* filename)
 }
 
 
-
-
-
-
 void readInventoryFromFile(Inventory* pInventory, const char* filename) {
     FILE* fp = fopen(filename, "r");
-    if (!fp) 
+    if (!fp)
     {
         perror("Unable to open file");
         return;
     }
-    
+
     char line[256];
     int itemCount;
 
     // Read Beers
     fscanf(fp, "%d\n", &itemCount); // Read the count of beer items
     pInventory->beerArray = (Beer*)malloc(itemCount * sizeof(Beer));
+    if (pInventory->beerArray == NULL) {
+        printf("Memory allocation failed for beer array.\n");
+        fclose(fp);
+        return;
+    }
     pInventory->beersCount = itemCount;
     for (int i = 0; i < itemCount; ++i) {
         char tempBrand[256];
         readLine(fp, tempBrand, sizeof(tempBrand));
         pInventory->beerArray[i].brand = (char*)malloc((strlen(tempBrand) + 1) * sizeof(char));
-        strcpy(pInventory->beerArray[i].brand, tempBrand);
+        if (pInventory->beerArray[i].brand != NULL) {
+            strcpy(pInventory->beerArray[i].brand, tempBrand);
+        }
 
         fscanf(fp, "%d\n%d\n%d\n%d\n",
-               &pInventory->beerArray[i].itemSerial,
-               &pInventory->beerArray[i].amountAvailable,
-               &pInventory->beerArray[i].price,
-               &pInventory->beerArray[i].numOfSolds);
+            &pInventory->beerArray[i].itemSerial,
+            &pInventory->beerArray[i].amountAvailable,
+            &pInventory->beerArray[i].price,
+            &pInventory->beerArray[i].numOfSolds);
 
         readLine(fp, line, sizeof(line)); // Read the beer size/type as string
         parseBeerSize(line, &pInventory->beerArray[i].bSize);
@@ -246,18 +486,25 @@ void readInventoryFromFile(Inventory* pInventory, const char* filename) {
     // Read Whiskeys
     fscanf(fp, "%d\n", &itemCount); // Read the count of whiskey items
     pInventory->whiskeyArray = (Whiskey*)malloc(itemCount * sizeof(Whiskey));
+    if (pInventory->whiskeyArray == NULL) {
+        printf("Memory allocation failed for whiskey array.\n");
+        fclose(fp);
+        return;
+    }
     pInventory->whiskeysCount = itemCount;
     for (int i = 0; i < itemCount; ++i) {
         char tempBrand[256];
         readLine(fp, tempBrand, sizeof(tempBrand));
         pInventory->whiskeyArray[i].brand = (char*)malloc((strlen(tempBrand) + 1) * sizeof(char));
-        strcpy(pInventory->whiskeyArray[i].brand, tempBrand);
+        if (pInventory->whiskeyArray[i].brand != NULL) {
+            strcpy(pInventory->whiskeyArray[i].brand, tempBrand);
+        }
 
         fscanf(fp, "%d\n%d\n%d\n%d\n",
-               &pInventory->whiskeyArray[i].itemSerial,
-               &pInventory->whiskeyArray[i].amountAvailable,
-               &pInventory->whiskeyArray[i].price,
-               &pInventory->whiskeyArray[i].numOfSolds);
+            &pInventory->whiskeyArray[i].itemSerial,
+            &pInventory->whiskeyArray[i].amountAvailable,
+            &pInventory->whiskeyArray[i].price,
+            &pInventory->whiskeyArray[i].numOfSolds);
 
         readLine(fp, line, sizeof(line)); // Read the whiskey type as string
         parseWhiskeyType(line, &pInventory->whiskeyArray[i].whiskeyType);
@@ -266,18 +513,25 @@ void readInventoryFromFile(Inventory* pInventory, const char* filename) {
     // Read Wines
     fscanf(fp, "%d\n", &itemCount); // Read the count of wine items
     pInventory->wineArray = (Wine*)malloc(itemCount * sizeof(Wine));
+    if (pInventory->wineArray == NULL) {
+        printf("Memory allocation failed for wine array.\n");
+        fclose(fp);
+        return;
+    }
     pInventory->winesCount = itemCount;
     for (int i = 0; i < itemCount; ++i) {
         char tempBrand[256];
         readLine(fp, tempBrand, sizeof(tempBrand));
         pInventory->wineArray[i].brand = (char*)malloc((strlen(tempBrand) + 1) * sizeof(char));
-        strcpy(pInventory->wineArray[i].brand, tempBrand);
+        if (pInventory->wineArray[i].brand != NULL) {
+            strcpy(pInventory->wineArray[i].brand, tempBrand);
+        }
 
         fscanf(fp, "%d\n%d\n%d\n%d\n",
-               &pInventory->wineArray[i].itemSerial,
-               &pInventory->wineArray[i].amountAvailable,
-               &pInventory->wineArray[i].price,
-               &pInventory->wineArray[i].numOfSolds);
+            &pInventory->wineArray[i].itemSerial,
+            &pInventory->wineArray[i].amountAvailable,
+            &pInventory->wineArray[i].price,
+            &pInventory->wineArray[i].numOfSolds);
 
         readLine(fp, line, sizeof(line)); // Read the wine type as string
         parseWineType(line, &pInventory->wineArray[i].wType);
@@ -285,6 +539,13 @@ void readInventoryFromFile(Inventory* pInventory, const char* filename) {
 
     fclose(fp);
 }
+
+
+
+
+
+
+
 
 
 

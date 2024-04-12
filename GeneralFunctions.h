@@ -30,12 +30,12 @@
 
 #define CLOSE_FILE_RETURN_1(fp) {fclose(fp); return 1;}
 
-char* getStrExactName(const char* msg);
-char* myGets(char* buffer, int size);
-char* myGetsFile(char* buffer, int size, FILE* fp);
-char* getDynStr(char* str);
-char** splitCharsToWords(char* str, int* pCount, int* pTotalLength);
-int getIntPositive(const char* prompt);
+char*	getStrExactName(const char* msg);
+char*	myGets(char* buffer, int size);
+char*	myGetsFile(char* buffer, int size, FILE* fp);
+char*	getDynStr(char* str);
+char**	splitCharsToWords(char* str, int* pCount, int* pTotalLength);
+int		getIntPositive(const char* prompt);
 
-void generalArrayFunction(void* arr, int size, int arrTypeSize, void(*func)(void* element));
+void	generalArrayFunction(void* arr, int size, int arrTypeSize, void(*func)(void* element));
 

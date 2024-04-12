@@ -76,7 +76,7 @@ int addNewCustomer(Sales* pSales)
 	Customer* pCustomer = initCustomer(pSales);
 	if (!pCustomer)
 		return 0;
-	L_insertByNameOrder((LIST*) &pSales->customersList, pCustomer);
+	//L_insertByNameOrder((LIST*) &pSales->customersList, pCustomer);////!!!
 	return 1;
 }
 
@@ -428,7 +428,7 @@ double updateInventoryAndGetCost(Inventory* pInventory, int choice, int serialNu
 void addPurchasedItemToReservation(Reservation* pNewReservation, int serialNumber, int numBottles, double cost)
 {
     // Reallocate memory for the array of purchased items
-    PurchasedItem* newItems = (PurchasedItem*)realloc(pNewReservation->purchasedItems, sizeof(PurchasedItem) * (pNewReservation->numPurchasedItems + 1));
+    PurchasedItem* newItems = (PurchasedItem*)realloc(pNewReservation->purchasedItems, sizeof(PurchasedItem) * ((size_t)pNewReservation->numPurchasedItems + 1));//(size_t)
     if (newItems == NULL) {
         printf("Memory allocation failed for new item.\n");
         return;
@@ -579,7 +579,7 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
         }
 
         // Add the purchased item to the reservation
-        PurchasedItem* newItem = (PurchasedItem*)realloc(pNewReservation->purchasedItems, (pNewReservation->numPurchasedItems + 1) * sizeof(PurchasedItem));
+        PurchasedItem* newItem = (PurchasedItem*)realloc(pNewReservation->purchasedItems, ((size_t)pNewReservation->numPurchasedItems + 1) * sizeof(PurchasedItem));//(size_t)
         if (newItem == NULL)
         {
             printf("Memory allocation failed for new item.\n");
@@ -613,7 +613,7 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
     else
     {
         // If reservationArray is not NULL, reallocate memory to accommodate the new reservation
-        tempArray = (Reservation**)realloc(pSales->reservationArray, (pSales->reservationCount + 1) * sizeof(Reservation*));
+        tempArray = (Reservation**)realloc(pSales->reservationArray, ((size_t)pSales->reservationCount + 1) * sizeof(Reservation*));//(size_t)
     }
 
     if (!tempArray)
@@ -706,7 +706,7 @@ void findReservation(const Sales* pSales) {
         return;
     }
 
-    Reservation tempReservation;
+    Reservation tempReservation = {0};//= {0}
     Reservation* pTempReservation = &tempReservation;
 
     // Allocate memory for the customer field
@@ -741,7 +741,7 @@ void findReservation(const Sales* pSales) {
 
     // Free the allocated memory for the customer field and name
     free(pTempReservation->customer->name);
-    free(pTempReservation->customer);
+    free(pTempReservation->customer);//exp
 
     if (pFoundReservation == NULL)
         printf("Reservation was not found\n");

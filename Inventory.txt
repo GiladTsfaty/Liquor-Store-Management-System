@@ -1,4 +1,4 @@
-3
+4
 GoldStar
 111
 49
@@ -16,6 +16,12 @@ Stout
 0
 50
 8
+Jug
+The_Soldin_Special
+114
+50
+15
+0
 Jug
 3
 Macallan
