@@ -213,8 +213,44 @@ int insertNewCustomerToList(LIST* pList, Customer* pCustomer)
 
 
 }
+//creative2
+void findTopCustomers(const Sales* pSales, int topN)
+{
+    if (topN <= 0 || topN > L_length(&pSales->customersList))
+    {
+        printf("Invalid number of top customers.\n");
+        return;
+    }
 
+    // Create an array of Customer pointers
+    Customer** customers = (Customer**)malloc(sizeof(Customer*) * (size_t)(L_length(&pSales->customersList)-1));//-1//size_t
+    if (customers == NULL)
+    {
+        printf("Memory allocation failed for customers array.\n");
+        return;
+    }
 
+    // Copy Customer pointers from the linked list to the array
+    NODE* current = pSales->customersList.head.next;
+    int index = 0;
+    while (current != NULL)
+    {
+        customers[index++] = (Customer*)current->key;
+        current = current->next;
+    }
+
+    // Sort the customers array based on total spent amount in descending order
+    qsort(customers, (size_t)L_length(&pSales->customersList)-1, sizeof(Customer*), compareCustomersByTotalSpent);//(size_t)
+
+    // Print the top N customers
+    printf("Top %d customers by total spent amount:\n", topN);
+    for (int i = 0; i < topN && i < L_length(&pSales->customersList)-1; i++)
+    {
+        printf("%d. %s - Total Spent: $%.2f\n", i + 1, customers[i]->name, customers[i]->totalSpent);
+    }
+
+    free(customers);
+}
 
 
 ////RESERVATIONS////
@@ -668,6 +704,9 @@ void freeReservationsArr(struct Reservation** array, int size)//struct
 {
 	generalArrayFunction(array, size, sizeof(Reservation*), freeReservationPtr);
 }
+
+
+
 
 
 

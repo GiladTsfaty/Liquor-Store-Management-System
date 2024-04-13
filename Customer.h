@@ -39,3 +39,5 @@ char* allocateRightLength(char** wordsArray, int count, int totalLength);
 void  changeNameOneWord(char* name, const char* word);
 void  changeName(char* name, int count, char** wordsArray);
 
+
+int compareCustomersByTotalSpent(const void* a, const void* b);//creative2

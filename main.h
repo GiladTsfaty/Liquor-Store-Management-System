@@ -10,7 +10,7 @@ typedef enum
     ePrintInventory, ePrintReservations, ePrintCustomers,
     eAddBeveragesToInventory, eAddClient, eMakeReservation,
 	eSortReservationArray, eFindReservation,
-    ecreativeFunc1, ecreativeFunc2,
+    ecalculateTotalRevenue, eTopNCustomers,
     eNofOptions
 } eMenuOptions;
 
@@ -21,11 +21,12 @@ const char* str[eNofOptions] = {
     "Print inventory", "Print reservations", "Print all clients",
     "Add beverages to inventory", "Add client", "Make reservation",
     "Sort reservation array", "Find reservation",
-    "Creative function 1", "Creative function 2"
+    "Show the shops profit", "Show the top clients"
 };
 
 
 #define EXIT			-1
+#define FIND_TOP_N_CLIENTS 1
 ///inventory files ///
 #define INVENTORY_FILE_NAME "Inventory.txt"
 #define INVENTORY_BINARY_FILE_NAME "Inventory.bin"

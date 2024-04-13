@@ -244,3 +244,15 @@ void changeName(char* name, int count, char** wordsArray) {
         }
     }
 }
+
+int compareCustomersByTotalSpent(const void* a, const void* b)
+{
+    Customer* customerA = *(Customer**)a;
+    Customer* customerB = *(Customer**)b;
+    if (customerA->totalSpent < customerB->totalSpent)
+        return 1;
+    else if (customerA->totalSpent > customerB->totalSpent)
+        return -1;
+    else
+        return 0;
+}
