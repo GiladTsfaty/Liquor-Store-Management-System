@@ -2,6 +2,11 @@
 
 #include "Inventory.h"
 #include "Sales.h"
+#include "Customer.h"
+#include "Reservation.h"
+#include "Date.h"
+#include "BinaryFunctions.h"
+#include "Filefunctions.h"
 
 typedef struct
 {
@@ -9,12 +14,18 @@ typedef struct
     Sales* salesDepartment;
     int netBudget;
 
+    double  profit;
+
 }Shop;
 
 
-void initShop(Shop *pShop, Inventory *pInventory, Sales *pSales, int initialBudget);
+void    initShop(Shop *pShop, Inventory *pInventory, Sales *pSales, int initialBudget);
 
-int saveShopToTextFile(Shop* pShop, FILE* inventoryFileName, FILE* customerFileName, FILE* reservationFileName);// change to FILE*
-int saveShopToBianryFile(Shop* pShop, FILE* inventoryFileName, FILE* customerFileName, FILE* reservationFileName);
+int     saveShopToTextFile(Shop* pShop, FILE* inventoryFileName, FILE* customerFileName, FILE* reservationFileName);// change to FILE*
+int     saveShopToBianryFile(Shop* pShop, FILE* inventoryFileName, FILE* customerFileName, FILE* reservationFileName);
 
-void freeShop(Shop* pShop);
+
+double  calculateReservationRevenue(const Sales* pSales);
+void    printTotalRevenue(const Shop* pShop, int initialBudget);
+
+void    freeShop(Shop* pShop);

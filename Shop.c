@@ -3,12 +3,8 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "Inventory.h"
-#include "Customer.h"
-#include "Date.h"
 #include "Shop.h"
-#include "BinaryFunctions.h"
-#include "Filefunctions.h"
+
 
 
 
@@ -42,66 +38,22 @@ int saveShopToBianryFile(Shop* pShop, FILE* inventoryFileName, FILE* customerFil
 
 
 
+double calculateReservationRevenue(const Sales* pSales)
+{
+    double totalRevenue = 0.0;
+    for (int i = 0; i < pSales->reservationCount; i++)
+    {
+        totalRevenue +=((Reservation*)pSales->reservationArray[i])->priceOfOrder;
+    }
+    return totalRevenue;
+}
 
-//void initSystemFromFiles(Shop* pShop, Sales* pSales, Inventory* pInventory)
-//{
-//    int choice;
-//    printf("Select the file format to load from:\n");
-//    printf("1. Text files\n");
-//    printf("2. Binary files\n");
-//    printf("Enter your choice: ");
-//    scanf("%d", &choice);
-//
-//    switch (choice)
-//    {
-//        case 1:
-//            // Load from text files
-//            if (!initCustomerListFromTextFile(pSales, "customer_list.txt"))
-//            {
-//                printf("Failed to load customers from text file.\n");
-//                return;
-//            }
-//            if (!initInventoryFromTextFile(pInventory, "Inventory.txt"))
-//            {
-//                printf("Failed to load inventory from text file.\n");
-//                return;
-//            }
-//            if (!loadReservationsArrayFromTextFile(pSales, "reservation_arr.txt"))
-//            {
-//                printf("Failed to load reservations from text file.\n");
-//                return;
-//            }
-//            printf("System loaded successfully from text files.\n");
-//            break;
-//        case 2:
-//            // Load from binary files
-//            if (!readCustomerListFromBFile(pSales, "BinaryCustomer.bin"))
-//            {
-//                printf("Failed to load customers from binary file.\n");
-//                return;
-//            }
-//            if (!initInventoryFromBinaryFile(pInventory, "Inventory.bin"))
-//            {
-//                printf("Failed to load inventory from binary file.\n");
-//                return;
-//            }
-//            if (!loadReservationsArrayFromBinaryFile(pSales, "BinaryReservation.bin"))
-//            {
-//                printf("Failed to load reservations from binary file.\n");
-//                return;
-//            }
-//            printf("System loaded successfully from binary files.\n");
-//            break;
-//        default:
-//            printf("Invalid choice. System not loaded.\n");
-//            break;
-//    }
-//
-//    // Initialize the shop with the loaded inventory and sales
-//    initShop(pShop, pInventory, pSales, 0);
-//}
-
-
+void printTotalRevenue(const Shop* pShop, int initialBudget)
+{
+    double reservationRevenue = calculateReservationRevenue(pShop->salesDepartment);
+    double totalRevenue = reservationRevenue + initialBudget;
+    printf("Total Revenue: $%.2f\n", totalRevenue);
+}
 
 
 

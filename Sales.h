@@ -50,6 +50,7 @@ int         customerCompare(const void* data1, const void* data2);//name compera
 void        printAllCustomers(const Sales* pSales);
 int		    insertNewCustomerToList(LIST* pList, Customer* pCustomer);
 
+void        findTopCustomers(const Sales* pSales, int topN);//creative2
 
 
 
@@ -68,5 +69,5 @@ void        freeReservationsArr(struct Reservation** array, int size);//struct
 
 
 eSortOption showSortMenu();
-void        findReservation(const Sales* pSales); //bsearch- 1)ResCode  2)clientName   3)date?
-void        sortReservations(Sales* pSales);
+void        findReservation(const Sales* pSales); //bSearch - 1)ResCode  2)clientName   3)date
+void        sortReservations(Sales* pSales);      //qSort - 1)ResCode  2)clientName   3)date

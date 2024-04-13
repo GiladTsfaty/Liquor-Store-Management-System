@@ -34,7 +34,7 @@ int main()
 
     initSystemFromFiles(&theShop, &sales, &inventory);
    
-
+    double totalRevenue = 0.0;
     int option;
     int stop = 0;
 
@@ -70,11 +70,13 @@ int main()
         case eFindReservation:
             findReservation(&sales);
             break;
-        case ecreativeFunc1:
+        case ecalculateTotalRevenue:
             // Call creative function 1
+            printTotalRevenue(&theShop, initialBudget);
             break;
-        case ecreativeFunc2:
+        case eTopNCustomers:
             // Call creative function 2
+            findTopCustomers(theShop.salesDepartment, FIND_TOP_N_CLIENTS);
             break;
         case EXIT:
             printf("Bye bye\n");
