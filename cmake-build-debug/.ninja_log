@@ -45,3 +45,17 @@
 204	268	1712797965750467681	CMakeFiles/final_repo.dir/BinaryFunctions.c.o	71b012ec4e9e99fc
 203	270	1712797965751228510	CMakeFiles/final_repo.dir/Filefunctions.c.o	70f6ce4cc11382db
 270	321	1712797965804644430	final_repo	89720f965b2331f6
+1	259	1713514628623145597	CMakeFiles/final_repo.dir/GeneralFunctions.c.o	95f5f27caeb152cf
+1	259	1713514628622759928	CMakeFiles/final_repo.dir/Beer.c.o	3548076f80f216a9
+1	260	1713514628622775136	CMakeFiles/final_repo.dir/main.c.o	fa30ed3f2393bba7
+1	260	1713514628624868486	CMakeFiles/final_repo.dir/Inventory.c.o	bbeef9b61832b118
+2	260	1713514628622762428	CMakeFiles/final_repo.dir/Wine.c.o	8d55d6abdb8503d
+2	262	1713514628622776095	CMakeFiles/final_repo.dir/List.c.o	c7187e5431bec800
+260	294	1713514628658940047	CMakeFiles/final_repo.dir/Reservation.c.o	37981912fd68378e
+260	294	1713514628658456835	CMakeFiles/final_repo.dir/Shop.c.o	85c7984ab1c739b5
+260	294	1713514628658381376	CMakeFiles/final_repo.dir/Whiskey.c.o	fb9ed54fa695195f
+259	297	1713514628662062155	CMakeFiles/final_repo.dir/Customer.c.o	d45b43f2508b37e1
+262	303	1713514628668140370	CMakeFiles/final_repo.dir/Filefunctions.c.o	70f6ce4cc11382db
+260	303	1713514628668815375	CMakeFiles/final_repo.dir/Sales.c.o	dd5001636b0a4fed
+294	326	1713514628692035726	CMakeFiles/final_repo.dir/BinaryFunctions.c.o	71b012ec4e9e99fc
+326	441	1713514628806642174	final_repo	89720f965b2331f6
