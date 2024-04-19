@@ -1,6 +1,6 @@
 #define _CRTDBG_MAP_ALLOC
 
-#include <crtdbg.h>
+//#include <crtdbg.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -100,7 +100,7 @@ int main()
 ////>>>>>>> fd534e4 (justForSAFE)//what is this?
 
     printf("before memory dump\n");
-    _CrtDumpMemoryLeaks();
+//    _CrtDumpMemoryLeaks();
     return 1;
 }
 
