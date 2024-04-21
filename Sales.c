@@ -427,6 +427,112 @@ void addPurchasedItemToReservation(Reservation* pNewReservation, int serialNumbe
     pNewReservation->numPurchasedItems++;
 }
 
+//int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pCustomer)
+//{
+//    // Allocate memory for a new Reservation object
+//    Reservation* pNewReservation = (Reservation*)calloc(1, sizeof(Reservation));
+//    if (!pNewReservation)
+//        return 0;
+//
+//    double totalCost = 0.0;
+//
+//    int addMoreItems = 1;
+//    while (addMoreItems)
+//    {
+//        // Ask the user to choose between beer, wine, or whiskey
+//        int choice;
+//        printf("\nEnter 0 for beer, 1 for wine, or 2 for whiskey: ");
+//        scanf("%d", &choice);
+//
+//        // Print the list of drinks based on the user's choice
+//        printDrinkList(pInventory, choice);
+//
+//        // Ask the user to enter the serial number of the drink
+//        int serialNumber = getDrinkSerialNumber();
+//
+//        // Ask the user for the number of bottles
+//        int numBottles = getNumBottles();
+//
+//        // Find the drink in the inventory and update the cost
+//        double cost = updateInventoryAndGetCost(pInventory, choice, serialNumber, numBottles);
+//
+//        if (cost == 0.0)
+//        {
+//            printf("Invalid selection or insufficient bottles.\n");
+//            continue;
+//        }
+//
+//        // Add the purchased item to the reservation
+//        PurchasedItem* newItem = (PurchasedItem*)realloc(pNewReservation->purchasedItems, ((size_t)pNewReservation->numPurchasedItems + 1) * sizeof(PurchasedItem));//(size_t)
+//        if (newItem == NULL)
+//        {
+//            printf("Memory allocation failed for new item.\n");
+//            free(pNewReservation->purchasedItems);
+//            free(pNewReservation);
+//            return 0;
+//        }
+//        pNewReservation->purchasedItems = newItem;
+//
+//        PurchasedItem* item = &(pNewReservation->purchasedItems[pNewReservation->numPurchasedItems]);
+//        item->serial = serialNumber;
+//        item->amount = numBottles;
+//        item->costInt = (int)cost;
+//        item->costDec = (int)((cost - item->costInt) * 100);
+//
+//        pNewReservation->numPurchasedItems++;
+//        totalCost += cost;
+//
+//        // Ask the user if they want to add more items
+//        printf("Do you want to add another item? (1 for yes, 0 for no): ");
+//        scanf("%d", &addMoreItems);
+//    }
+//
+//    // Resize the reservationArray to accommodate the new reservation
+//    Reservation** tempArray;
+//    if (pSales->reservationArray == NULL)
+//    {
+//        // If reservationArray is NULL, allocate memory for the first reservation
+//        tempArray = (Reservation**)malloc(sizeof(Reservation*));
+//    }
+//    else
+//    {
+//        // If reservationArray is not NULL, reallocate memory to accommodate the new reservation
+//        tempArray = (Reservation**)realloc(pSales->reservationArray, ((size_t)pSales->reservationCount + 1) * sizeof(Reservation*));//(size_t)
+//    }
+//
+//    if (!tempArray)
+//    {
+//        // Memory allocation failed, free the previously allocated Reservation object
+//        free(pNewReservation->purchasedItems);
+//        free(pNewReservation);
+//        return 0;
+//    }
+//
+//    pNewReservation->customer = pCustomer;
+//    getCorrectDate(&pNewReservation->date);
+//    pNewReservation->ReservationCode = pSales->reservationCount;
+//    pNewReservation->priceOfOrder = totalCost;
+//    pCustomer->totalSpent += totalCost;
+//
+//    if (pCustomer->totalSpent >= VIP_THRESH)
+//        pCustomer->type = eVip;
+//    else
+//        pCustomer->type = eRegular;
+//
+//    // Assign the resized array to the reservationArray
+//    pSales->reservationArray = (struct Reservation**)tempArray;
+//
+//    // Add the new reservation to the end of the array
+//    pSales->reservationArray[pSales->reservationCount] = (struct Reservation*)pNewReservation;
+//
+//    // Increment the reservation count
+//    pSales->reservationCount++;
+//
+//    // Reset the reservation sorting option (if needed)
+//    pSales->ReservationSortOpt = eNone;
+//
+//    return 1; // Reservation added successfully
+//}
 int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pCustomer)
 {
     // Allocate memory for a new Reservation object
@@ -437,7 +543,8 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
     double totalCost = 0.0;
 
     int addMoreItems = 1;
-    while (addMoreItems)
+    int itemCount = 0;
+    while (addMoreItems && itemCount < 9)
     {
         // Ask the user to choose between beer, wine, or whiskey
         int choice;
@@ -462,6 +569,13 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
             continue;
         }
 
+        // Check if adding the item would exceed the total amount limit of $10,000
+        if (totalCost + cost > 10000)
+        {
+            printf("Adding this item would exceed the total amount limit of $10,000. Item not added.\n");
+            continue;
+        }
+
         // Add the purchased item to the reservation
         PurchasedItem* newItem = (PurchasedItem*)realloc(pNewReservation->purchasedItems, ((size_t)pNewReservation->numPurchasedItems + 1) * sizeof(PurchasedItem));//(size_t)
         if (newItem == NULL)
@@ -481,10 +595,19 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
 
         pNewReservation->numPurchasedItems++;
         totalCost += cost;
+        itemCount++;
 
         // Ask the user if they want to add more items
-        printf("Do you want to add another item? (1 for yes, 0 for no): ");
-        scanf("%d", &addMoreItems);
+        if (itemCount < 9)
+        {
+            printf("Do you want to add another item? (1 for yes, 0 for no): ");
+            scanf("%d", &addMoreItems);
+        }
+        else
+        {
+            printf("Maximum number of items (9) reached. Cannot add more items.\n");
+            addMoreItems = 0;
+        }
     }
 
     // Resize the reservationArray to accommodate the new reservation
