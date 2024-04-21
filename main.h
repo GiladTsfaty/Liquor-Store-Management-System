@@ -2,15 +2,16 @@
 
 #include "Shop.h"
 #include "Sales.h"
+#include "BringThemHomeNow.h"
 
 
 
 typedef enum
 {
     ePrintInventory, ePrintReservations, ePrintCustomers,
-    eAddBeveragesToInventory, eAddClient, eMakeReservation,
+    eAddBeveragesToInventory, eRefillInventory, eAddClient, eMakeReservation,
 	eSortReservationArray, eFindReservation,
-    ecalculateTotalRevenue, eTopNCustomers,
+    ecalculateTotalRevenue, eTopNCustomers, eBringThemHome,
     eNofOptions
 } eMenuOptions;
 
@@ -19,9 +20,9 @@ typedef enum
 
 const char* str[eNofOptions] = {
     "Print inventory", "Print reservations", "Print all clients",
-    "Add beverages to inventory", "Add client", "Make reservation",
+    "Add beverages to inventory", "Refill Inventory", "Add client", "Make reservation",
     "Sort reservation array", "Find reservation",
-    "Show the shops profit", "Show the top clients"
+    "Show the shops profit", "Show the top clients", "Bring Them Home"
 };
 
 

@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stddef.h>
 
 #include "Inventory.h"
 #include "Wine.h"
@@ -54,23 +55,6 @@ int addWhiskey(Inventory* pInventory)
     pInventory->whiskeysCount++;
     return 1;
 }
-
-//int addBeveragesToInventory(Inventory* pInventory)
-//{
-//    int choice;
-//    printf("Enter the type of beverage to add (0 for beer, 1 for wine, 2 for whiskey): ");
-//    scanf("%d", &choice);
-//
-//    if (choice == 0)
-//        addBeer(pInventory);
-//    else if (choice == 1)
-//        addWine(pInventory);
-//    else if (choice == 2)
-//        addWhiskey(pInventory);
-//    else
-//        printf("Invalid choice.\n");
-//
-//}
 
 int addBeveragesToInventory(Inventory* pInventory)
 {
@@ -156,6 +140,151 @@ void printInventory(const Inventory* pInventory) {
                pInventory->wineArray[i].price,
                pInventory->wineArray[i].numOfSolds,
                WineTypeStr[pInventory->wineArray[i].wType]);
+    }
+}
+
+void refillStock(void* item, int startAmount, int* itemsAdded) {
+    int* amountAvailable = NULL;
+
+    if (item != NULL) {
+        amountAvailable = (int*)((char*)item + offsetof(Beer, amountAvailable));
+        int prevAmount = *amountAvailable;
+        *amountAvailable = startAmount;
+        *itemsAdded += startAmount - prevAmount;
+    }
+}
+
+void printRefillDetails(void* item, int itemsAdded, int elementSize, int (*getSerialNumber)(void*)) {
+    int serialNumber = getSerialNumber(item);
+    printf("Serial: %d, Bottles added: %d\n", serialNumber, itemsAdded);
+}
+
+void refillInventoryStock(Inventory* pInventory) {
+    int beersAdded = 0;
+    int whiskeysAdded = 0;
+    int winesAdded = 0;
+
+    // Refill beer stock
+    for (int i = 0; i < pInventory->beersCount; i++) {
+        Beer* beer = &pInventory->beerArray[i];
+        int prevBeersAdded = beersAdded;
+        refillStock(beer, START_NUM_UNITS_OF_BEER, &beersAdded);
+        printRefillDetails(beer, beersAdded - prevBeersAdded, sizeof(Beer), getBeerSerialNumber);
+    }
+
+    // Refill whiskey stock
+    for (int i = 0; i < pInventory->whiskeysCount; i++) {
+        Whiskey* whiskey = &pInventory->whiskeyArray[i];
+        int prevWhiskeysAdded = whiskeysAdded;
+        refillStock(whiskey, START_NUM_UNITS_OF_WHISKEY, &whiskeysAdded);
+        printRefillDetails(whiskey, whiskeysAdded - prevWhiskeysAdded, sizeof(Whiskey), getWhiskeySerialNumber);
+    }
+
+    // Refill wine stock
+    for (int i = 0; i < pInventory->winesCount; i++) {
+        Wine* wine = &pInventory->wineArray[i];
+        int prevWinesAdded = winesAdded;
+        refillStock(wine, START_NUM_UNITS_OF_WINE, &winesAdded);
+        printRefillDetails(wine, winesAdded - prevWinesAdded, sizeof(Wine), getWineSerialNumber);
+    }
+
+    printf("\nRestocked Inventory:\n");
+    printf("Total Beers added: %d\n", beersAdded);
+    printf("Total Whiskeys added: %d\n", whiskeysAdded);
+    printf("Total Wines added: %d\n", winesAdded);
+}
+
+void* findItemBySerial(void* arr, int count, int serialNumber, int elementSize, int (*getSerialNumber)(void*)) {
+    for (int i = 0; i < count; i++) {
+        void* item = (char*)arr + i * elementSize;
+        if (getSerialNumber(item) == serialNumber) {
+            return item;
+        }
+    }
+    return NULL;
+}
+
+void refillItemBySerial(Inventory* pInventory) {
+    // Print the current inventory
+    printf("Current Inventory:\n");
+    printInventory(pInventory);
+
+    int serialNumber;
+    printf("\nEnter the serial number of the item to refill: ");
+    scanf("%d", &serialNumber);
+
+    void* item = NULL;
+    int startAmount = 0;
+    char* itemType = NULL;
+
+    // Search for the item in the beer array
+    for (int i = 0; i < pInventory->beersCount; i++) {
+        if (pInventory->beerArray[i].itemSerial == serialNumber) {
+            item = &pInventory->beerArray[i];
+            startAmount = START_NUM_UNITS_OF_BEER;
+            itemType = "Beer";
+            break;
+        }
+    }
+
+    // Search for the item in the whiskey array
+    if (item == NULL) {
+        for (int i = 0; i < pInventory->whiskeysCount; i++) {
+            if (pInventory->whiskeyArray[i].itemSerial == serialNumber) {
+                item = &pInventory->whiskeyArray[i];
+                startAmount = START_NUM_UNITS_OF_WHISKEY;
+                itemType = "Whiskey";
+                break;
+            }
+        }
+    }
+
+    // Search for the item in the wine array
+    if (item == NULL) {
+        for (int i = 0; i < pInventory->winesCount; i++) {
+            if (pInventory->wineArray[i].itemSerial == serialNumber) {
+                item = &pInventory->wineArray[i];
+                startAmount = START_NUM_UNITS_OF_WINE;
+                itemType = "Wine";
+                break;
+            }
+        }
+    }
+
+    if (item != NULL) {
+        int prevAmount = ((Beer*)item)->amountAvailable;
+        ((Beer*)item)->amountAvailable = startAmount;
+        int refillAmount = startAmount - prevAmount;
+        printf("%s with serial number %d has been refilled. %d bottles added.\n", itemType, serialNumber, refillAmount);
+    } else {
+        printf("Item with serial number %d not found.\n", serialNumber);
+    }
+
+    // Print the updated inventory after refilling
+    printf("\nUpdated Inventory:\n");
+    printInventory(pInventory);
+}
+
+void handleRefillInventory(Inventory* pInventory) {
+    int choice;
+
+    printf("Refill Inventory Options:\n");
+    printf("1. Refill the entire stock\n");
+    printf("2. Refill a specific item\n");
+    printf("Enter your choice (1 or 2): ");
+    scanf("%d", &choice);
+
+    switch (choice) {
+        case 1:
+            refillInventoryStock(pInventory);
+            printf("The entire stock has been refilled.\n");
+            break;
+        case 2:
+            refillItemBySerial(pInventory);
+            break;
+        default:
+            printf("Invalid choice. Please try again.\n");
+            break;
     }
 }
 

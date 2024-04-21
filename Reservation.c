@@ -28,17 +28,6 @@ void initPurchasedItem(PurchasedItem* pItems)
 }
 
 
-
-//void printPurchasedItem(const void* pItemVoid)//NODE
-//{
-//    // Cast from void* to the appropriate type
-//    const PurchasedItem* pItem = (const PurchasedItem*)pItemVoid;
-//
-//    // Print the details of the PurchasedItem
-//    printf("Item Serial: %d, Amount: %d, Cost: $%.2f\n",
-//           pItem->serial, pItem->amount, pItem->cost);
-//}
-
 void printPurchasedItem(const void* pItemVoid)
 {
 	const PurchasedItem* pItem = (const PurchasedItem*)pItemVoid;
@@ -47,26 +36,6 @@ void printPurchasedItem(const void* pItemVoid)
 		pItem->serial, pItem->amount, cost);
 }
 
-
-
-//
-//void initReservation(Reservation* pRes, Customer* pCus) {
-//	
-//	pRes->ReservationCode = -1;
-//
-//	// Copy customer information
-//	pRes->customer = pCus;
-//
-//	// Initialize the date
-//	getCorrectDate(&(pRes->date));
-//
-//	// Initialize the price of the order
-//	pRes->priceOfOrder = 0;
-//
-//	// Initialize the list of purchased items
-//	initPurchasedItem(&pRes->purchasedItems) ;//& i add 
-//}
-//
 
 
 void initReservation(Reservation* pRes, Customer* pCus) {
@@ -78,22 +47,6 @@ void initReservation(Reservation* pRes, Customer* pCus) {
 	pRes->numPurchasedItems = 0;
 }
 
-
-
-//void printReservation(const Reservation* pRes)
-//{
-//	
-//	
-//	printf("\n\nOn the ");
-//	printDate(&pRes->date);
-//	printf(", %s made a Reservation,  REScode: %d, , in the amount of %.2f$. \n", pRes->customer->name,
-//		pRes->ReservationCode,pRes->priceOfOrder);
-//    printf("The Items are:\n");
-//
-//    L_print((LIST*)&pRes->purchasedItems, (void(*)(const void*))printPurchasedItem);//change
-//	
-//}
-//
 
 void printReservation(const Reservation* pRes)
 {
@@ -118,13 +71,6 @@ void printReservationPtr(void* pResPtr)
 
 }
 
-//void freeReservationPtr(void* pResPtr)
-//{
-//	 Reservation* temp = *(Reservation**)pResPtr;
-//	 L_free((LIST*)&temp->purchasedItems, (void (*)(void*)) free); // Free purchased items list
-//	 free(temp);
-//}
-
 
 
 void freeReservationPtr(void* pResPtr)
@@ -133,10 +79,6 @@ void freeReservationPtr(void* pResPtr)
 	free(temp->purchasedItems); // Free the array of purchased items
 	free(temp);
 }
-
-
-
-
 
 
 int compareReseravationByReservatinCode(const void* rese1, const void* rese2)//first in order -1

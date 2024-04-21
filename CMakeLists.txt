@@ -21,6 +21,5 @@ add_executable(final_repo main.c
         Shop.c
         Whiskey.c
         Filefunctions.c
-        BinaryFiles.h
-        BinaryFiles.c
-        BinaryFunctions.c)
+        BinaryFunctions.c
+        BringThemHomeNow.c)

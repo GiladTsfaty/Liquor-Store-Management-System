@@ -10,7 +10,7 @@ static const char* BeerSizeStr[eNumOfBeerSizes]
 typedef struct
 {
     char* brand;
-    int itemSerial; //111
+    int itemSerial;
     int amountAvailable;
     int price;
     int numOfSolds;

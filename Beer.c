@@ -41,29 +41,6 @@ const char* GetBeerSizeStr(int type)
     return BeerSizeStr[type];
 }
 
-//int generateItemSerial(Beer* pBeer)
-//{
-//
-//    // Create a temporary character array to store the generated item serial
-//    char tempSerial[5];
-//
-//    // Set the first character based on the struct type
-//    tempSerial[0] = 'B';
-//
-//    // Copy the first three characters of the brand name in uppercase
-//    for (int i = 0; i < 3 && pBeer->brand[i] != '\0'; i++)
-//    {
-//        tempSerial[i + 1] = toupper(pBeer->brand[i]);
-//    }
-//
-//    // Add null terminator
-//    tempSerial[4] = '\0';
-//
-//    // Copy the generated item serial to the Beer struct's itemSerial array
-//    strncpy(pBeer->itemSerial, tempSerial, sizeof(pBeer->itemSerial));
-//
-//    return 1;
-//}
 
 void printBeer(const Beer* pBeer)
 {
