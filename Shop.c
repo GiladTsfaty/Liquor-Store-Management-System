@@ -7,8 +7,6 @@
 
 
 
-
-
 void initShop(Shop *pShop, Inventory *pInventory, Sales *pSales, int initialBudget)
 ////needs to call init salse/inventory/reservations functions
 {

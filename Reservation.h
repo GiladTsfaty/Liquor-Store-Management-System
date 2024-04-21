@@ -8,12 +8,6 @@
 #include "Sales.h"
 
 
-//i want to change the  Reservation struct from :"LIST          purchasedItems;"
-//
-//to : "PurchasedItem*             purchasedItems; "
-//
-//and adapte all functions to work with it
-
 
 typedef struct
 {
@@ -41,19 +35,10 @@ typedef struct
 
 void initPurchasedItem(PurchasedItem* pItems);
 void printPurchasedItem(const void* pItemVoid);
-
-
 void initReservation(Reservation* pRes,Customer* pCus);
 void printReservation(const Reservation* pRes);
 void printReservationPtr(void* pResPtr );
-
 void freeReservationPtr(void* pResPtr);
-
-
-
-
-
-
 int compareReseravationByReservatinCode(const void* rese1, const void* rese2);
 int compareReseravationByCustomerName(const void* rese1, const void* rese2);
 int compareReseravationByDate(const void* rese1, const void* rese2);

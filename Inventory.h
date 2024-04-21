@@ -5,9 +5,9 @@
 #include "Wine.h"
 #include "Whiskey.h"
 
-#define START_NUM_UNITS_OF_BEER 50
-#define START_NUM_UNITS_OF_WINE 35
-#define START_NUM_UNITS_OF_WHISKEY 25
+#define START_NUM_UNITS_OF_BEER 75
+#define START_NUM_UNITS_OF_WINE 50
+#define START_NUM_UNITS_OF_WHISKEY 30
 
 
 typedef struct
@@ -35,6 +35,10 @@ int isSerialNumberUnique(void* arr, int count, int serialNumber, int elementSize
 int getUniqueSerialNumber(void* arr, int count, int minSerial, int maxSerial, int elementSize, int (*getSerialNumber)(void*));
 int getValidSerialNumber(int minSerial, int maxSerial);
 int getBeerSerialNumber(void* pBeer);
+void refillItemBySerial(Inventory* pInventory);
+void printRefillDetails(void* item, int itemsAdded, int elementSize, int (*getSerialNumber)(void*));
+void refillStock(void* item, int startAmount, int* itemsAdded);
+void handleRefillInventory(Inventory* pInventory);
 int getWhiskeySerialNumber(void* pWhiskey);
 int getWineSerialNumber(void* pWine);
 void freeInventory(Inventory* inventory);
