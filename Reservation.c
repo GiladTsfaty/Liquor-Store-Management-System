@@ -11,14 +11,6 @@
 
 
 
-//void initPurchasedItem(PurchasedItem* pItems)
-//{
-//	pItems->amount = 0;
-//	pItems->cost = 0;
-//	pItems->serial = 0;
-//
-//}
-
 void initPurchasedItem(PurchasedItem* pItems)
 {
 	pItems->serial = 0;
