@@ -37,10 +37,25 @@ void* displayTimePassedThread(void* arg) {
 }
 
 void BringThemHomeNow(Inventory* inventory) {
-    const int NUM_NAMES = 10;
+    const int NUM_NAMES = 133;
     const char* names[NUM_NAMES] = {
-            "Kfir Bibas", "Ariel Bibas", "Shiri Bibas", "Yarden Bibas", "Oded Lifschitz",
-            "Eden Yerushlami", "Gadi Moses", "Carmel Gat", "Liri Elbag", "Alex Luvnov"
+            "AVIV ATZILI", "Or Avinatan", "EVYATAR DAVID", "AVERA MANGISTO", "AVRAHAM MONDER","AGAM BERGER", "OHAD BEN AMI", "OHAD YAHALOMI", "OR LEVI", "HADAR GOLDIN",
+            "ORON SHAUL", "ORI DANINO", "URIEL BARUCH", "ILAN VAYS", "ITZIK ELGARAT","ITZIK GELERENTER", "ITAY CHEN", "ITAY SVIRSKY", "EITAN HORN ", "EITAN LEVI",
+            "EITAN MOR", "ALON OHEL", " ELI SHARABI", "ELIYA CHOHEN", "ELIYAHU MARGALIT", "ELYAKIM LIBERMAN", "ALEX LUBANOV", "ALEX DANZIG", "ALMOG MEIR JAN", "ALMOG SARUSI",
+            "ELAD KAZIR", "ELKANA BOHBOT", "EMILY TEHILA DAMARI", "ANDREY KOZLOV", "ASSAF HAMAMMI", "ARBEL YEHUD", "ARIEL BIBAS", "ARIEL CUNIO", "ARIE ZALMANOVICH", "BENAWATH SITAO",
+            "Bar Kuperstein", "Gadi Haggai", "Gadi Moshe Mozes", " Judith Weinstein Haggai", "Joshua Loitu Mollel", "JOSHI BIPIN", "GUY EILUZ", "GUY GILBOA DALLAL", "GALI BERMAN", "DAVID CUNIO",
+            "Dolev Yehud", "Doron Stainbreher", "DANIRL PERETZ","Daniela gilboa", "DROR OR" ,"HIRSH GOLDBERG POLIN", "Hisham al-Sayed" , "Sriaoun Watchara", "Ziv Berman" , "HAIM PERI",
+            "Hamza Al Zaydana", "Hanan Yablonka" , "TAL HAYIMI", "TAL SHOHAM", "Yair Horn", "YAIR YAAKOV", "", "Yegev Buchshtav", "Yonatan Samarno", "YOSSI SHARABI",
+            "Yossef Al Zaydana", "Yossef Haim Ohana", "Yoram Metzger","Yarden Bibas", "Kfir Bibas" ,"Camel Gat", "Lior Rodaif" , "Liri Albag", "Mohammad Alatrash" , "MISHEL NISBAUM",
+            "Meni Godard", "MASKIM HERKIN" , "Angrest Matan", "Matan Tzangauker", "Nadav Popplewell", "Pinta Netafong", "Nimrod Cohen", "NOA ARGAMANI", "NAAMA LEVI", "SAHAR BARUCH",
+            "Sudthisak Rinthalak", " Suntaya Akrasi", "SORSAK ROMANO","Stian Swanakam", "Alexander Trufanov" ,"EDEN YERUSHLAMI", "ODED LIFSITZ" , "OZ DANIEL", "Omer Wenkert" , "Omer Neutra",
+            "OMER KALDERON ", "OMER SHEM TOV" , " OMRI MIRAN", "OFFER KALDERON", "IDAN ALEXANDER", "Idan Shtivi", "AMIRAM KUPER", "AMIT ESTER BUSKILA", "INBER  HAIMAN", "OFRA  KEYDAR",
+            "Farhan Al-Qadi ", "Pongsak Tanna", "ZAHI IDAN","KIRIL BRODSKI", "Keith Samuel Sigal" ,"Karina Ariev", "RAVID KATZ" , "Rom Braslavski", "ROMI GONEN" , "RON BENYAMIN",
+            "RONEN ENGEL", "RON GVILI" , "SEGEV KALFON", "SAGI DEKEL CHEN", "SHAI LEVINSON", "SHIRI BIBAS", "SHLOMI ZIV", "SHLOMO MANSUR", "SHANI LUK", "TOMER AHIMAS",
+            "TAMIR ADAR","TAMIR NIMRODI"
+
+
+
     };
 
     srand(time(NULL));  // Seed the random number generator with the current time
@@ -55,7 +70,12 @@ void BringThemHomeNow(Inventory* inventory) {
         Whiskey* selectedWhiskey = &inventory->whiskeyArray[whiskeyIndex];
 
         // Print the selected name and whiskey bottle
-        printf("Bringing %s home now!\n", selectedName);
+        printf("WE DONT HAVE TIME!\n");
+        printf("WE DONT HAVE TIME!\n");
+
+        printf("ONE name = the entire world\n");
+        printf("Bring ->>>    %s    <<<---   home now!\n", selectedName);
+
         printf("Sending a bottle of %s whiskey to their family.\n", selectedWhiskey->brand);
 
         // Decrement the available quantity of the selected whiskey bottle

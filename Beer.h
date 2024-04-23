@@ -19,7 +19,6 @@ typedef struct
 }Beer;
 
 void        initBeer(Beer* pBeer, Beer* beerArr, int beerCount);
-int         generateItemSerial(Beer* pBeer);
 eBeerSize   getBeerSize();
 const char* GetBeerSizeStr(int type);
 void        printBeer(const Beer* pBeer);

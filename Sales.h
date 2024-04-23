@@ -21,22 +21,19 @@ static const char* sortOptStr[eNofSortOpt]={ "None", "Reservation Code", "Custom
 
 typedef struct
 {
-    LIST                    customersList;//list*??
-    struct Reservation**    reservationArray;//
+    LIST                    customersList;
+    struct Reservation**    reservationArray;
     int                     reservationCount;
     eSortOption	            ReservationSortOpt;
     Inventory*              inventory;
 }Sales;
 
 
-//void        initSalesFromFile(Sales* pSales, const char* fileName);
 
 void        initSales(Sales* pSales, Inventory* pInventory);
-
-int         saveSalesToTextFile(Sales* pSales, FILE* customerFileName, FILE* reservationFileName);// change to FILE*
+int         saveSalesToTextFile(Sales* pSales, FILE* customerFileName, FILE* reservationFileName);
 int         saveSalesToBinaryFile(Sales* pSales, FILE* customerFileName, FILE* reservationFileName);
 
-void        freeSales(Sales* pSales);
 
 
 
@@ -46,28 +43,24 @@ int         addNewCustomer(Sales* pSales);
 Customer*   initCustomer(Sales* pSales);
 Customer*   findCustomerByName(const Sales* pSales, const char* name);
 int         uniqeNameCheck(const char* name, const Sales* pSales);
-int         customerCompare(const void* data1, const void* data2);//name comperator
+int         customerCompare(const void* data1, const void* data2);
 void        printAllCustomers(const Sales* pSales);
 int		    insertNewCustomerToList(LIST* pList, Customer* pCustomer);
 
-void        findTopCustomers(const Sales* pSales, int topN);//creative2
+void        findTopCustomers(const Sales* pSales, int topN);
 
 
 
 ///Res funcs 
-//void         initReservationArray();
+
 Customer*   getCustomerForReservation(Sales* pSales);
-//int         addNewReservationToArray(Sales* pSales, Customer* pCustomer, char* itemsList, int itemsPrice);
-
 int         addNewReservationToArray2(Sales* pSales, Inventory* pInventory,Customer* pCustomer);
-
-
-
-void        printReservationsArr(struct Reservation** array ,int size);//
-void        freeReservationsArr(struct Reservation** array, int size);//struct
-
-
+void        printReservationsArr(struct Reservation** array ,int size);
+void        freeReservationsArr(struct Reservation** array, int size);
 
 eSortOption showSortMenu();
-void        findReservation(const Sales* pSales); //bSearch - 1)ResCode  2)clientName   3)date
+void        findReservation(const Sales* pSales);
 void        sortReservations(Sales* pSales);      //qSort - 1)ResCode  2)clientName   3)date
+
+
+void        freeSales(Sales* pSales);
