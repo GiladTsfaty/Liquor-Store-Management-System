@@ -11,16 +11,16 @@ static const char* WhiskeyTypeStr[eNumOfWhiskeyTypes]
 
 typedef struct
 {
-    char* brand;
-    int itemSerial; // 222
-    int amountAvailable;
-    int price;
-    int numOfSolds;
+    char*   brand;
+    int     itemSerial; 
+    int     amountAvailable;
+    int     price;
+    int     numOfSolds;
     eWhiskeyType whiskeyType;
 
 }Whiskey;
 
-void initWhiskey(Whiskey* pWhiskey, Whiskey* whiskeyArr, int whiskeyCount);
-eWhiskeyType getWhiskeyType();
-const char* GetWhiskeyTypeStr(int type);
-void printWhiskey(const Whiskey* pWhiskey);
+void            initWhiskey(Whiskey* pWhiskey, Whiskey* whiskeyArr, int whiskeyCount);
+eWhiskeyType    getWhiskeyType();
+const char*     GetWhiskeyTypeStr(int type);
+void            printWhiskey(const Whiskey* pWhiskey);

@@ -20,32 +20,25 @@ int	  readCharsFromFile(char* arr, int size, FILE* fp, const char* msg);
 int	  readIntFromFile(int* val, FILE* fp, const char* msg);
 int   readDoubleFromFile(double* pVal, FILE* fp, const char* msg);
 
-
 void parseBeerSize(const char* sizeStr, eBeerSize* size);
 void parseWhiskeyType(const char* typeStr, eWhiskeyType* type);
 void parseWineType(const char* typeStr, eWineType* type);
-///inventory text files ///
 
+///inventory text files ///
 void  readInventoryFromFile(Inventory* pInventory, const char* filename);//what is the diff
 int   initInventoryFromTextFile(Inventory* pInventory, const char* filename);
 int   saveInventoryToTextFile(const Inventory* pInventory,  char* filename);
-
 
 ///customer text files ///
 int   loadCustomerFromTextFile(Customer* pCustomer, FILE* fp);
 int   saveCustomerToFile(Customer* pCustomer, FILE* fp);
 
-
 int   initCustomerListFromTextFile(Sales* pSales, const char* fileName);// change to FILE*
 int   saveCustomerListToTextFile(const Sales* pSales,  char* fileName);
 
-
-
-
-// Functions for loading and saving reservations to/from text files
+// reservations text files//
 Reservation*	loadReservationFromFile(Sales* pSales, FILE* file);
 void			saveReservationToFile(const Reservation* reservation, FILE* file);
-
 
 int				loadReservationsArrayFromTextFile(Sales* pSales, const char* filename);// change to FILE*
 int				saveReservationsArrayToTextFile(const Sales* pSales,  char* filename);

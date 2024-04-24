@@ -7,9 +7,9 @@ GoldStar
 ThirdLiter
 IPA
 112
-69
+75
 8
-6
+0
 ThirdLiter
 Stout
 125
@@ -25,9 +25,9 @@ Guinness
 ImperialPaint
 Tuborg
 134
-69
+75
 9
-6
+0
 ImperialPaint
 Pabst Blue Ribbon
 140
@@ -37,9 +37,9 @@ Pabst Blue Ribbon
 ThirdLiter
 Stella Artois
 129
-63
+75
 11
-12
+0
 ThirdLiter
 Modelo
 150
@@ -50,9 +50,9 @@ Jug
 8
 Macallan
 221
-20
+25
 80
-5
+0
 Scotch
 JohnnieWalker
 222
@@ -68,9 +68,9 @@ Knob Creek
 Scotch
 Jim Beam
 243
-27
+30
 100
-3
+0
 Bourbon
 Buffalo Trace
 245
@@ -80,9 +80,9 @@ Buffalo Trace
 Tennessee
 Crown Royal
 267
-20
+30
 140
-10
+0
 Blended
 Woodford Reserve
 229
@@ -105,25 +105,25 @@ Merlot
 Red
 Chateau Haut-Bailly
 332
-33
+35
 50
-2
+0
 White
 Volpaia
 345
-27
+35
 50
-8
+0
 Fortified
 Zestos
 367
-32
+35
 50
-3
+0
 Sparkling
 Taittinger
 308
-30
+35
 50
-5
+0
 White

@@ -11,16 +11,16 @@ static const char* WineTypeStr[eNumOfWineTypes]
 
 typedef struct
 {
-    char* brand;
-    int itemSerial; 
-    int amountAvailable;
-    int price;
-    int numOfSolds;
+    char*   brand;
+    int     itemSerial; 
+    int     amountAvailable;
+    int     price;
+    int     numOfSolds;
     eWineType wType;
 
 }Wine;
 
-void initWine(Wine* pWine, Wine* wineArr, int wineCount);
-eWineType getWineType();
+void        initWine(Wine* pWine, Wine* wineArr, int wineCount);
+eWineType   getWineType();
 const char* GetWineTypeStr(int type);
-void printWine(const Wine* pWine);
+void        printWine(const Wine* pWine);

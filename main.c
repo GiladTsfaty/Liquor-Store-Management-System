@@ -1,6 +1,6 @@
 #define _CRTDBG_MAP_ALLOC
 
-//#include <crtdbg.h>
+#include <crtdbg.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -19,6 +19,7 @@
 #include "Reservation.h"
 #include "Date.h"
 #include "BinaryFunctions.h"
+#include "BringThemHome.h"
 
 
 
@@ -28,9 +29,9 @@ int main()
 {
     printf("HELLO AND WELLCOME TO THE LIQUOR STORE:\n");
     Shop theShop;
-    Inventory inventory;//init in sales
-    Sales sales;//init in sales
-    int initialBudget = 3500;
+    Inventory inventory;
+    Sales sales;
+    int initialBudget = 9000;
 
     initSystemFromFiles(&theShop, &sales, &inventory);
 
@@ -62,6 +63,7 @@ int main()
                 if (!handleRefillInventory(&inventory)) {
                     printf("Error refilling inventory\n");
                 }
+               
                 break;
         case eAddClient:
             if (!addNewCustomer(theShop.salesDepartment))
@@ -77,12 +79,10 @@ int main()
         case eFindReservation:
             findReservation(&sales);
             break;
-        case ecalculateTotalRevenue:
-            // Call creative function 1
+        case ecalculateTotalRevenue:          
             printTotalRevenue(&theShop, initialBudget);
             break;
         case eTopNCustomers:
-            // Call creative function 2
             findTopCustomers(theShop.salesDepartment, FIND_TOP_N_CLIENTS);
             break;
             case eBringThemHome:
@@ -101,16 +101,10 @@ int main()
     saveShopToTextFile(&theShop,(FILE*) INVENTORY_FILE_NAME, (FILE*)CUSTOMER_LIST_TEXT_FILE_SAVE_NAME, (FILE*)RESERVATIONS_ARR_TEXT_FILE_SAVE_NAME);
     saveShopToBianryFile(&theShop, (FILE*)INVENTORY_BINARY_FILE_NAME, (FILE*)CUSTOMER_LIST_BINARY_FILE_SAVE_NAME, (FILE*)RESERVATIONS_ARR_BINARY_FILE_SAVE_NAME);//(FILE*)CUSTOMER_LIST_BINARY_FILE_LOAD_NAME, (FILE*)RESERVATIONS_ARR_BINARY_FILE_LOAD_NAME//
 
-    //freeInventory(&inventory);
-    //freeSales(&sales);
     freeShop(&theShop);
    
-
-
-
-
     printf("before memory dump\n");
-//    _CrtDumpMemoryLeaks();
+    _CrtDumpMemoryLeaks();
     return 1;
 }
 
@@ -134,17 +128,17 @@ void initSystemFromFiles(Shop* pShop, Sales* pSales, Inventory* pInventory)
         {
         case 1:
             // Load from text files
-            if (!initCustomerListFromTextFile(pSales, "blankText.txt"))//"customer_list.txt" // "customer_list_saveTo.txt"
+            if (!initCustomerListFromTextFile(pSales, "customer_list_saveTo.txt"))
             {
                 printf("Failed to load customers from text file.\n");
                 return;
             }
-            if (!initInventoryFromTextFile(pInventory, "baseInventoryText.txt"))// "Inventory.txt" 
+            if (!initInventoryFromTextFile(pInventory, "Inventory.txt"))
             {
                 printf("Failed to load inventory from text file.\n");
                 return;
             }
-            if (!loadReservationsArrayFromTextFile(pSales, "blankText.txt"))//"reservation_arr.txt"  //"reservation_arr_saveTo.txt"
+            if (!loadReservationsArrayFromTextFile(pSales, "reservation_arr_saveTo.txt"))
             {
                 printf("Failed to load reservations from text file.\n");
                 return;
@@ -155,17 +149,17 @@ void initSystemFromFiles(Shop* pShop, Sales* pSales, Inventory* pInventory)
 
         case 2:
             // Load from binary files
-            if (!readCustomerListFromBFile(pSales, "blankBinary.bin"))//"BinaryCustomer.bin"  //"BinaryCustomerSaveTo.bin"
+            if (!readCustomerListFromBFile(pSales, "BinaryCustomerSaveTo.bin"))
             {
                 printf("Failed to load customers from binary file.\n");
                 return;
             }
-            if (!initInventoryFromBinaryFile(pInventory, "Inventory.bin"))//
+            if (!initInventoryFromBinaryFile(pInventory, "Inventory.bin"))
             {
                 printf("Failed to load inventory from binary file.\n");
                 return;
             }
-            if (!loadReservationsArrayFromBinaryFile(pSales,"blankBinary.bin"))// "BinaryReservation.bin" // "BinaryReservationSaveTo.bin"
+            if (!loadReservationsArrayFromBinaryFile(pSales, "BinaryReservationSaveTo.bin"))
             {
                 printf("Failed to load reservations from binary file.\n");
                 return;
@@ -197,7 +191,7 @@ int menu()
 	printf("Please choose one of the following options\n");
 	for (int i = 0; i < eNofOptions; i++)
 		printf("%d - %s\n", i, str[i]);
-	printf("%d - Quit\n", EXIT);
+	printf("%d - Quit (And Save To Text & Binary Files) \n", EXIT);
 	scanf("%d", &option);
 	//clean buffer
 	char tav;
@@ -205,5 +199,3 @@ int menu()
 	return option;
 }
 
-//CheckThatGitPush//
-/////SOLDIN THE GOAT//////

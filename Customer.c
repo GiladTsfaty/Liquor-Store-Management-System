@@ -108,7 +108,7 @@ char* allocateRightLength(char** wordsArray, int count, int totalLength)
         totalLength += (count - 1); // Add space for underscores
     }
 
-    char* name = (char*)calloc((size_t)totalLength + 1, sizeof(char)); // +1 for null terminator//(size_t)
+    char* name = (char*)calloc((size_t)totalLength + 1, sizeof(char)); // +1 for null terminator
     if (!name) {
         for (int i = 0; i < count; i++)
             free(wordsArray[i]);
@@ -119,15 +119,6 @@ char* allocateRightLength(char** wordsArray, int count, int totalLength)
     return name;
 }
 
-//void changeNameOneWord(char* name, const char* word)
-//{
-//    int len = (int)strlen(word);
-//    name[0] = toupper(word[0]);
-//    for (int i = 1; i < len; i++) 
-//    {
-//        name[i] = tolower(word[i]);
-//    }
-//}
 void changeNameOneWord(char* name, const char* word)
 {
     int len = (int)strlen(word);
