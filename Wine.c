@@ -11,7 +11,7 @@ void initWine(Wine* pWine, Wine* wineArr, int winesCount)
 {
     char* tempBrand = getStrExactName("Enter the Wine brand:");
     pWine->brand = tempBrand;
-    pWine->itemSerial = getUniqueSerialNumber(wineArr, winesCount, 300, 399, sizeof(Wine), getWineSerialNumber);
+    pWine->itemSerial = getUniqueSerialNumber(wineArr, winesCount,WINE_SERIAL_LOW, WINE_SERIAL_HIGH, sizeof(Wine), getWineSerialNumber);
     pWine->amountAvailable = START_NUM_UNITS_OF_WINE;
     pWine->price = getIntPositive("Enter the price:");
     pWine->numOfSolds = 0;

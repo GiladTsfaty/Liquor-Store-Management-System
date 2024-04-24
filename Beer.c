@@ -12,7 +12,7 @@ void initBeer(Beer* pBeer, Beer* beerArr, int beersCount)
 {
     char* tempBrand = getStrExactName("Enter the Beer brand:");
     pBeer->brand = tempBrand;
-    pBeer->itemSerial = getUniqueSerialNumber(beerArr, beersCount, 100, 199, sizeof(Beer), getBeerSerialNumber);
+    pBeer->itemSerial = getUniqueSerialNumber(beerArr, beersCount, BEER_SERIAL_LOW, BEER_SERIAL_HIGH, sizeof(Beer), getBeerSerialNumber);
     pBeer->amountAvailable = START_NUM_UNITS_OF_BEER;
     pBeer->price = getIntPositive("Enter the price:");
     pBeer->numOfSolds = 0;
@@ -45,9 +45,7 @@ const char* GetBeerSizeStr(int type)
 void printBeer(const Beer* pBeer)
 {
     printf("Beer: Brand: %s, Item Serial: %d Amount Available: %d, Price: %d, Number of Sold: %d, Beer Size: \n",
-        pBeer->brand, pBeer->itemSerial, pBeer->amountAvailable, pBeer->price, pBeer->numOfSolds
-        //, BeerSizeStr[pBeer->bSize]
-    );
+        pBeer->brand, pBeer->itemSerial, pBeer->amountAvailable, pBeer->price, pBeer->numOfSolds );
 }
 
 

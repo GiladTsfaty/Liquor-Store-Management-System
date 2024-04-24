@@ -35,7 +35,7 @@ Reservation*	loadReservationFromBinaryFile(Sales* pSales, FILE* file);
 int		loadReservationsArrayFromBinaryFile(Sales* pSales, const char* filename);
 int		saveReservationsArrayToBinaryFile(const Sales* pSales,  char* filename);
 
-/// Compress///
+///Compress functions///
 int	 writeStringToCompressFile(const char* str, FILE* fp, const char* msg);
 
 int savePurchasedItemToCompressedFile(const PurchasedItem* pItem, FILE* fp);

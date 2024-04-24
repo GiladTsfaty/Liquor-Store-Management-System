@@ -185,8 +185,7 @@ int readWineArrFromBFile(FILE* pFile, Wine* pWineArr, const int count)
 
 
 
-///B inventory files ///
-
+///Binary inventory files ///
 
 int initInventoryFromBinaryFile(Inventory* pInventory, const char* filename)
 {
@@ -197,7 +196,7 @@ int initInventoryFromBinaryFile(Inventory* pInventory, const char* filename)
         printf("Failed to open file: %s\n", filename);
         return 0;  // Return 0 to indicate failure
     }
-    //CHECK_PRINT_RETURN_0(fp, "Failed to open file: %s\n", filename);
+    
 
     // Read beer array
     if (fread(&pInventory->beersCount, sizeof(int), 1, fp) != 1) 
@@ -244,8 +243,7 @@ int initInventoryFromBinaryFile(Inventory* pInventory, const char* filename)
         CLOSE_FILE_RETURN_0(fp);  // Return 0 to indicate failure
     }
 
-   /* fclose(fp);
-    return 1; */
+   
     CLOSE_FILE_RETURN_1(fp);// Return 1 to indicate success
 }
 
@@ -255,11 +253,7 @@ int initInventoryFromBinaryFile(Inventory* pInventory, const char* filename)
 int writeCustomerListToBFile(const Sales* pSales, char* fileName)
 {
     FILE* fp = fopen(fileName, "wb");
-    /*if (!fp)
-    {
-        printf("Error opening file for writing customer list.\n");
-        return 0;
-    }*/
+    
     CHECK_PRINT_RETURN_0(fp, "Error opening file for writing customer list.")
 
     int count = L_length(&pSales->customersList) - 1;
@@ -288,8 +282,6 @@ int writeCustomerListToBFile(const Sales* pSales, char* fileName)
         pNode = pNode->next;
     }
 
-    /*fclose(fp);
-    return 1;*/
     CLOSE_FILE_RETURN_1(fp);
 }
 
@@ -301,11 +293,7 @@ int readCustomerListFromBFile(Sales* pSales, const char* fileName)
 {
     FILE* fp = fopen(fileName, "rb");
 
-   /* if (!fp)
-    {
-        printf("Error opening file for reading customer list.\n");
-        return 0;
-    }*/
+   
     CHECK_PRINT_RETURN_0(fp, "Error opening file for reading customer list.");
 
     int count;
@@ -333,14 +321,14 @@ int readCustomerListFromBFile(Sales* pSales, const char* fileName)
 
 
 
-        //double totalSpent;
+        
         if (!readDoubleFromFile(&pCustomer->totalSpent, fp, "Error reading customer total spent"))
         {
             free(pCustomer->name);
             free(pCustomer);
             CLOSE_FILE_RETURN_0(fp);
         }
-        //pCustomer->totalSpent = ;
+        
 
 
 
@@ -368,8 +356,7 @@ int readCustomerListFromBFile(Sales* pSales, const char* fileName)
         }
     }
 
-    /*fclose(fp);
-    return 1;*/
+    
     CLOSE_FILE_RETURN_1(fp);
 }
 
@@ -392,7 +379,6 @@ void saveReservationToBinaryFile(const Reservation* reservation, FILE* file)
     }
 }
 
-///changed func  loadReservationFromBinaryFile above
 
 Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file) {
     Reservation* reservation = (Reservation*)malloc(sizeof(Reservation));
@@ -457,19 +443,13 @@ Reservation* loadReservationFromBinaryFile(Sales* pSales, FILE* file) {
 
 
 
-////
-
 
 
 // Function to load reservations from a binary file
 int loadReservationsArrayFromBinaryFile(Sales* pSales, const char* filename)
 {
     FILE* fp = fopen(filename, "rb");
-    /*if (fp == NULL)
-    {
-        printf("Failed to open file\n");
-        return 0;
-    }*/
+    
     CHECK_PRINT_RETURN_0(fp, "Failed to open file");
 
     // Read the number of reservations
@@ -496,8 +476,7 @@ int loadReservationsArrayFromBinaryFile(Sales* pSales, const char* filename)
     }
 
     pSales->reservationCount = count;
-    /*fclose(fp);
-    return 1;*/
+    
     CLOSE_FILE_RETURN_1(fp);
 }
 
@@ -508,11 +487,7 @@ int loadReservationsArrayFromBinaryFile(Sales* pSales, const char* filename)
 int saveReservationsArrayToBinaryFile(const Sales* pSales,  char* filename)
 {
     FILE* fp = fopen(filename, "wb");
-   /* if (fp == NULL)
-    {
-        printf("Failed to open file\n");
-        return 0;
-    }*/
+  
     CHECK_PRINT_RETURN_0(fp, "Failed to open file");
     // Write the number of reservations
     fwrite(&pSales->reservationCount, sizeof(int), 1, fp);
@@ -524,8 +499,7 @@ int saveReservationsArrayToBinaryFile(const Sales* pSales,  char* filename)
         saveReservationToBinaryFile((Reservation*)reservation, fp);//(Reservation*)
     }
 
-   /* fclose(fp);
-    return 1;*/
+   
     CLOSE_FILE_RETURN_1(fp);
 }
 
@@ -546,10 +520,10 @@ int	 writeStringToCompressFile(const char* str, FILE* fp, const char* msg)
 
 
 
-///from 1-4
+///from 16 BYTES --> to 4 BYTES
 int savePurchasedItemToCompressedFile(const PurchasedItem* pItem, FILE* fp)
 {
-    BYTE compressedData[5] = {0};//= {0}
+    BYTE compressedData[5] = {0};
 
     // Compress serial number (0-999)
     compressedData[0] = (pItem->serial >> 2) & 0xFF;
@@ -596,12 +570,3 @@ int loadPurchasedItemFromCompressedFile(PurchasedItem* pItem, FILE* fp)
     return 1;
 }
 
-
-
-///////!!!compress-explantion!!!///// we need to make sure the "parts" of PurchasedItem stay in range 
-/*  the PurchasedItem struct will be compressed using bitwise operations 
-when saving to a file and decompressed when loading from a file. 
-The compression scheme used here packs
-the serial number (0-999), amount (0-10),
-cost integer part (0-10000), and cost decimal part (0-99) 
-into 4 bytes.   */

@@ -19,7 +19,7 @@ typedef enum
 
 
 const char* str[eNofOptions] = {
-    "Show inventory", "Print all of the shops reservations", "Print all clients",
+    "Show inventory", "Print  reservations", "Print all clients",
     "Add beverages to inventory", "Refill the inventory", "Add a client", "Make a reservation",
     "Sort reservations array", "Find reservation",
     "Show the shops profit", "Show the top clients", "Bring Them Home"
@@ -29,6 +29,7 @@ const char* str[eNofOptions] = {
 #define EXIT		      -1
 #define FIND_TOP_N_CLIENTS 2
 #define RESTOCK_INVENTORY_PRICE 1000
+#define SHOP_BASE_BUDGET 10000
 ///inventory files ///
 #define INVENTORY_FILE_NAME "Inventory.txt"
 #define INVENTORY_BINARY_FILE_NAME "Inventory.bin"
