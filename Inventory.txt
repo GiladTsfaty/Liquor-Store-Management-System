@@ -42,16 +42,22 @@ GILAD'S BOOZE
 222
 6
 Bourbon
-2
+3
 Merlot
 331
-35
+29
 50
-0
+6
 Red
 Chardonnay
 332
-35
+23
 50
-0
+12
 White
+efrats drunk
+333
+35
+90
+0
+Sparkling

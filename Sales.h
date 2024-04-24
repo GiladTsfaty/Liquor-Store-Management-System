@@ -33,10 +33,7 @@ typedef struct
 void        initSales(Sales* pSales, Inventory* pInventory);
 int         saveSalesToTextFile(Sales* pSales, FILE* customerFileName, FILE* reservationFileName);
 int         saveSalesToBinaryFile(Sales* pSales, FILE* customerFileName, FILE* reservationFileName);
-
-
-
-
+void        freeSales(Sales* pSales);
 
 /// Client funcs
 int         addNewCustomer(Sales* pSales);
@@ -46,21 +43,15 @@ int         uniqeNameCheck(const char* name, const Sales* pSales);
 int         customerCompare(const void* data1, const void* data2);
 void        printAllCustomers(const Sales* pSales);
 int		    insertNewCustomerToList(LIST* pList, Customer* pCustomer);
-
 void        findTopCustomers(const Sales* pSales, int topN);
 
-
-
-///Res funcs 
-
+///Reservations funcs 
 Customer*   getCustomerForReservation(Sales* pSales);
 int         addNewReservationToArray2(Sales* pSales, Inventory* pInventory,Customer* pCustomer);
 void        printReservationsArr(struct Reservation** array ,int size);
 void        freeReservationsArr(struct Reservation** array, int size);
 
+
 eSortOption showSortMenu();
 void        findReservation(const Sales* pSales);
 void        sortReservations(Sales* pSales);      //qSort - 1)ResCode  2)clientName   3)date
-
-
-void        freeSales(Sales* pSales);

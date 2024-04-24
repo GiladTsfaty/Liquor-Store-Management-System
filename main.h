@@ -26,7 +26,7 @@ const char* str[eNofOptions] = {
 };
 
 
-#define EXIT			-1
+#define EXIT		      -1
 #define FIND_TOP_N_CLIENTS 1
 ///inventory files ///
 #define INVENTORY_FILE_NAME "Inventory.txt"
