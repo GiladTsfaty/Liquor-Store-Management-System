@@ -173,7 +173,6 @@ void initSystemFromFiles(Shop* pShop, Sales* pSales, Inventory* pInventory)
         }
     }
 
-    // Initialize the shop with the loaded inventory and sales
     initShop(pShop, pInventory, pSales, SHOP_BASE_BUDGET);
 }
 
@@ -190,7 +189,7 @@ int menu()
 	printf("Please choose one of the following options\n");
 	for (int i = 0; i < eNofOptions; i++)
 		printf("%d - %s\n", i, str[i]);
-	printf("%d - Quit (And Save To Text & Binary Files) \n", EXIT);
+	printf("%d - Quit (And Save System To Text & Binary Files) \n", EXIT);
 	scanf("%d", &option);
 	//clean buffer
 	char tav;
