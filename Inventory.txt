@@ -62,13 +62,13 @@ JohnnieWalker
 Irish
 Knob Creek
 280
-30
+29
 90
 0
 Scotch
 Jim Beam
 243
-27
+30
 100
 3
 Bourbon
@@ -96,7 +96,7 @@ Aberfeldy distillery
 90
 0
 Tennessee
-5
+6
 Merlot
 331
 35
@@ -127,3 +127,9 @@ Taittinger
 50
 5
 White
+SHAI
+337
+48
+999
+2
+Sparkling

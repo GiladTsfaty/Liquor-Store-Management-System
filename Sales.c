@@ -14,18 +14,13 @@ void initSales(Sales* pSales, Inventory* pInventory)
 {
     printf("---------Init Sales----------\n");
 
-   // pSales->customersList = (LIST*)malloc(sizeof(LIST));
-    /*if (pSales->customersList == NULL)
-    {
-        printf("Memory allocation failed for customersList.\n");
-        return;
-    }*/
+  
     if (L_init(&pSales->customersList) == False)
     {
         printf("Memory allocation failed for customersList.\n");
         return;
     }
-    //L_init(&pSales->customersList);//&
+   
     pSales->inventory = pInventory;
     pSales->ReservationSortOpt = eNew;
     pSales->reservationCount = 0;
@@ -54,7 +49,7 @@ int addNewCustomer(Sales* pSales)
 	Customer* pCustomer = initCustomer(pSales);
 	if (!pCustomer)
 		return 0;
-	//L_insertByNameOrder((LIST*) &pSales->customersList, pCustomer);////!!!
+	
 	return 1;
 }
 
@@ -188,7 +183,7 @@ void findTopCustomers(const Sales* pSales, int topN)
     }
 
     // Create an array of Customer pointers
-    Customer** customers = (Customer**)malloc(sizeof(Customer*) * (size_t)(L_length(&pSales->customersList)-1));//-1//size_t
+    Customer** customers = (Customer**)malloc(sizeof(Customer*) * (size_t)(L_length(&pSales->customersList)-1));
     if (customers == NULL)
     {
         printf("Memory allocation failed for customers array.\n");
@@ -205,7 +200,7 @@ void findTopCustomers(const Sales* pSales, int topN)
     }
 
     // Sort the customers array based on total spent amount in descending order
-    qsort(customers, (size_t)L_length(&pSales->customersList)-1, sizeof(Customer*), compareCustomersByTotalSpent);//(size_t)
+    qsort(customers, (size_t)L_length(&pSales->customersList)-1, sizeof(Customer*), compareCustomersByTotalSpent);
 
     // Print the top N customers
     printf("Top %d customers by total spent amount:\n", topN);
@@ -219,7 +214,6 @@ void findTopCustomers(const Sales* pSales, int topN)
 
 
 ////RESERVATIONS////
-
 
 
 // Function to print the list of beers
@@ -410,7 +404,7 @@ double updateInventoryAndGetCost(Inventory* pInventory, int choice, int serialNu
 void addPurchasedItemToReservation(Reservation* pNewReservation, int serialNumber, int numBottles, double cost)
 {
     // Reallocate memory for the array of purchased items
-    PurchasedItem* newItems = (PurchasedItem*)realloc(pNewReservation->purchasedItems, sizeof(PurchasedItem) * ((size_t)pNewReservation->numPurchasedItems + 1));//(size_t)
+    PurchasedItem* newItems = (PurchasedItem*)realloc(pNewReservation->purchasedItems, sizeof(PurchasedItem) * ((size_t)pNewReservation->numPurchasedItems + 1));
     if (newItems == NULL) {
         printf("Memory allocation failed for new item.\n");
         return;
@@ -427,112 +421,6 @@ void addPurchasedItemToReservation(Reservation* pNewReservation, int serialNumbe
     pNewReservation->numPurchasedItems++;
 }
 
-//int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pCustomer)
-//{
-//    // Allocate memory for a new Reservation object
-//    Reservation* pNewReservation = (Reservation*)calloc(1, sizeof(Reservation));
-//    if (!pNewReservation)
-//        return 0;
-//
-//    double totalCost = 0.0;
-//
-//    int addMoreItems = 1;
-//    while (addMoreItems)
-//    {
-//        // Ask the user to choose between beer, wine, or whiskey
-//        int choice;
-//        printf("\nEnter 0 for beer, 1 for wine, or 2 for whiskey: ");
-//        scanf("%d", &choice);
-//
-//        // Print the list of drinks based on the user's choice
-//        printDrinkList(pInventory, choice);
-//
-//        // Ask the user to enter the serial number of the drink
-//        int serialNumber = getDrinkSerialNumber();
-//
-//        // Ask the user for the number of bottles
-//        int numBottles = getNumBottles();
-//
-//        // Find the drink in the inventory and update the cost
-//        double cost = updateInventoryAndGetCost(pInventory, choice, serialNumber, numBottles);
-//
-//        if (cost == 0.0)
-//        {
-//            printf("Invalid selection or insufficient bottles.\n");
-//            continue;
-//        }
-//
-//        // Add the purchased item to the reservation
-//        PurchasedItem* newItem = (PurchasedItem*)realloc(pNewReservation->purchasedItems, ((size_t)pNewReservation->numPurchasedItems + 1) * sizeof(PurchasedItem));//(size_t)
-//        if (newItem == NULL)
-//        {
-//            printf("Memory allocation failed for new item.\n");
-//            free(pNewReservation->purchasedItems);
-//            free(pNewReservation);
-//            return 0;
-//        }
-//        pNewReservation->purchasedItems = newItem;
-//
-//        PurchasedItem* item = &(pNewReservation->purchasedItems[pNewReservation->numPurchasedItems]);
-//        item->serial = serialNumber;
-//        item->amount = numBottles;
-//        item->costInt = (int)cost;
-//        item->costDec = (int)((cost - item->costInt) * 100);
-//
-//        pNewReservation->numPurchasedItems++;
-//        totalCost += cost;
-//
-//        // Ask the user if they want to add more items
-//        printf("Do you want to add another item? (1 for yes, 0 for no): ");
-//        scanf("%d", &addMoreItems);
-//    }
-//
-//    // Resize the reservationArray to accommodate the new reservation
-//    Reservation** tempArray;
-//    if (pSales->reservationArray == NULL)
-//    {
-//        // If reservationArray is NULL, allocate memory for the first reservation
-//        tempArray = (Reservation**)malloc(sizeof(Reservation*));
-//    }
-//    else
-//    {
-//        // If reservationArray is not NULL, reallocate memory to accommodate the new reservation
-//        tempArray = (Reservation**)realloc(pSales->reservationArray, ((size_t)pSales->reservationCount + 1) * sizeof(Reservation*));//(size_t)
-//    }
-//
-//    if (!tempArray)
-//    {
-//        // Memory allocation failed, free the previously allocated Reservation object
-//        free(pNewReservation->purchasedItems);
-//        free(pNewReservation);
-//        return 0;
-//    }
-//
-//    pNewReservation->customer = pCustomer;
-//    getCorrectDate(&pNewReservation->date);
-//    pNewReservation->ReservationCode = pSales->reservationCount;
-//    pNewReservation->priceOfOrder = totalCost;
-//    pCustomer->totalSpent += totalCost;
-//
-//    if (pCustomer->totalSpent >= VIP_THRESH)
-//        pCustomer->type = eVip;
-//    else
-//        pCustomer->type = eRegular;
-//
-//    // Assign the resized array to the reservationArray
-//    pSales->reservationArray = (struct Reservation**)tempArray;
-//
-//    // Add the new reservation to the end of the array
-//    pSales->reservationArray[pSales->reservationCount] = (struct Reservation*)pNewReservation;
-//
-//    // Increment the reservation count
-//    pSales->reservationCount++;
-//
-//    // Reset the reservation sorting option (if needed)
-//    pSales->ReservationSortOpt = eNone;
-//
-//    return 1; // Reservation added successfully
-//}
 int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pCustomer)
 {
     // Allocate memory for a new Reservation object
@@ -577,7 +465,7 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
         }
 
         // Add the purchased item to the reservation
-        PurchasedItem* newItem = (PurchasedItem*)realloc(pNewReservation->purchasedItems, ((size_t)pNewReservation->numPurchasedItems + 1) * sizeof(PurchasedItem));//(size_t)
+        PurchasedItem* newItem = (PurchasedItem*)realloc(pNewReservation->purchasedItems, ((size_t)pNewReservation->numPurchasedItems + 1) * sizeof(PurchasedItem));
         if (newItem == NULL)
         {
             printf("Memory allocation failed for new item.\n");
@@ -620,7 +508,7 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
     else
     {
         // If reservationArray is not NULL, reallocate memory to accommodate the new reservation
-        tempArray = (Reservation**)realloc(pSales->reservationArray, ((size_t)pSales->reservationCount + 1) * sizeof(Reservation*));//(size_t)
+        tempArray = (Reservation**)realloc(pSales->reservationArray, ((size_t)pSales->reservationCount + 1) * sizeof(Reservation*));
     }
 
     if (!tempArray)
@@ -657,7 +545,7 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
     return 1; // Reservation added successfully
 }
 
-void printReservationsArr(struct Reservation** array, int size)//struct
+void printReservationsArr(struct Reservation** array, int size)
 {
     if (!size)
     {
@@ -668,7 +556,7 @@ void printReservationsArr(struct Reservation** array, int size)//struct
 
 }
 
-void freeReservationsArr(struct Reservation** array, int size)//struct
+void freeReservationsArr(struct Reservation** array, int size)
 {
 	generalArrayFunction(array, size, sizeof(Reservation*), freeReservationPtr);
 }
@@ -763,14 +651,17 @@ void sortReservations(Sales* pSales)
     {
     case eResCode:
         compare = compareReseravationByReservatinCode;
+        printf("Reseravations Sorted By Code\n");
         break;
 
     case eCustomerName:
         compare = compareReseravationByCustomerName;
+        printf("Reseravations Sorted By Name\n");
         break;
 
     case eDate:
         compare = compareReseravationByDate;
+        printf("Reseravations Sorted By Date\n");
         break;
 
     default:
@@ -794,18 +685,6 @@ eSortOption showSortMenu()
 
 	return (eSortOption)opt;
 }
-
-
-
-//i want to fix the sortReservations and findReservation functions.
-//
-//the sortReservations  meant to show  showSortMenu and based on the pick sort the reservation array by order of pick.
-//
-//
-//
-//findReservation meant to find and reservation
-
-
 
 
 

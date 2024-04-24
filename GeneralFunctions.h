@@ -13,7 +13,7 @@
 
 #define CHECK_PRINT_RETURN_0(ptr,str) {if(!ptr){ printf(#str"\n"); return 0;}}
 
-#define CLOSE_FILE_RETURN_0(fp) {fclose(fp); return 0;} //file funcs
+#define CLOSE_FILE_RETURN_0(fp) {fclose(fp); return 0;} 
 
 #define CLOSE_FILE_RETURN_1(fp) {fclose(fp); return 1;}
 

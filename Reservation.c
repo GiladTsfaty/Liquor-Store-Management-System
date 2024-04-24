@@ -73,7 +73,7 @@ void freeReservationPtr(void* pResPtr)
 }
 
 
-int compareReseravationByReservatinCode(const void* rese1, const void* rese2)//first in order -1
+int compareReseravationByReservatinCode(const void* rese1, const void* rese2)
 {
 	const Reservation* pReservation1 = *(const Reservation**)rese1;
 	const Reservation* pReservation2 = *(const Reservation**)rese2;

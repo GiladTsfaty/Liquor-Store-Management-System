@@ -21,10 +21,6 @@ Customer* returnBlanckCustomer(Customer* pCustomer)
 
 int initCustomerWithoutName(Customer* pCustomer)
 {
-
-	/*if (!getCustomerName(pCustomer))
-		return 0;*/
-   
 	pCustomer->type = eNew;
 	pCustomer->totalSpent = 0;
     printf("Customer created\n");

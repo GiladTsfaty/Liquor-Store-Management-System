@@ -11,7 +11,7 @@ void initWhiskey(Whiskey* pWhiskey, Whiskey* whiskeyArr, int whiskeysCount)
 {
     char* tempBrand = getStrExactName("Enter the Whiskey brand:");
     pWhiskey->brand = tempBrand;
-    pWhiskey->itemSerial = getUniqueSerialNumber(whiskeyArr, whiskeysCount, 200, 299, sizeof(Whiskey), getWhiskeySerialNumber);
+    pWhiskey->itemSerial = getUniqueSerialNumber(whiskeyArr, whiskeysCount,WHISKY_SERIAL_LOW , WHISKY_SERIAL_HIGH, sizeof(Whiskey), getWhiskeySerialNumber);
     pWhiskey->amountAvailable = START_NUM_UNITS_OF_WHISKEY;
     pWhiskey->price = getIntPositive("Enter the price:");
     pWhiskey->numOfSolds = 0;
