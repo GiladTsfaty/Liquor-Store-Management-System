@@ -17,7 +17,7 @@ void initShop(Shop *pShop, Inventory *pInventory, Sales *pSales, int initialBudg
     pShop->netBudget = initialBudget;
 }
 
-int saveShopToTextFile(Shop* pShop, const FILE* inventoryFileName, const FILE* customerFileName, const FILE* reservationFileName)
+int saveShopToTextFile(Shop* pShop,  FILE* inventoryFileName,  FILE* customerFileName,  FILE* reservationFileName)
 {
     saveSalesToTextFile(pShop->salesDepartment,customerFileName,reservationFileName);
     saveInventoryToTextFile(pShop->inventory, (char*)inventoryFileName);
@@ -25,7 +25,7 @@ int saveShopToTextFile(Shop* pShop, const FILE* inventoryFileName, const FILE* c
     return 1;
 }
 
-int saveShopToBianryFile(Shop* pShop, const FILE* inventoryFileName, const FILE* customerFileName, const FILE* reservationFileName)
+int saveShopToBianryFile(Shop* pShop,  FILE* inventoryFileName,  FILE* customerFileName, FILE* reservationFileName)
 {
     saveSalesToBinaryFile(pShop->salesDepartment, customerFileName, reservationFileName);
     saveInventoryToBinaryFile(pShop->inventory, (char*)inventoryFileName);
@@ -52,8 +52,6 @@ void printTotalRevenue(const Shop* pShop, int initialBudget)
     double totalRevenue = reservationRevenue + initialBudget;
     printf("Total Revenue: $%.2f\n", totalRevenue);
 }
-
-
 
 
 

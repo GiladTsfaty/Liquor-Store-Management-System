@@ -5,8 +5,6 @@
 
 
 # define VIP_THRESH 1000
-# define MAX_STR_LEN 255
-#define SEP_CHAR '_'
 
 typedef enum {
     eNew, eRegular, eVip, eNomOfCustomerTypes
@@ -25,18 +23,13 @@ typedef struct
 }Customer;
 
 Customer* returnBlanckCustomer(Customer* pCustomer)  ;
-
-int  initCustomerWithoutName(Customer* pCustomer);
-int  printCustomer( const Customer* pCustomer);
-int  isSameCustomerName(const Customer* pCustomer1,const Customer* pCustomer2);
-
-void freeCustomerVal(void* value);
-void freeCustomer(Customer* pCustomer);
-
-int   getCustomerName(Customer* pCustomer);
-char* allocateRightLength(char** wordsArray, int count, int totalLength);
-void  changeNameOneWord(char* name, const char* word);
-void  changeName(char* name, int count, char** wordsArray);
-
-
-int compareCustomersByTotalSpent(const void* a, const void* b);//creative2
+int       initCustomerWithoutName(Customer* pCustomer);
+int       printCustomer( const Customer* pCustomer);
+int       isSameCustomerName(const Customer* pCustomer1,const Customer* pCustomer2);
+void      freeCustomerVal(void* value);
+void      freeCustomer(Customer* pCustomer);
+int       getCustomerName(Customer* pCustomer);
+char*     allocateRightLength(char** wordsArray, int count, int totalLength);
+void      changeNameOneWord(char* name, const char* word);
+void      changeName(char* name, int count, char** wordsArray);
+int       compareCustomersByTotalSpent(const void* a, const void* b);//creative2
