@@ -50,10 +50,6 @@ void printReservationPtr(void* pResPtr );
 void freeReservationPtr(void* pResPtr);
 
 
-
-
-
-
 int compareReseravationByReservatinCode(const void* rese1, const void* rese2);
 int compareReseravationByCustomerName(const void* rese1, const void* rese2);
 int compareReseravationByDate(const void* rese1, const void* rese2);

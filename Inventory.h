@@ -12,12 +12,12 @@
 
 typedef struct
 {
-    Beer* beerArray;
-    int beersCount;
+    Beer*  beerArray;
+    int    beersCount;
     Whiskey* whiskeyArray;
-    int whiskeysCount;
+    int      whiskeysCount;
     Wine* wineArray;
-    int winesCount;
+    int   winesCount;
 
 }Inventory;
 

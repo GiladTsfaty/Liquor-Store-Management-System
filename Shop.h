@@ -10,22 +10,16 @@
 
 typedef struct
 {
-    Inventory* inventory;
-    Sales* salesDepartment;
-    int netBudget;
-
-    double  profit;
-
+    Inventory*   inventory;
+    Sales*       salesDepartment;
+    int          netBudget;
+    double       profit;
 }Shop;
 
 
 void    initShop(Shop *pShop, Inventory *pInventory, Sales *pSales, int initialBudget);
-
 int     saveShopToTextFile(Shop* pShop, FILE* inventoryFileName, FILE* customerFileName, FILE* reservationFileName);// change to FILE*
 int     saveShopToBianryFile(Shop* pShop, FILE* inventoryFileName, FILE* customerFileName, FILE* reservationFileName);
-
-
 double  calculateReservationRevenue(const Sales* pSales);
 void    printTotalRevenue(const Shop* pShop, int initialBudget);
-
 void    freeShop(Shop* pShop);

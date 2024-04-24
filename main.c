@@ -124,17 +124,17 @@ void initSystemFromFiles(Shop* pShop, Sales* pSales, Inventory* pInventory)
         {
         case 1:
             // Load from text files
-            if (!initCustomerListFromTextFile(pSales, "customer_list.txt"))//
+            if (!initCustomerListFromTextFile(pSales, "blankText.txt"))//"customer_list.txt" // "customer_list_saveTo.txt"
             {
                 printf("Failed to load customers from text file.\n");
                 return;
             }
-            if (!initInventoryFromTextFile(pInventory, "Inventory.txt"))
+            if (!initInventoryFromTextFile(pInventory, "baseInventoryText.txt"))// "Inventory.txt" 
             {
                 printf("Failed to load inventory from text file.\n");
                 return;
             }
-            if (!loadReservationsArrayFromTextFile(pSales, "reservation_arr.txt"))//
+            if (!loadReservationsArrayFromTextFile(pSales, "blankText.txt"))//"reservation_arr.txt"  //"reservation_arr_saveTo.txt"
             {
                 printf("Failed to load reservations from text file.\n");
                 return;
@@ -145,17 +145,17 @@ void initSystemFromFiles(Shop* pShop, Sales* pSales, Inventory* pInventory)
 
         case 2:
             // Load from binary files
-            if (!readCustomerListFromBFile(pSales, "BinaryCustomer.bin"))
+            if (!readCustomerListFromBFile(pSales, "blankBinary.bin"))//"BinaryCustomer.bin"  //"BinaryCustomerSaveTo.bin"
             {
                 printf("Failed to load customers from binary file.\n");
                 return;
             }
-            if (!initInventoryFromBinaryFile(pInventory, "Inventory.bin"))
+            if (!initInventoryFromBinaryFile(pInventory, "Inventory.bin"))//
             {
                 printf("Failed to load inventory from binary file.\n");
                 return;
             }
-            if (!loadReservationsArrayFromBinaryFile(pSales, "BinaryReservation.bin"))
+            if (!loadReservationsArrayFromBinaryFile(pSales,"blankBinary.bin"))// "BinaryReservation.bin" // "BinaryReservationSaveTo.bin"
             {
                 printf("Failed to load reservations from binary file.\n");
                 return;
