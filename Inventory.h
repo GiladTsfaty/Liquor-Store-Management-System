@@ -35,10 +35,11 @@ int isSerialNumberUnique(void* arr, int count, int serialNumber, int elementSize
 int getUniqueSerialNumber(void* arr, int count, int minSerial, int maxSerial, int elementSize, int (*getSerialNumber)(void*));
 int getValidSerialNumber(int minSerial, int maxSerial);
 int getBeerSerialNumber(void* pBeer);
-void refillItemBySerial(Inventory* pInventory);
+int refillItemBySerial(Inventory* pInventory);
 void printRefillDetails(void* item, int itemsAdded, int elementSize, int (*getSerialNumber)(void*));
 void refillStock(void* item, int startAmount, int* itemsAdded);
-void handleRefillInventory(Inventory* pInventory);
+//int refillStock(Inventory* pInventory);
+int handleRefillInventory(Inventory* pInventory);
 int getWhiskeySerialNumber(void* pWhiskey);
 int getWineSerialNumber(void* pWine);
 void freeInventory(Inventory* inventory);

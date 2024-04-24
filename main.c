@@ -59,9 +59,10 @@ int main()
                 printf("Error adding beverages to inventory\n");
             break;
             case eRefillInventory:
-                handleRefillInventory(&inventory);
+                if (!handleRefillInventory(&inventory)) {
+                    printf("Error refilling inventory\n");
+                }
                 break;
-
         case eAddClient:
             if (!addNewCustomer(theShop.salesDepartment))
                 printf("Error adding client\n");
