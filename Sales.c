@@ -8,9 +8,7 @@
 #include "Reservation.h"
 #include "GeneralFunctions.h"
 #include "Customer.h"
-
 #include "Filefunctions.h"
-#include "BinaryFiles.h"
 
 void initSales(Sales* pSales, Inventory* pInventory)
 {
@@ -51,26 +49,6 @@ int saveSalesToBinaryFile(Sales* pSales, FILE* customerFileName, FILE* reservati
 }
 
 
-
-//
-//void initSalesFromFile(Sales* pSales, const char* fileName)
-//{
-//   
-//
-//    if (loadSalesFromFile(pSales, fileName))
-//        return FROM_FILE;
-//
-//    printf("-----------  Init airport Manager ---- User\n");
-//    if (!L_init(&pSales->customersList))
-//        return ERROR;
-//
-//
-//    return FROM_USER;
-//
-//
-//}
-
-
 int addNewCustomer(Sales* pSales)
 {
 	Customer* pCustomer = initCustomer(pSales);
@@ -103,8 +81,6 @@ Customer* initCustomer(Sales* pSales)
 }
 
 
-
-
 int uniqeNameCheck(const char* name, const Sales* pSales)
 {
 	Customer* customer = findCustomerByName(pSales, name);
@@ -114,8 +90,6 @@ int uniqeNameCheck(const char* name, const Sales* pSales)
 
 	return 1;
 }
-
-
 
 
 Customer* findCustomerByName(const Sales* pSales, const char* name)
@@ -141,10 +115,6 @@ Customer* findCustomerByName(const Sales* pSales, const char* name)
 }
 
 
-
-
-
-
 int customerCompare(const void* data1, const void* data2) //if code is uniqe return 0 
 {
 	const Customer* pCustomer1 = (const  Customer*)data1;
@@ -154,8 +124,6 @@ int customerCompare(const void* data1, const void* data2) //if code is uniqe ret
 		return 1;
 	return 0;
 }
-
-
 
 
 void printAllCustomers(const Sales* pSales)
@@ -174,10 +142,7 @@ void printAllCustomers(const Sales* pSales)
         L_print((LIST*)&(pSales->customersList), (void (*)(const void*)) printCustomer);
 
         printf("\n");
-
     }
-	
-
 }
 
 int insertNewCustomerToList(LIST* pList, Customer* pCustomer)
@@ -442,25 +407,6 @@ double updateInventoryAndGetCost(Inventory* pInventory, int choice, int serialNu
 }
 
 
-//
-//void addPurchasedItemToReservation(Reservation* pNewReservation, int serialNumber, int numBottles, double cost)
-//{
-//    PurchasedItem* newItem = (PurchasedItem*)malloc(sizeof(PurchasedItem));
-//    if (newItem != NULL)
-//    {
-//        newItem->serial = serialNumber;
-//        newItem->amount = numBottles;
-//        newItem->costInt = (int)cost;
-//        newItem->costDec = (int)((cost - newItem->costInt) * 100);
-//        L_insert(&pNewReservation->purchasedItems, newItem);//fix maybe item not list 
-//    }
-//    else
-//    {
-//        printf("Memory allocation failed for newItem.\n");
-//        free(newItem);
-//    }
-//}
-
 void addPurchasedItemToReservation(Reservation* pNewReservation, int serialNumber, int numBottles, double cost)
 {
     // Reallocate memory for the array of purchased items
@@ -481,9 +427,6 @@ void addPurchasedItemToReservation(Reservation* pNewReservation, int serialNumbe
     pNewReservation->numPurchasedItems++;
 }
 
-
-
-//
 //int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pCustomer)
 //{
 //    // Allocate memory for a new Reservation object
@@ -491,8 +434,6 @@ void addPurchasedItemToReservation(Reservation* pNewReservation, int serialNumbe
 //    if (!pNewReservation)
 //        return 0;
 //
-//    // Initialize the list of purchased items
-//    L_init((LIST*)&pNewReservation->purchasedItems);
 //    double totalCost = 0.0;
 //
 //    int addMoreItems = 1;
@@ -522,8 +463,23 @@ void addPurchasedItemToReservation(Reservation* pNewReservation, int serialNumbe
 //        }
 //
 //        // Add the purchased item to the reservation
-//        addPurchasedItemToReservation(pNewReservation, serialNumber, numBottles, cost);
+//        PurchasedItem* newItem = (PurchasedItem*)realloc(pNewReservation->purchasedItems, ((size_t)pNewReservation->numPurchasedItems + 1) * sizeof(PurchasedItem));//(size_t)
+//        if (newItem == NULL)
+//        {
+//            printf("Memory allocation failed for new item.\n");
+//            free(pNewReservation->purchasedItems);
+//            free(pNewReservation);
+//            return 0;
+//        }
+//        pNewReservation->purchasedItems = newItem;
 //
+//        PurchasedItem* item = &(pNewReservation->purchasedItems[pNewReservation->numPurchasedItems]);
+//        item->serial = serialNumber;
+//        item->amount = numBottles;
+//        item->costInt = (int)cost;
+//        item->costDec = (int)((cost - item->costInt) * 100);
+//
+//        pNewReservation->numPurchasedItems++;
 //        totalCost += cost;
 //
 //        // Ask the user if they want to add more items
@@ -541,12 +497,13 @@ void addPurchasedItemToReservation(Reservation* pNewReservation, int serialNumbe
 //    else
 //    {
 //        // If reservationArray is not NULL, reallocate memory to accommodate the new reservation
-//        tempArray = (Reservation**)realloc(pSales->reservationArray, (pSales->reservationCount + 1) * sizeof(Reservation*));
+//        tempArray = (Reservation**)realloc(pSales->reservationArray, ((size_t)pSales->reservationCount + 1) * sizeof(Reservation*));//(size_t)
 //    }
 //
 //    if (!tempArray)
 //    {
 //        // Memory allocation failed, free the previously allocated Reservation object
+//        free(pNewReservation->purchasedItems);
 //        free(pNewReservation);
 //        return 0;
 //    }
@@ -576,9 +533,6 @@ void addPurchasedItemToReservation(Reservation* pNewReservation, int serialNumbe
 //
 //    return 1; // Reservation added successfully
 //}
-
-
-
 int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pCustomer)
 {
     // Allocate memory for a new Reservation object
@@ -589,7 +543,8 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
     double totalCost = 0.0;
 
     int addMoreItems = 1;
-    while (addMoreItems)
+    int itemCount = 0;
+    while (addMoreItems && itemCount < 9)
     {
         // Ask the user to choose between beer, wine, or whiskey
         int choice;
@@ -614,6 +569,13 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
             continue;
         }
 
+        // Check if adding the item would exceed the total amount limit of $10,000
+        if (totalCost + cost > 10000)
+        {
+            printf("Adding this item would exceed the total amount limit of $10,000. Item not added.\n");
+            continue;
+        }
+
         // Add the purchased item to the reservation
         PurchasedItem* newItem = (PurchasedItem*)realloc(pNewReservation->purchasedItems, ((size_t)pNewReservation->numPurchasedItems + 1) * sizeof(PurchasedItem));//(size_t)
         if (newItem == NULL)
@@ -633,10 +595,19 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
 
         pNewReservation->numPurchasedItems++;
         totalCost += cost;
+        itemCount++;
 
         // Ask the user if they want to add more items
-        printf("Do you want to add another item? (1 for yes, 0 for no): ");
-        scanf("%d", &addMoreItems);
+        if (itemCount < 9)
+        {
+            printf("Do you want to add another item? (1 for yes, 0 for no): ");
+            scanf("%d", &addMoreItems);
+        }
+        else
+        {
+            printf("Maximum number of items (9) reached. Cannot add more items.\n");
+            addMoreItems = 0;
+        }
     }
 
     // Resize the reservationArray to accommodate the new reservation
@@ -686,9 +657,6 @@ int addNewReservationToArray2(Sales* pSales, Inventory* pInventory, Customer* pC
     return 1; // Reservation added successfully
 }
 
-
-
-
 void printReservationsArr(struct Reservation** array, int size)//struct
 {
     if (!size)
@@ -704,91 +672,6 @@ void freeReservationsArr(struct Reservation** array, int size)//struct
 {
 	generalArrayFunction(array, size, sizeof(Reservation*), freeReservationPtr);
 }
-
-
-
-
-
-
-
-
-
-
-//
-//
-//void findReservation(const Sales* pSales) {
-//    if (pSales->reservationCount == 0) {
-//        printf("There are no reservations.\n");
-//        return;
-//    }
-//
-//    int(*compare)(const void* rese1, const void* rese2) = NULL;
-//
-//    switch (pSales->ReservationSortOpt) {
-//    case eResCode:
-//        printf("Enter the Reservation Code: ");
-//        compare = compareReseravationByReservatinCode;
-//        break;
-//
-//    case eCustomerName:
-//        printf("Enter the Customer Name: ");
-//        compare = compareReseravationByCustomerName;
-//        break;
-//
-//    case eDate:
-//        printf("Enter the Date (DD/MM/YYYY): ");
-//        compare = compareReseravationByDate;
-//        break;
-//
-//    default:
-//        printf("Invalid - Reservations Are Not Sorted\n");
-//        return;
-//    }
-//
-//    Reservation tempReservation = { 0 };//= {0}
-//    Reservation* pTempReservation = &tempReservation;
-//
-//    // Allocate memory for the customer field
-//    pTempReservation->customer = (Customer*)malloc(sizeof(Customer));
-//    if (pTempReservation->customer == NULL) {
-//        printf("Memory allocation failed for customer.\n");
-//        return;
-//    }
-//
-//    switch (pSales->ReservationSortOpt) {
-//    case eResCode:
-//        scanf("%d", &pTempReservation->ReservationCode);
-//        break;
-//
-//    case eCustomerName:
-//        // Allocate memory for the customer name
-//        pTempReservation->customer->name = (char*)malloc(sizeof(char) * MAX_STR_LEN);
-//        if (pTempReservation->customer->name == NULL) {
-//            printf("Memory allocation failed for customer name.\n");
-//            free(pTempReservation->customer);
-//            return;
-//        }
-//        scanf("%s", pTempReservation->customer->name);
-//        break;
-//
-//    case eDate:
-//        scanf("%d/%d/%d", &pTempReservation->date.day, &pTempReservation->date.month, &pTempReservation->date.year);
-//        break;
-//    }
-//
-//    Reservation** pFoundReservation = bsearch(&pTempReservation, pSales->reservationArray, pSales->reservationCount, sizeof(Reservation*), compare);
-//
-//    // Free the allocated memory for the customer field and name
-//    free(pTempReservation->customer->name);
-//    free(pTempReservation->customer);//exp
-//
-//    if (pFoundReservation == NULL)
-//        printf("Reservation was not found\n");
-//    else {
-//        printf("Reservation found:\n");
-//        printReservation(*pFoundReservation);
-//    }
-//}
 
 
 void findReservation(const Sales* pSales) {

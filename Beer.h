@@ -10,7 +10,7 @@ static const char* BeerSizeStr[eNumOfBeerSizes]
 typedef struct
 {
     char* brand;
-    int itemSerial; //111
+    int itemSerial;
     int amountAvailable;
     int price;
     int numOfSolds;
@@ -19,7 +19,6 @@ typedef struct
 }Beer;
 
 void        initBeer(Beer* pBeer, Beer* beerArr, int beerCount);
-int         generateItemSerial(Beer* pBeer);
 eBeerSize   getBeerSize();
 const char* GetBeerSizeStr(int type);
 void        printBeer(const Beer* pBeer);

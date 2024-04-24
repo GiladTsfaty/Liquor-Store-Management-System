@@ -7,8 +7,6 @@
 
 
 
-
-
 void initShop(Shop *pShop, Inventory *pInventory, Sales *pSales, int initialBudget)
 ////needs to call init salse/inventory/reservations functions
 {
@@ -19,7 +17,7 @@ void initShop(Shop *pShop, Inventory *pInventory, Sales *pSales, int initialBudg
     pShop->netBudget = initialBudget;
 }
 
-int saveShopToTextFile(Shop* pShop, FILE* inventoryFileName, FILE* customerFileName, FILE* reservationFileName)
+int saveShopToTextFile(Shop* pShop, const FILE* inventoryFileName, const FILE* customerFileName, const FILE* reservationFileName)
 {
     saveSalesToTextFile(pShop->salesDepartment,customerFileName,reservationFileName);
     saveInventoryToTextFile(pShop->inventory, (char*)inventoryFileName);
@@ -27,7 +25,7 @@ int saveShopToTextFile(Shop* pShop, FILE* inventoryFileName, FILE* customerFileN
     return 1;
 }
 
-int saveShopToBianryFile(Shop* pShop, FILE* inventoryFileName, FILE* customerFileName, FILE* reservationFileName)
+int saveShopToBianryFile(Shop* pShop, const FILE* inventoryFileName, const FILE* customerFileName, const FILE* reservationFileName)
 {
     saveSalesToBinaryFile(pShop->salesDepartment, customerFileName, reservationFileName);
     saveInventoryToBinaryFile(pShop->inventory, (char*)inventoryFileName);

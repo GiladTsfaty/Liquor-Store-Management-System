@@ -53,5 +53,5 @@ void        freeReservationsArr(struct Reservation** array, int size);
 
 
 eSortOption showSortMenu();
-void        findReservation(const Sales* pSales); //bSearch - 1)ResCode  2)clientName   3)date
+void        findReservation(const Sales* pSales);
 void        sortReservations(Sales* pSales);      //qSort - 1)ResCode  2)clientName   3)date

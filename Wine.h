@@ -12,7 +12,7 @@ static const char* WineTypeStr[eNumOfWineTypes]
 typedef struct
 {
     char* brand;
-    int itemSerial; // 222
+    int itemSerial; 
     int amountAvailable;
     int price;
     int numOfSolds;

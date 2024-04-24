@@ -18,7 +18,7 @@ typedef struct
 
 
 void    initShop(Shop *pShop, Inventory *pInventory, Sales *pSales, int initialBudget);
-int     saveShopToTextFile(Shop* pShop, FILE* inventoryFileName, FILE* customerFileName, FILE* reservationFileName);// change to FILE*
+int     saveShopToTextFile(Shop* pShop, FILE* inventoryFileName, FILE* customerFileName, FILE* reservationFileName);
 int     saveShopToBianryFile(Shop* pShop, FILE* inventoryFileName, FILE* customerFileName, FILE* reservationFileName);
 double  calculateReservationRevenue(const Sales* pSales);
 void    printTotalRevenue(const Shop* pShop, int initialBudget);
